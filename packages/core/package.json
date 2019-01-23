@@ -1,0 +1,30 @@
+{
+  "name": "@rcgen/core",
+  "version": "0.0.0",
+  "description": "The core functionality of rcgen.",
+  "bugs": {
+    "url": "https://github.com/clebert/rcgen/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clebert/rcgen.git"
+  },
+  "license": "MIT",
+  "author": "Clemens Akens <clebert@me.com>",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "ajv": "^6.9.2",
+    "micromatch": "^3.1.10"
+  },
+  "devDependencies": {
+    "@types/micromatch": "^3.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "extends": "ts-config",
+  "linterOptions": {
+    "exclude": ["**/lib/**", "**/node_modules/**"]
+  },
+  "rules": {
+    "quotemark": [true, "single", "avoid-escape", "avoid-template"]
+  }
+}
