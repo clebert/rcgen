@@ -7,13 +7,13 @@ A generator for config files.
 ### Using Yarn
 
 ```sh
-yarn add -D @rcgen/cli
+yarn add @rcgen/cli
 ```
 
 ### Using NPM
 
 ```sh
-npm install -D @rcgen/cli
+npm install @rcgen/cli
 ```
 
 ## Getting Started

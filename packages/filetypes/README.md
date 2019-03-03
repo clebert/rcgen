@@ -1,19 +1,19 @@
-# @rcgen/core
+# @rcgen/filetypes
 
-The core functionality of rcgen.
+A collection of common file types.
 
 ## Installation
 
 ### Using Yarn
 
 ```sh
-yarn add @rcgen/core
+yarn add @rcgen/filetypes
 ```
 
 ### Using NPM
 
 ```sh
-npm install @rcgen/core
+npm install @rcgen/filetypes
 ```
 
 ---
