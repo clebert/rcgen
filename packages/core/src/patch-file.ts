@@ -1,7 +1,7 @@
 import path from 'path';
-import {validate} from './__utils__';
 import {LoadedFile} from './load-file';
 import {LoadedManifest} from './load-manifest';
+import {validate} from './validate';
 
 export interface PatchedFile<T> extends LoadedFile<T> {
   readonly generatedContent: T;

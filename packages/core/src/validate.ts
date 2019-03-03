@@ -1,17 +1,16 @@
 import Ajv from 'ajv';
 
-export type Predicate<T> = (value: unknown) => value is T;
-
-export interface Result<T> {
-  readonly isValid: Predicate<T>;
+export interface ValidationResult<T> {
   readonly validationMessage: string;
+
+  isValid(value: unknown): value is T;
 }
 
 export function validate<T>(
   value: unknown,
   valueName: string,
   schema: object
-): Result<T> {
+): ValidationResult<T> {
   const ajv = new Ajv({allErrors: true});
 
   ajv.addKeyword('isFunction', {

@@ -1,8 +1,8 @@
 import {existsSync, readFileSync} from 'fs';
 import micromatch from 'micromatch';
 import path from 'path';
-import {validate} from './__utils__';
 import {File, LoadedManifest} from './load-manifest';
+import {validate} from './validate';
 
 export interface LoadedFile<T> extends File<T> {
   readonly readContentData?: Buffer;

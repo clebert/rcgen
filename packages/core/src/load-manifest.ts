@@ -1,5 +1,5 @@
 import path from 'path';
-import {validate} from './__utils__';
+import {validate} from './validate';
 
 export type Serializer<T> = (content: T) => Buffer;
 export type Deserializer<T> = (contentData: Buffer) => T;
