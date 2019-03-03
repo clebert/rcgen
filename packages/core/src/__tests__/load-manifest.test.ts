@@ -42,14 +42,8 @@ function defineInvalidFiletype(
 }
 
 describe('loadManifest', () => {
-  let testEnv: TestEnv;
-
-  beforeEach(() => {
-    testEnv = new TestEnv();
-  });
-
   it('returns the manifest together with its filename', () => {
-    const {mockNodeRequire, file, fileWithDeserializer} = testEnv;
+    const {mockNodeRequire, file, fileWithDeserializer} = new TestEnv();
 
     const manifests: Manifest[] = [
       {files: []},
@@ -71,7 +65,7 @@ describe('loadManifest', () => {
 
       expect(loadManifest('/path/to/m', mockNodeRequire)).toEqual({
         ...manifest,
-        manifestFilename: '/path/to/m'
+        absoluteManifestFilename: '/path/to/m'
       });
     }
   });
@@ -85,7 +79,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if the module of the manifest could not be required', () => {
-    const {mockNodeRequire} = testEnv;
+    const {mockNodeRequire} = new TestEnv();
 
     mockNodeRequire.mockImplementation(() => {
       throw new Error('NodeRequireError');
@@ -99,7 +93,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if the module of the manifest does not have a valid default export', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
     const {filetype} = file;
 
     const invalidDefinitions = [
@@ -211,7 +205,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if at least two of the files in the manifest have the same filename', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
 
     mockNodeRequire.mockReturnValue({default: {files: [file, file]}});
 
@@ -223,7 +217,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if the filename of a file in the manifest is not relative', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
 
     mockNodeRequire.mockReturnValue({
       default: {files: [{...file, filename: '/a'}]}
@@ -237,7 +231,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if a file in the manifest conflicts with itself', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
 
     mockNodeRequire.mockReturnValue({
       default: {
@@ -253,7 +247,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if a file in the manifest conflicts with another file in the manifest', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
 
     mockNodeRequire.mockReturnValue({
       default: {
@@ -269,7 +263,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if the initial content of a file in the manifest is invalid', () => {
-    const {mockNodeRequire, file} = testEnv;
+    const {mockNodeRequire, file} = new TestEnv();
     const {filetype} = file;
 
     mockNodeRequire.mockReturnValue({

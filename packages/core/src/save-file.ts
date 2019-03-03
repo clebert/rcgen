@@ -1,4 +1,5 @@
 import {existsSync, writeFileSync} from 'fs';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import {LoadedManifest} from './load-manifest';
 import {PatchedFile} from './patch-file';
@@ -19,6 +20,7 @@ function createFileCannotBeSavedError(
  * @throws if the file conflicts with an existing file
  * @throws if the generated content of the file could not be serialized
  * @throws if the generated content of the file differs from the read content of the file (not in force mode)
+ * @throws if the required subdirectories of the file could not be created
  * @throws if the generated content of the file could not be written
  */
 export function saveFile<T = unknown>(
@@ -26,7 +28,7 @@ export function saveFile<T = unknown>(
   patchedFile: PatchedFile<T>,
   force: boolean = false
 ): boolean {
-  const {manifestFilename} = loadedManifest;
+  const {absoluteManifestFilename} = loadedManifest;
 
   const {
     filename,
@@ -36,11 +38,11 @@ export function saveFile<T = unknown>(
     generatedContent
   } = patchedFile;
 
-  const rootDirname = path.dirname(manifestFilename);
+  const absoluteRootDirname = path.dirname(absoluteManifestFilename);
 
   if (conflictingFilenames) {
     for (const conflictingFilename of conflictingFilenames) {
-      if (existsSync(path.join(rootDirname, conflictingFilename))) {
+      if (existsSync(path.join(absoluteRootDirname, conflictingFilename))) {
         throw createFileCannotBeSavedError(
           filename,
           `because it conflicts with the existing file '${conflictingFilename}'`
@@ -74,8 +76,20 @@ export function saveFile<T = unknown>(
     }
   }
 
+  const absoluteFilename = path.join(absoluteRootDirname, filename);
+
   try {
-    writeFileSync(path.join(rootDirname, filename), generatedContentData);
+    mkdirp.sync(path.dirname(absoluteFilename));
+  } catch (error) {
+    throw createFileCannotBeSavedError(
+      filename,
+      'because its required subdirectories could not be created',
+      error.message
+    );
+  }
+
+  try {
+    writeFileSync(absoluteFilename, generatedContentData);
   } catch (error) {
     throw createFileCannotBeSavedError(
       filename,

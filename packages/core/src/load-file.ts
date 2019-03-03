@@ -57,7 +57,7 @@ export function loadFile<T = unknown>(
   filename: string
 ): LoadedFile<T> | undefined {
   const {
-    manifestFilename,
+    absoluteManifestFilename,
     files,
     includedFilenames,
     excludedFilenames
@@ -75,7 +75,8 @@ export function loadFile<T = unknown>(
     return;
   }
 
-  const absoluteFilename = path.join(path.dirname(manifestFilename), filename);
+  const absoluteRootDirname = path.dirname(absoluteManifestFilename);
+  const absoluteFilename = path.join(absoluteRootDirname, filename);
 
   try {
     if (!existsSync(absoluteFilename)) {

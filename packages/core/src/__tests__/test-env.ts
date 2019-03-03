@@ -4,46 +4,59 @@ jest.mock('fs', () => ({
   writeFileSync: jest.fn()
 }));
 
+jest.mock('mkdirp', () => ({
+  sync: jest.fn()
+}));
+
 import {existsSync, readFileSync, writeFileSync} from 'fs';
+import mkdirp from 'mkdirp';
+import path from 'path';
 import {File, LoadedManifest} from '..';
 
 export class TestEnv {
   // tslint:disable: no-any
-  public readonly mockExistsSync = (existsSync as any) as jest.Mock;
-  public readonly mockReadFileSync = (readFileSync as any) as jest.Mock;
-  public readonly mockWriteFileSync = (writeFileSync as any) as jest.Mock;
+  public static readonly mockExistsSync = (existsSync as any) as jest.Mock;
+  public static readonly mockReadFileSync = (readFileSync as any) as jest.Mock;
+  public static readonly mockWriteFileSync = (writeFileSync as any) as jest.Mock;
+  public static readonly mockMkdirpSync = (mkdirp.sync as any) as jest.Mock;
   // tslint:enable: no-any
-  public readonly mockNodeRequire: jest.Mock;
-  public readonly mockSerializer: jest.Mock;
-  public readonly mockDeserializer: jest.Mock;
+
+  public static serializeJson(content: unknown): Buffer {
+    return Buffer.from(JSON.stringify(content));
+  }
+
+  public static deserializeJson(contentData: Buffer): unknown {
+    return JSON.parse(contentData.toString());
+  }
+
+  public readonly mockNodeRequire = jest.fn();
+  public readonly mockSerializer = jest.fn(TestEnv.serializeJson);
+  public readonly mockDeserializer = jest.fn(TestEnv.deserializeJson);
+
   public readonly readContent: string[];
   public readonly readContentData: Buffer;
-  public readonly rootDirname: string;
-  public readonly loadedManifest: LoadedManifest;
+
+  public readonly absoluteRootDirname: string;
   public readonly absoluteFilename: string;
+  public readonly absoluteDirname: string;
+
+  public readonly loadedManifest: LoadedManifest;
+
   public readonly file: File<string[]>;
   public readonly fileWithDeserializer: File<string[]>;
 
-  public constructor() {
-    this.mockExistsSync.mockReset();
-    this.mockReadFileSync.mockReset();
-    this.mockWriteFileSync.mockReset();
-
-    this.mockNodeRequire = jest.fn();
-    this.mockSerializer = jest.fn(this.serializeJson);
-    this.mockDeserializer = jest.fn(this.deserializeJson);
+  public constructor(filename: string = 'a') {
     this.readContent = ['bar'];
-    this.readContentData = this.serializeJson(this.readContent);
-    this.rootDirname = '/path/to';
+    this.readContentData = TestEnv.serializeJson(this.readContent);
+
+    this.absoluteRootDirname = '/path/to';
+    this.absoluteFilename = path.join(this.absoluteRootDirname, filename);
+    this.absoluteDirname = path.dirname(this.absoluteFilename);
 
     this.loadedManifest = {
-      manifestFilename: `${this.rootDirname}/m`,
+      absoluteManifestFilename: path.join(this.absoluteRootDirname, 'm'),
       files: []
     };
-
-    const filename = 'a';
-
-    this.absoluteFilename = `${this.rootDirname}/${filename}`;
 
     const filetype = {
       contentSchema: {type: 'array', items: {type: 'string'}},
@@ -54,15 +67,8 @@ export class TestEnv {
 
     this.fileWithDeserializer = {
       ...this.file,
-      filetype: {...filetype, deserializer: this.mockDeserializer}
+      // tslint:disable-next-line: no-any
+      filetype: {...filetype, deserializer: this.mockDeserializer as any}
     };
-  }
-
-  public serializeJson(content: unknown): Buffer {
-    return Buffer.from(JSON.stringify(content));
-  }
-
-  public deserializeJson(contentData: Buffer): unknown {
-    return JSON.parse(contentData.toString());
   }
 }

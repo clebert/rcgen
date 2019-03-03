@@ -19,10 +19,12 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "ajv": "^6.9.2",
-    "micromatch": "^3.1.10"
+    "micromatch": "^3.1.10",
+    "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "@types/micromatch": "^3.1.0"
+    "@types/micromatch": "^3.1.0",
+    "@types/mkdirp": "^0.5.2"
   },
   "publishConfig": {
     "access": "public"

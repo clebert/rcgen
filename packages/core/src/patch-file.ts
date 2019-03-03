@@ -25,7 +25,7 @@ export function patchFile<T = unknown>(
   loadedManifest: LoadedManifest,
   loadedFile: LoadedFile<T>
 ): PatchedFile<T> {
-  const {manifestFilename, patchers} = loadedManifest;
+  const {absoluteManifestFilename, patchers} = loadedManifest;
 
   const {
     filename,
@@ -40,13 +40,13 @@ export function patchFile<T = unknown>(
     return {...loadedFile, generatedContent};
   }
 
-  const rootDirname = path.dirname(manifestFilename);
+  const absoluteRootDirname = path.dirname(absoluteManifestFilename);
 
   for (const patcher of patchers) {
     try {
       generatedContent = patcher({
         filename,
-        rootDirname,
+        absoluteRootDirname,
         generatedContent,
         readContent
       });

@@ -19,7 +19,7 @@ export interface File<T> {
 
 export interface PatcherArgs<T> {
   readonly filename: string;
-  readonly rootDirname: string;
+  readonly absoluteRootDirname: string;
   readonly generatedContent: T;
   readonly readContent: T | undefined;
 }
@@ -36,16 +36,16 @@ export interface Manifest {
 }
 
 export interface LoadedManifest extends Manifest {
-  readonly manifestFilename: string;
+  readonly absoluteManifestFilename: string;
 }
 
 function createManifestCannotBeLoadedError(
-  manifestFilename: string,
+  absoluteManifestFilename: string,
   cause: string,
   details?: string
 ): Error {
   return new Error(
-    `Manifest '${manifestFilename}' cannot be loaded ${cause}.${
+    `Manifest '${absoluteManifestFilename}' cannot be loaded ${cause}.${
       details ? ` Details: ${details}` : ''
     }`
   );
@@ -109,12 +109,12 @@ const manifestModuleSchema = {
  * @throws if the initial content of a file in the manifest is invalid
  */
 export function loadManifest(
-  manifestFilename: string,
+  absoluteManifestFilename: string,
   nodeRequire: (moduleName: string) => unknown = require
 ): LoadedManifest {
-  if (!path.isAbsolute(manifestFilename)) {
+  if (!path.isAbsolute(absoluteManifestFilename)) {
     throw createManifestCannotBeLoadedError(
-      manifestFilename,
+      absoluteManifestFilename,
       'because its filename is not absolute'
     );
   }
@@ -122,10 +122,10 @@ export function loadManifest(
   let manifestModule: unknown;
 
   try {
-    manifestModule = nodeRequire(manifestFilename);
+    manifestModule = nodeRequire(absoluteManifestFilename);
   } catch (error) {
     throw createManifestCannotBeLoadedError(
-      manifestFilename,
+      absoluteManifestFilename,
       'because its module could not be required',
       error.message
     );
@@ -139,7 +139,7 @@ export function loadManifest(
 
   if (!manifestModuleResult.isValid(manifestModule)) {
     throw createManifestCannotBeLoadedError(
-      manifestFilename,
+      absoluteManifestFilename,
       'because its module does not have a valid default export',
       manifestModuleResult.validationMessage
     );
@@ -152,7 +152,7 @@ export function loadManifest(
   for (const {filename, filetype, initialContent} of files) {
     if (filenames.has(filename)) {
       throw createManifestCannotBeLoadedError(
-        manifestFilename,
+        absoluteManifestFilename,
         `because at least two of its files have the same filename '${filename}'`
       );
     }
@@ -161,7 +161,7 @@ export function loadManifest(
 
     if (path.isAbsolute(filename)) {
       throw createManifestCannotBeLoadedError(
-        manifestFilename,
+        absoluteManifestFilename,
         `because the filename of its file '${filename}' is not relative`
       );
     }
@@ -170,12 +170,12 @@ export function loadManifest(
       if (conflictingFilenames && conflictingFilenames.includes(filename)) {
         if (filename === otherFilename) {
           throw createManifestCannotBeLoadedError(
-            manifestFilename,
+            absoluteManifestFilename,
             `because its file '${filename}' conflicts with itself`
           );
         } else {
           throw createManifestCannotBeLoadedError(
-            manifestFilename,
+            absoluteManifestFilename,
             `because its file '${filename}' conflicts with its other file '${otherFilename}'`
           );
         }
@@ -190,12 +190,12 @@ export function loadManifest(
 
     if (!initialContentResult.isValid(initialContent)) {
       throw createManifestCannotBeLoadedError(
-        manifestFilename,
+        absoluteManifestFilename,
         `because the initial content of its file '${filename}' is invalid`,
         initialContentResult.validationMessage
       );
     }
   }
 
-  return {...manifest, manifestFilename};
+  return {...manifest, absoluteManifestFilename};
 }

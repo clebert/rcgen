@@ -3,24 +3,16 @@ import {TestEnv} from './test-env';
 import {loadFile} from '..';
 
 describe('loadFile', () => {
-  let testEnv: TestEnv;
-
-  beforeEach(() => {
-    testEnv = new TestEnv();
-  });
-
   it('returns the file together with its read but not deserialized content', () => {
     const {
-      mockExistsSync,
-      mockReadFileSync,
       readContentData,
       loadedManifest,
       absoluteFilename,
       file
-    } = testEnv;
+    } = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
-    mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockExistsSync.mockReturnValue(true);
+    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
 
     const {filename} = file;
 
@@ -29,24 +21,22 @@ describe('loadFile', () => {
       readContentData
     });
 
-    expect(mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
-    expect(mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
+    expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
+    expect(TestEnv.mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
   });
 
   it('returns the file together with its read and deserialized content', () => {
     const {
-      mockExistsSync,
-      mockReadFileSync,
       mockDeserializer,
       readContent,
       readContentData,
       loadedManifest,
       absoluteFilename,
       fileWithDeserializer
-    } = testEnv;
+    } = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
-    mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockExistsSync.mockReturnValue(true);
+    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
 
     const {filename} = fileWithDeserializer;
 
@@ -54,15 +44,15 @@ describe('loadFile', () => {
       loadFile({...loadedManifest, files: [fileWithDeserializer]}, filename)
     ).toEqual({...fileWithDeserializer, readContentData, readContent});
 
-    expect(mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
-    expect(mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
+    expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
+    expect(TestEnv.mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
     expect(mockDeserializer.mock.calls).toEqual([[readContentData]]);
   });
 
   it('returns undefined if the file is not included', () => {
-    const {mockExistsSync, loadedManifest, file} = testEnv;
+    const {loadedManifest, file} = new TestEnv();
 
-    mockExistsSync.mockReturnValue(false);
+    TestEnv.mockExistsSync.mockReturnValue(false);
 
     const testCases = [
       {included: [1, 1, 1]},
@@ -97,9 +87,9 @@ describe('loadFile', () => {
   });
 
   it('does not attempt to access the file if it is not included', () => {
-    const {mockExistsSync, mockReadFileSync, loadedManifest, file} = testEnv;
+    const {loadedManifest, file} = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
+    TestEnv.mockExistsSync.mockReturnValue(true);
 
     expect(
       loadFile(
@@ -108,31 +98,25 @@ describe('loadFile', () => {
       )
     ).toBeUndefined();
 
-    expect(mockExistsSync.mock.calls).toEqual([]);
-    expect(mockReadFileSync.mock.calls).toEqual([]);
+    expect(TestEnv.mockExistsSync.mock.calls).toEqual([]);
+    expect(TestEnv.mockReadFileSync.mock.calls).toEqual([]);
   });
 
   it('does not attempt to read the content of the file if it does not exist', () => {
-    const {
-      mockExistsSync,
-      mockReadFileSync,
-      loadedManifest,
-      absoluteFilename,
-      file
-    } = testEnv;
+    const {loadedManifest, absoluteFilename, file} = new TestEnv();
 
-    mockExistsSync.mockReturnValue(false);
+    TestEnv.mockExistsSync.mockReturnValue(false);
 
     expect(loadFile({...loadedManifest, files: [file]}, file.filename)).toEqual(
       file
     );
 
-    expect(mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
-    expect(mockReadFileSync.mock.calls).toEqual([]);
+    expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
+    expect(TestEnv.mockReadFileSync.mock.calls).toEqual([]);
   });
 
   it('throws if the file is undefined', () => {
-    const {loadedManifest} = testEnv;
+    const {loadedManifest} = new TestEnv();
 
     expect(() => loadFile(loadedManifest, 'a')).toThrowError(
       new Error("File 'a' cannot be loaded because it is undefined.")
@@ -140,9 +124,9 @@ describe('loadFile', () => {
   });
 
   it('throws if the file could not be accessed', () => {
-    const {mockExistsSync, loadedManifest, file} = testEnv;
+    const {loadedManifest, file} = new TestEnv();
 
-    mockExistsSync.mockImplementation(() => {
+    TestEnv.mockExistsSync.mockImplementation(() => {
       throw new Error('ExistsSyncError');
     });
 
@@ -156,11 +140,11 @@ describe('loadFile', () => {
   });
 
   it('throws if the content of the file could not be read', () => {
-    const {mockExistsSync, mockReadFileSync, loadedManifest, file} = testEnv;
+    const {loadedManifest, file} = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
+    TestEnv.mockExistsSync.mockReturnValue(true);
 
-    mockReadFileSync.mockImplementation(() => {
+    TestEnv.mockReadFileSync.mockImplementation(() => {
       throw new Error('ReadFileSyncError');
     });
 
@@ -175,16 +159,14 @@ describe('loadFile', () => {
 
   it('throws if the read content of the file could not be deserialized', () => {
     const {
-      mockExistsSync,
-      mockReadFileSync,
       mockDeserializer,
       readContentData,
       loadedManifest,
       fileWithDeserializer
-    } = testEnv;
+    } = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
-    mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockExistsSync.mockReturnValue(true);
+    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
 
     mockDeserializer.mockImplementation(() => {
       throw new Error('DeserializerError');
@@ -202,16 +184,10 @@ describe('loadFile', () => {
   });
 
   it('throws if the read content of the file is invalid', () => {
-    const {
-      mockExistsSync,
-      mockReadFileSync,
-      loadedManifest,
-      fileWithDeserializer,
-      serializeJson
-    } = testEnv;
+    const {loadedManifest, fileWithDeserializer} = new TestEnv();
 
-    mockExistsSync.mockReturnValue(true);
-    mockReadFileSync.mockReturnValue(serializeJson('bar'));
+    TestEnv.mockExistsSync.mockReturnValue(true);
+    TestEnv.mockReadFileSync.mockReturnValue(TestEnv.serializeJson('bar'));
 
     const {filename} = fileWithDeserializer;
 
