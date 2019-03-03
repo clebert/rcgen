@@ -24,7 +24,7 @@ export interface PatcherArgs<T> {
   readonly readContent: T | undefined;
 }
 
-export type Patcher<T> = (args: PatcherArgs<T>) => T | undefined;
+export type Patcher<T> = (args: PatcherArgs<T>) => T;
 
 export interface Manifest {
   // tslint:disable: no-any
