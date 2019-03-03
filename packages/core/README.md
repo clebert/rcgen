@@ -7,13 +7,13 @@ The core functionality of rcgen.
 ### Using Yarn
 
 ```sh
-yarn add @rcgen/core
+yarn add -D @rcgen/core
 ```
 
 ### Using NPM
 
 ```sh
-npm install @rcgen/core
+npm install -D @rcgen/core
 ```
 
 ---
