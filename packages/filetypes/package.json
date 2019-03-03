@@ -1,7 +1,7 @@
 {
   "name": "@rcgen/filetypes",
   "version": "0.0.0",
-  "description": "A collection of common file types.",
+  "description": "A collection of common file types for use with rcgen.",
   "bugs": {
     "url": "https://github.com/clebert/rcgen/issues"
   },

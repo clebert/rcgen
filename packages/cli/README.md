@@ -1,6 +1,6 @@
 # @rcgen/cli
 
-A generator for config files.
+The CLI of rcgen.
 
 ## Installation
 

@@ -1,7 +1,7 @@
 {
   "name": "@rcgen/cli",
   "version": "0.0.0",
-  "description": "A generator for config files.",
+  "description": "The CLI of rcgen.",
   "bugs": {
     "url": "https://github.com/clebert/rcgen/issues"
   },
