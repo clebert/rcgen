@@ -9,7 +9,7 @@ exports.default = {
   files: [
     {
       filename: '.node-version',
-      filetype: createTextFiletype({insertFinalNewline: true}),
+      filetype: createTextFiletype(),
       initialContent: ['10']
     }
   ]
