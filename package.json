@@ -10,7 +10,7 @@
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
-    "test": "jest --verbose"
+    "test": "jest --coverage --verbose"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
