@@ -1599,12 +1599,31 @@
   dependencies:
     "@types/jest-diff" "*"
 
+"@types/meow@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/meow/-/meow-5.0.0.tgz#60653cc3c3f91d6af3a131bd82614acf9b530357"
+  integrity sha512-csdM22P8TFF5KwuHseifUBOzWiGtiLfYmQosrKPGpA/xdK3o3PNo3+4YOpiJ5BQBshwO2kuhdJ7NoAitQ6m/jg==
+  dependencies:
+    "@types/minimist-options" "*"
+
 "@types/micromatch@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@types/micromatch/-/micromatch-3.1.0.tgz#514c8a3d24b2680a9b838eeb80e6d7d724545433"
   integrity sha512-06uA9V7v68RTOzA3ky1Oi0HmCPa+YJ050vM+sTECwkxnHUQnO17TAcNCGX400QT6bldUiPb7ux5oKy0j8ccEDw==
   dependencies:
     "@types/braces" "*"
+
+"@types/minimist-options@*":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/minimist-options/-/minimist-options-3.0.0.tgz#0dabe91d07e21c9b3fe9614ca862aab202566eb5"
+  integrity sha512-FYeTlkAANOr9KR0mQL7X+v7MT7Nb/aWdNNHNKzJ8sPctpS2Ei8ucgMbvQRbLRjaYZH2OVN5AGDGGcHV5x8lSgQ==
+  dependencies:
+    "@types/minimist" "*"
+
+"@types/minimist@*":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
+  integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
 "@types/node@^11.10.0":
   version "11.10.0"
@@ -4899,7 +4918,7 @@ mem@^4.0.0:
     mimic-fn "^1.0.0"
     p-is-promise "^1.1.0"
 
-meow@5.0.0:
+meow@5.0.0, meow@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-5.0.0.tgz#dfc73d63a9afc714a5e371760eb5c88b91078aa4"
   integrity sha512-CbTqYU17ABaLefO8vCU153ZZlprKYWDljcndKKDCFcYQITzWCXZAVk4QMFZPgvzrnUQ3uItnIE/LoUOwrT15Ig==

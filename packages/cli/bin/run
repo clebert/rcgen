@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+
+// tslint:disable-next-line: no-require-imports no-var-requires
+require('../lib/index');
