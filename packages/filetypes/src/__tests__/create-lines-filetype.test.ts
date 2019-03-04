@@ -3,7 +3,7 @@ import {createLinesFiletype} from '..';
 
 describe('createLinesFiletype', () => {
   describe('#contentSchema', () => {
-    it('matches the content type', () => {
+    it('matches a string array', () => {
       const {contentSchema} = createLinesFiletype();
 
       const testCases = [

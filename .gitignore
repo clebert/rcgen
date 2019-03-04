@@ -1,4 +1,5 @@
 .node-version
+.vscode/settings.json
 coverage
 lib
 node_modules
