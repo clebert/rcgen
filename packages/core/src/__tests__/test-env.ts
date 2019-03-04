@@ -1,3 +1,5 @@
+// tslint:disable: no-any
+
 jest.mock('fs', () => ({
   existsSync: jest.fn(),
   readFileSync: jest.fn(),
@@ -14,12 +16,10 @@ import path from 'path';
 import {File, LoadedManifest} from '..';
 
 export class TestEnv {
-  // tslint:disable: no-any
   public static readonly mockExistsSync = (existsSync as any) as jest.Mock;
   public static readonly mockReadFileSync = (readFileSync as any) as jest.Mock;
   public static readonly mockWriteFileSync = (writeFileSync as any) as jest.Mock;
   public static readonly mockMkdirpSync = (mkdirp.sync as any) as jest.Mock;
-  // tslint:enable: no-any
 
   public static serializeJson(content: unknown): Buffer {
     return Buffer.from(JSON.stringify(content));
@@ -67,7 +67,6 @@ export class TestEnv {
 
     this.fileWithDeserializer = {
       ...this.file,
-      // tslint:disable-next-line: no-any
       filetype: {...filetype, deserializer: this.mockDeserializer as any}
     };
   }

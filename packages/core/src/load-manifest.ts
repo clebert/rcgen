@@ -27,10 +27,8 @@ export interface PatcherArgs<T> {
 export type Patcher<T> = (args: PatcherArgs<T>) => T;
 
 export interface Manifest {
-  // tslint:disable: no-any
-  readonly files: File<any>[];
-  readonly patchers?: Patcher<any>[];
-  // tslint:enable: no-any
+  readonly files: File<any>[]; // tslint:disable-line: no-any
+  readonly patchers?: Patcher<any>[]; // tslint:disable-line: no-any
   readonly includedFilenames?: string[];
   readonly excludedFilenames?: string[];
 }

@@ -1,1 +1,1 @@
-export * from './create-text-filetype';
+export * from './create-lines-filetype';
