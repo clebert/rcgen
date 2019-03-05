@@ -22,6 +22,7 @@ exports.default = {
       initialContent: ['10']
     },
     {
+      // node -e 'console.log(require("./husky.config.js"));'
       filename: 'husky.config.js',
       filetype: createNodeModuleFiletype(),
       initialContent: {hooks: {'commit-msg': 'yarn commitlint --edit'}}
