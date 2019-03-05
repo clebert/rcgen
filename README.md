@@ -40,7 +40,7 @@ npm init
 3. Install all necessary packages from **rcgen**:
 
 ```sh
-npm install -D @rcgen/cli @rcgen/core @rcgen/filetypes
+npm install -D @rcgen/cli @rcgen/core @rcgen/filetypes @rcgen/patchers
 ```
 
 4. Create a `rcgen.js` manifest file with the following contents:
