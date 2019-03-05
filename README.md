@@ -2,6 +2,13 @@
 
 A generator for config files.
 
+## Contents
+
+- [Rationale](#rationale)
+- [Getting Started](#getting-started)
+- [CLI Documentation](#cli-documentation)
+- [Packages](#packages)
+
 ## Rationale
 
 TODO
