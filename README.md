@@ -1,11 +1,12 @@
 # rcgen
 
-A generator for config files.
+A generator for configuration files.
 
 ## Contents
 
 - [Rationale](#rationale)
 - [Getting Started](#getting-started)
+- [Examples](#examples)
 - [CLI Documentation](#cli-documentation)
 - [API Documentation](#api-documentation)
 
@@ -135,6 +136,12 @@ Output:
 
 10. To be continued...
 
+## Examples
+
+This project has its own [`rcgen.js`][rcgen-file] file that serves as an
+integration test and generates some of the configuration files needed for
+development.
+
 ## CLI Documentation
 
 ```sh
@@ -175,3 +182,4 @@ License][license].
 
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [prettier]: https://prettier.io
+[rcgen-file]: https://github.com/clebert/rcgen/blob/master/rcgen.js
