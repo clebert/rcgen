@@ -7,7 +7,7 @@ A generator for config files.
 - [Rationale](#rationale)
 - [Getting Started](#getting-started)
 - [CLI Documentation](#cli-documentation)
-- [Packages](#packages)
+- [API Documentation](#api-documentation)
 
 ## Rationale
 
@@ -154,21 +154,17 @@ Examples
   $ rcgen --verbose
 ```
 
-## Packages
+## API Documentation
 
-### [@rcgen/cli][package-cli]
-
-The CLI of **rcgen**.
-
-### [@rcgen/core][package-core]
+### @rcgen/core
 
 The core functionality of **rcgen**.
 
-### [@rcgen/filetypes][package-filetypes]
+### @rcgen/filetypes
 
 A collection of common file types for use with **rcgen**.
 
-### [@rcgen/patchers][package-patchers]
+### @rcgen/patchers
 
 A collection of convenient patcher functions for use with **rcgen**.
 
@@ -178,12 +174,4 @@ Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
-[package-cli]:
-  https://github.com/clebert/rcgen/blob/master/packages/cli/README.md
-[package-core]:
-  https://github.com/clebert/rcgen/blob/master/packages/core/README.md
-[package-filetypes]:
-  https://github.com/clebert/rcgen/blob/master/packages/filetypes/README.md
-[package-patchers]:
-  https://github.com/clebert/rcgen/blob/master/packages/patchers/README.md
 [prettier]: https://prettier.io

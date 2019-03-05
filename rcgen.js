@@ -26,6 +26,21 @@ exports.default = {
       filename: 'husky.config.js',
       filetype: createNodeModuleFiletype(),
       initialContent: {hooks: {}}
+    },
+    {
+      filename: 'typedoc.js',
+      filetype: createNodeModuleFiletype(),
+      initialContent: {
+        mode: 'file',
+        ignoreCompilerErrors: false,
+        exclude: ['**/*+(__tests__|lib|node_modules)/**/*'],
+        excludeExternals: true,
+        excludeNotExported: true,
+        excludePrivate: true,
+        theme: 'minimal',
+        gitRevision: 'master',
+        readme: 'README.md'
+      }
     }
   ],
   patchers: [

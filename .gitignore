@@ -1,7 +1,9 @@
 .node-version
 .vscode/settings.json
 coverage
+docs
 husky.config.js
 lib
 node_modules
 todo.tasks
+typedoc.js
