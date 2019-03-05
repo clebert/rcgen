@@ -186,10 +186,12 @@ yarn install && yarn test
 
 ### Development Scripts
 
-- `yarn compile` Compiles all sources.
-- `yarn lint` Lints all sources.
-- `yarn test` Executes all tests.
-- `yarn format` Formats all files.
+| Command        | Description           |
+| -------------- | --------------------- |
+| `yarn compile` | Compiles all sources. |
+| `yarn lint`    | Lints all sources.    |
+| `yarn test`    | Executes all tests.   |
+| `yarn format`  | Formats all files.    |
 
 ---
 
