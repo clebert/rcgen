@@ -5,6 +5,7 @@ const {
   createLinesFiletype,
   createNodeModuleFiletype
 } = require('@rcgen/filetypes');
+const {addLines} = require('@rcgen/patchers');
 
 /**
  * @type {import('@rcgen/core').Manifest}
@@ -19,12 +20,13 @@ exports.default = {
     {
       filename: '.node-version',
       filetype: createLinesFiletype(),
-      initialContent: ['10']
+      initialContent: []
     },
     {
       filename: 'husky.config.js',
       filetype: createNodeModuleFiletype(),
       initialContent: {hooks: {'commit-msg': 'yarn commitlint --edit'}}
     }
-  ]
+  ],
+  patchers: [addLines('.node-version', ['10'])]
 };

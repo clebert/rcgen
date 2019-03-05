@@ -161,6 +161,10 @@ The core functionality of **rcgen**.
 
 A collection of common file types for use with **rcgen**.
 
+### [@rcgen/patchers][package-patchers]
+
+A collection of convenient patcher functions for use with **rcgen**.
+
 ---
 
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
@@ -173,4 +177,6 @@ License][license].
   https://github.com/clebert/rcgen/blob/master/packages/core/README.md
 [package-filetypes]:
   https://github.com/clebert/rcgen/blob/master/packages/filetypes/README.md
+[package-patchers]:
+  https://github.com/clebert/rcgen/blob/master/packages/patchers/README.md
 [prettier]: https://prettier.io
