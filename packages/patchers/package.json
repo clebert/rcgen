@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/patchers",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A collection of convenient patcher functions for use with rcgen.",
   "bugs": {
     "url": "https://github.com/clebert/rcgen/issues"
@@ -18,7 +18,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@rcgen/core": "^0.0.0",
+    "@rcgen/core": "^0.1.0",
     "deepmerge": "^3.2.0"
   },
   "publishConfig": {

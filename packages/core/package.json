@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The core functionality of rcgen.",
   "bugs": {
     "url": "https://github.com/clebert/rcgen/issues"
