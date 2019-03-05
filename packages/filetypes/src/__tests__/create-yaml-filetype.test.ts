@@ -1,13 +1,13 @@
 import {validate} from '@rcgen/core';
-import {createJsonFiletype} from '..';
+import {createYamlFiletype} from '..';
 
-describe('createJsonFiletype', () => {
+describe('createYamlFiletype', () => {
   const absoluteManifestFilename = '/path/to/m';
   const filename = 'a';
 
   describe('#contentSchema', () => {
     it('matches an object', () => {
-      const {contentSchema} = createJsonFiletype();
+      const {contentSchema} = createYamlFiletype();
 
       const testCases = [
         {value: {}, validationMessage: ''},
@@ -24,7 +24,7 @@ describe('createJsonFiletype', () => {
     });
 
     it('can be customized', () => {
-      const {contentSchema} = createJsonFiletype({
+      const {contentSchema} = createYamlFiletype({
         contentSchema: {type: 'array'}
       });
 
@@ -44,30 +44,30 @@ describe('createJsonFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('stringifies the given content to JSON', () => {
-      const {serializer} = createJsonFiletype();
+    it('stringifies the given content to YAML', () => {
+      const {serializer} = createYamlFiletype();
 
       expect(
         serializer({
           absoluteManifestFilename,
           filename,
-          generatedContent: {foo: 'bar'}
+          generatedContent: {foo: 'bar', baz: [123, 456]}
         })
-      ).toEqual(Buffer.from('{\n  "foo": "bar"\n}\n'));
+      ).toEqual(Buffer.from('foo: bar\nbaz:\n  - 123\n  - 456\n'));
     });
   });
 
   describe('#deserializer', () => {
-    it('parses the given content as JSON', () => {
-      const {deserializer} = createJsonFiletype();
+    it('parses the given content as YAML', () => {
+      const {deserializer} = createYamlFiletype();
 
       expect(
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('{\n  "foo": "bar"\n}\n')
+          readContentData: Buffer.from('foo: bar\nbaz:\n  - 123\n  - 456\n')
         })
-      ).toEqual({foo: 'bar'});
+      ).toEqual({foo: 'bar', baz: [123, 456]});
     });
   });
 });
