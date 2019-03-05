@@ -8,11 +8,7 @@
   "scripts": {
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
-    "predocs": "rimraf docs",
-    "docs": "lerna exec --no-private --parallel -- typedoc --options ../../typedoc.js --out ../../docs/\\$LERNA_PACKAGE_NAME --tsconfig tsconfig.json .",
-    "postdocs": "node scripts/process-docs.js",
     "postinstall": "npm run --scripts-prepend-node-path=true compile && rcgen --verbose --force",
-    "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
     "test": "jest --coverage --verbose"
   },
@@ -23,6 +19,7 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-angular": "^7.5.0",
+    "@commitlint/travis-cli": "^7.5.2",
     "@types/jest": "^24.0.9",
     "@types/node": "^11.10.0",
     "babel-jest": "^24.1.0",
@@ -33,6 +30,7 @@
     "lerna": "^3.13.1",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
+    "sort-package-json": "^1.21.0",
     "ts-config": "^20.9.0",
     "tslint": "^5.13.1",
     "typedoc": "^0.14.2",
