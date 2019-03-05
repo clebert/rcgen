@@ -1,6 +1,6 @@
 # @rcgen/core
 
-The core functionality of rcgen.
+The core functionality of **rcgen**.
 
 ## Installation
 

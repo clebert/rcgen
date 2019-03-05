@@ -1,6 +1,6 @@
 # @rcgen/cli
 
-The CLI of rcgen.
+The CLI of **rcgen**.
 
 ## Installation
 

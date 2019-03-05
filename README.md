@@ -151,15 +151,15 @@ Examples
 
 ### [@rcgen/cli][package-cli]
 
-The CLI of rcgen.
+The CLI of **rcgen**.
 
 ### [@rcgen/core][package-core]
 
-The core functionality of rcgen.
+The core functionality of **rcgen**.
 
 ### [@rcgen/filetypes][package-filetypes]
 
-A collection of common file types for use with rcgen.
+A collection of common file types for use with **rcgen**.
 
 ---
 

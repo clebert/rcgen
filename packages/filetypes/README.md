@@ -1,6 +1,6 @@
 # @rcgen/filetypes
 
-A collection of common file types for use with rcgen.
+A collection of common file types for use with **rcgen**.
 
 ## Installation
 
