@@ -5,7 +5,7 @@ const {
   createLinesFiletype,
   createNodeModuleFiletype
 } = require('@rcgen/filetypes');
-const {addLines} = require('@rcgen/patchers');
+const {addLines, merge} = require('@rcgen/patchers');
 
 /**
  * @type {import('@rcgen/core').Manifest}
@@ -15,7 +15,7 @@ exports.default = {
     {
       filename: '.vscode/settings.json',
       filetype: createJsonFiletype(),
-      initialContent: {'editor.formatOnSave': true}
+      initialContent: {}
     },
     {
       filename: '.node-version',
@@ -25,8 +25,12 @@ exports.default = {
     {
       filename: 'husky.config.js',
       filetype: createNodeModuleFiletype(),
-      initialContent: {hooks: {'commit-msg': 'yarn commitlint --edit'}}
+      initialContent: {hooks: {}}
     }
   ],
-  patchers: [addLines('.node-version', ['10'])]
+  patchers: [
+    merge('.vscode/settings.json', {'editor.formatOnSave': true}),
+    addLines('.node-version', ['10']),
+    merge('husky.config.js', {hooks: {'commit-msg': 'yarn commitlint --edit'}})
+  ]
 };
