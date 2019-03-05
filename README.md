@@ -164,15 +164,15 @@ Examples
 
 ## API Documentation
 
-### @rcgen/core
+### [@rcgen/core][api-core]
 
 The core functionality of **rcgen**.
 
-### @rcgen/filetypes
+### [@rcgen/filetypes][api-filetypes]
 
 A collection of common file types for use with **rcgen**.
 
-### @rcgen/patchers
+### [@rcgen/patchers][api-patchers]
 
 A collection of convenient patcher functions for use with **rcgen**.
 
@@ -196,6 +196,9 @@ yarn install && yarn test
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
+[api-core]: https://rcgen.netlify.com/@rcgen/core/
+[api-filetypes]: https://rcgen.netlify.com/@rcgen/filetypes/
+[api-patchers]: https://rcgen.netlify.com/@rcgen/patchers/
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [prettier]: https://prettier.io
 [rcgen-file]: https://github.com/clebert/rcgen/blob/master/rcgen.js
