@@ -10,7 +10,7 @@ A collection of common file types for use with rcgen.
 yarn add @rcgen/filetypes
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @rcgen/filetypes

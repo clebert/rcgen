@@ -10,7 +10,7 @@ The core functionality of rcgen.
 yarn add @rcgen/core
 ```
 
-### Using NPM
+### Using npm
 
 ```sh
 npm install @rcgen/core
