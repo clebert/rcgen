@@ -8,6 +8,7 @@
   "scripts": {
     "precompile": "lerna exec --parallel -- rimraf lib",
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
+    "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "postinstall": "npm run --scripts-prepend-node-path=true compile && rcgen --verbose --force",
     "lint": "lerna exec --parallel -- tslint --config tslint.json --project tsconfig.json --format verbose",
     "test": "jest --coverage --verbose"

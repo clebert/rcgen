@@ -9,6 +9,7 @@ A generator for configuration files.
 - [Examples](#examples)
 - [CLI Documentation](#cli-documentation)
 - [API Documentation](#api-documentation)
+- [Contributing](#contributing)
 
 ## Rationale
 
@@ -174,6 +175,21 @@ A collection of common file types for use with **rcgen**.
 ### @rcgen/patchers
 
 A collection of convenient patcher functions for use with **rcgen**.
+
+## Contributing
+
+To get started, install the dependencies and run the tests:
+
+```sh
+yarn install && yarn test
+```
+
+### Development Scripts
+
+- `yarn compile` — Compiles all sources.
+- `yarn lint` — Lints all sources.
+- `yarn test` — Executes all tests.
+- `yarn format` — Formats all files.
 
 ---
 
