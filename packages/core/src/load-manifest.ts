@@ -1,8 +1,21 @@
 import path from 'path';
 import {validate} from './validate';
 
-export type Serializer<T> = (content: T) => Buffer;
-export type Deserializer<T> = (contentData: Buffer) => T;
+export interface SerializerArgs<T> {
+  readonly absoluteManifestFilename: string;
+  readonly filename: string;
+  readonly generatedContent: T;
+}
+
+export type Serializer<T> = (args: SerializerArgs<T>) => Buffer;
+
+export interface DeserializerArgs {
+  readonly absoluteManifestFilename: string;
+  readonly filename: string;
+  readonly readContentData: Buffer;
+}
+
+export type Deserializer<T> = (args: DeserializerArgs) => T;
 
 export interface Filetype<T> {
   readonly contentSchema: object;
@@ -18,8 +31,8 @@ export interface File<T> {
 }
 
 export interface PatcherArgs<T> {
+  readonly absoluteManifestFilename: string;
   readonly filename: string;
-  readonly absoluteRootDirname: string;
   readonly generatedContent: T;
   readonly readContent: T | undefined;
 }

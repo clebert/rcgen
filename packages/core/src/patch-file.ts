@@ -1,4 +1,3 @@
-import path from 'path';
 import {LoadedFile} from './load-file';
 import {LoadedManifest} from './load-manifest';
 import {validate} from './validate';
@@ -40,13 +39,11 @@ export function patchFile<T = unknown>(
     return {...loadedFile, generatedContent};
   }
 
-  const absoluteRootDirname = path.dirname(absoluteManifestFilename);
-
   for (const patcher of patchers) {
     try {
       generatedContent = patcher({
+        absoluteManifestFilename,
         filename,
-        absoluteRootDirname,
         generatedContent,
         readContent
       });

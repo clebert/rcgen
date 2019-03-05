@@ -18,7 +18,13 @@ describe('saveFile', () => {
 
     expect(saveFile(loadedManifest, patchedFile)).toBe(true);
 
-    expect(mockSerializer.mock.calls).toEqual([[generatedContent]]);
+    const {absoluteManifestFilename} = loadedManifest;
+    const {filename} = file;
+
+    expect(mockSerializer.mock.calls).toEqual([
+      [{absoluteManifestFilename, filename, generatedContent}]
+    ]);
+
     expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([[absoluteDirname]]);
 
     expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([
@@ -35,15 +41,18 @@ describe('saveFile', () => {
       file
     } = new TestEnv();
 
-    const patchedFile = {
-      ...file,
-      readContentData,
-      generatedContent: readContent
-    };
+    const generatedContent = readContent;
+    const patchedFile = {...file, readContentData, generatedContent};
 
     expect(saveFile(loadedManifest, patchedFile)).toBe(false);
 
-    expect(mockSerializer.mock.calls).toEqual([[readContent]]);
+    const {absoluteManifestFilename} = loadedManifest;
+    const {filename} = file;
+
+    expect(mockSerializer.mock.calls).toEqual([
+      [{absoluteManifestFilename, filename, generatedContent}]
+    ]);
+
     expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([]);
     expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([]);
   });
@@ -143,7 +152,13 @@ describe('saveFile', () => {
 
       expect(saveFile(loadedManifest, patchedFile, true)).toBe(true);
 
-      expect(mockSerializer.mock.calls).toEqual([[generatedContent]]);
+      const {absoluteManifestFilename} = loadedManifest;
+      const {filename} = file;
+
+      expect(mockSerializer.mock.calls).toEqual([
+        [{absoluteManifestFilename, filename, generatedContent}]
+      ]);
+
       expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([[absoluteDirname]]);
 
       expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([

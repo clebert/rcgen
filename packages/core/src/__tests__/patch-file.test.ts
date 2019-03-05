@@ -7,7 +7,6 @@ describe('patchFile', () => {
     const {
       readContent,
       readContentData,
-      absoluteRootDirname,
       loadedManifest,
       fileWithDeserializer
     } = new TestEnv();
@@ -35,11 +34,13 @@ describe('patchFile', () => {
       generatedContent: [...initialContent, 'baz', 'qux']
     });
 
+    const {absoluteManifestFilename} = loadedManifest;
+
     expect(mockPatcher1.mock.calls).toEqual([
       [
         {
+          absoluteManifestFilename,
           filename,
-          absoluteRootDirname,
           generatedContent: initialContent,
           readContent
         }
@@ -49,8 +50,8 @@ describe('patchFile', () => {
     expect(mockPatcher2.mock.calls).toEqual([
       [
         {
+          absoluteManifestFilename,
           filename,
-          absoluteRootDirname,
           generatedContent: [...initialContent, 'baz'],
           readContent
         }

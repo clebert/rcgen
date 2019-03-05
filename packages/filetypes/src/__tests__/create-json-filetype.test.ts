@@ -2,6 +2,9 @@ import {validate} from '@rcgen/core';
 import {createJsonFiletype} from '..';
 
 describe('createJsonFiletype', () => {
+  const absoluteManifestFilename = '/path/to/m';
+  const filename = 'a';
+
   describe('#contentSchema', () => {
     it('matches an object', () => {
       const {contentSchema} = createJsonFiletype();
@@ -44,9 +47,13 @@ describe('createJsonFiletype', () => {
     it('stringifies the given content to JSON', () => {
       const {serializer} = createJsonFiletype();
 
-      expect(serializer({foo: 'bar'})).toEqual(
-        Buffer.from('{\n  "foo": "bar"\n}\n')
-      );
+      expect(
+        serializer({
+          absoluteManifestFilename,
+          filename,
+          generatedContent: {foo: 'bar'}
+        })
+      ).toEqual(Buffer.from('{\n  "foo": "bar"\n}\n'));
     });
   });
 
@@ -54,7 +61,13 @@ describe('createJsonFiletype', () => {
     it('parses the given content as JSON', () => {
       const {deserializer} = createJsonFiletype();
 
-      expect(deserializer!(Buffer.from('{\n  "foo": "bar"\n}\n'))).toEqual({
+      expect(
+        deserializer!({
+          absoluteManifestFilename,
+          filename,
+          readContentData: Buffer.from('{\n  "foo": "bar"\n}\n')
+        })
+      ).toEqual({
         foo: 'bar'
       });
     });

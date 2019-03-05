@@ -113,7 +113,11 @@ export function loadFile<T = unknown>(
   let readContent: T;
 
   try {
-    readContent = deserializer(readContentData);
+    readContent = deserializer({
+      absoluteManifestFilename,
+      filename,
+      readContentData
+    });
   } catch (error) {
     throw createFileCannotBeLoadedError(
       filename,

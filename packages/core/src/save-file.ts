@@ -54,7 +54,11 @@ export function saveFile<T = unknown>(
   let generatedContentData: Buffer;
 
   try {
-    generatedContentData = serializer(generatedContent);
+    generatedContentData = serializer({
+      absoluteManifestFilename,
+      filename,
+      generatedContent
+    });
   } catch (error) {
     throw createFileCannotBeSavedError(
       filename,

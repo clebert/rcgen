@@ -46,7 +46,12 @@ describe('loadFile', () => {
 
     expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
     expect(TestEnv.mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
-    expect(mockDeserializer.mock.calls).toEqual([[readContentData]]);
+
+    const {absoluteManifestFilename} = loadedManifest;
+
+    expect(mockDeserializer.mock.calls).toEqual([
+      [{absoluteManifestFilename, filename, readContentData}]
+    ]);
   });
 
   it('returns undefined if the file is not included', () => {

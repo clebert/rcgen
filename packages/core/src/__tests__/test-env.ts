@@ -13,7 +13,7 @@ jest.mock('mkdirp', () => ({
 import {existsSync, readFileSync, writeFileSync} from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
-import {File, LoadedManifest} from '..';
+import {DeserializerArgs, File, LoadedManifest, SerializerArgs} from '..';
 
 export class TestEnv {
   public static readonly mockExistsSync = (existsSync as any) as jest.Mock;
@@ -30,8 +30,16 @@ export class TestEnv {
   }
 
   public readonly mockNodeRequire = jest.fn();
-  public readonly mockSerializer = jest.fn(TestEnv.serializeJson);
-  public readonly mockDeserializer = jest.fn(TestEnv.deserializeJson);
+
+  public readonly mockSerializer = jest.fn(
+    ({generatedContent}: SerializerArgs<unknown>) =>
+      TestEnv.serializeJson(generatedContent)
+  );
+
+  public readonly mockDeserializer = jest.fn(
+    ({readContentData}: DeserializerArgs) =>
+      TestEnv.deserializeJson(readContentData)
+  );
 
   public readonly readContent: string[];
   public readonly readContentData: Buffer;
