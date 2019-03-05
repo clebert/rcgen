@@ -1,6 +1,10 @@
 // @ts-check
 
-const {createJsonFiletype, createLinesFiletype} = require('@rcgen/filetypes');
+const {
+  createJsonFiletype,
+  createLinesFiletype,
+  createNodeModuleFiletype
+} = require('@rcgen/filetypes');
 
 /**
  * @type {import('@rcgen/core').Manifest}
@@ -16,6 +20,11 @@ exports.default = {
       filename: '.node-version',
       filetype: createLinesFiletype(),
       initialContent: ['10']
+    },
+    {
+      filename: 'husky.config.js',
+      filetype: createNodeModuleFiletype(),
+      initialContent: {hooks: {'commit-msg': 'yarn commitlint --edit'}}
     }
   ]
 };

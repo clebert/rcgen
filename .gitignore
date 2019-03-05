@@ -1,6 +1,7 @@
 .node-version
 .vscode/settings.json
 coverage
+husky.config.js
 lib
 node_modules
 todo.tasks

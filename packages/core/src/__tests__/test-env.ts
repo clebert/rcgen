@@ -45,6 +45,7 @@ export class TestEnv {
   public readonly readContentData: Buffer;
 
   public readonly absoluteRootDirname: string;
+  public readonly absoluteManifestFilename: string;
   public readonly absoluteFilename: string;
   public readonly absoluteDirname: string;
 
@@ -58,11 +59,12 @@ export class TestEnv {
     this.readContentData = TestEnv.serializeJson(this.readContent);
 
     this.absoluteRootDirname = '/path/to';
+    this.absoluteManifestFilename = path.join(this.absoluteRootDirname, 'm');
     this.absoluteFilename = path.join(this.absoluteRootDirname, filename);
     this.absoluteDirname = path.dirname(this.absoluteFilename);
 
     this.loadedManifest = {
-      absoluteManifestFilename: path.join(this.absoluteRootDirname, 'm'),
+      absoluteManifestFilename: this.absoluteManifestFilename,
       files: []
     };
 
