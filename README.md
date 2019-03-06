@@ -2,13 +2,6 @@
 
 A generator for configuration files.
 
-![](https://media.giphy.com/media/8N2tPBkltBYY0/giphy.gif)
-
-> One Manifest to rule them all, One Manifest to find them, One Manifest to
-> bring them all and in the code bind them
-
-> In the Land of JavaScript where Diversity reigns.
-
 ## Contents
 
 - [Rationale](#rationale)
@@ -28,6 +21,14 @@ transpilers like Babel, build tools like Webpack, Rollup or Parcel, testing
 frameworks like Jest or Mocha, text editors like VS Code or Atom. In addition
 there are tools like Git, Travis CI, Commitlint, Husky, Lerna, Wallaby, Yarn,
 npm, etc.
+
+All these tools need to be configured. In most cases, each tool has at least one
+configuration file and many tools also influence each other and require a
+coordinated individual configuration. This situation makes it difficult to set
+up new projects or to keep old projects up to date. Experts usually copy the
+configuration files of existing projects into their new projects manually with
+minor adjustments. Beginners are often completely overwhelmed and develop their
+software with suboptimal settings.
 
 To be continued...
 
