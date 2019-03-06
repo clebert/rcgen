@@ -2,6 +2,14 @@
 
 A generator for configuration files.
 
+> ⚠️This project is still in the development phase. I am currently testing a
+> first integration in another monorepo project. After the complete integration
+> I hope for a good abstraction and first ready-to-use configuration
+> integrations for the tools used in the monorepo. The progress can be seen
+> here:
+
+- https://github.com/sinnerschrader/feature-hub/pull/405
+
 ## Contents
 
 - [Rationale](#rationale)
