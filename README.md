@@ -2,6 +2,13 @@
 
 A generator for configuration files.
 
+![](https://media.giphy.com/media/8N2tPBkltBYY0/giphy.gif)
+
+> One Manifest to rule them all, One Manifest to find them, One Manifest to
+> bring them all and in the code bind them
+
+> In the Land of JavaScript where Diversity reigns.
+
 ## Contents
 
 - [Rationale](#rationale)
@@ -13,7 +20,16 @@ A generator for configuration files.
 
 ## Rationale
 
-TODO
+[Today's JavaScript landscape][stateofjs] consists of a multitude of languages,
+frameworks and tools and thus also the individual projects in it.
+
+These include languages like TypeScript or Flow, linters like ESLint or TSLint,
+transpilers like Babel, build tools like Webpack, Rollup or Parcel, testing
+frameworks like Jest or Mocha, text editors like VS Code or Atom. In addition
+there are tools like Git, Travis CI, Commitlint, Husky, Lerna, Wallaby, Yarn,
+npm, etc.
+
+To be continued...
 
 ## Getting Started
 
@@ -204,3 +220,4 @@ License][license].
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [prettier]: https://prettier.io
 [rcgen-file]: https://github.com/clebert/rcgen/blob/master/rcgen.js
+[stateofjs]: https://2018.stateofjs.com/
