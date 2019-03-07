@@ -25,24 +25,26 @@ function isMatch(filename: string, pattern: string): boolean {
   return micromatch.isMatch(filename, pattern, {dot: true, nonegate: true});
 }
 
-function isIncluded(
+function isIncludedFile(
   filename: string,
-  includedFilenames: string[] | undefined,
+  includedFilenames: string[] | undefined
+): boolean {
+  if (!includedFilenames) {
+    return true;
+  }
+
+  return includedFilenames.some(pattern => isMatch(filename, pattern));
+}
+
+function isExcludedFile(
+  filename: string,
   excludedFilenames: string[] | undefined
 ): boolean {
-  if (includedFilenames) {
-    if (!includedFilenames.some(pattern => isMatch(filename, pattern))) {
-      return false;
-    }
+  if (!excludedFilenames) {
+    return false;
   }
 
-  if (excludedFilenames) {
-    if (excludedFilenames.some(pattern => isMatch(filename, pattern))) {
-      return false;
-    }
-  }
-
-  return true;
+  return excludedFilenames.some(pattern => isMatch(filename, pattern));
 }
 
 /**
@@ -71,7 +73,10 @@ export function loadFile<T = unknown>(
     throw createFileCannotBeLoadedError(filename, 'because it is undefined');
   }
 
-  if (!isIncluded(filename, includedFilenames, excludedFilenames)) {
+  if (
+    !isIncludedFile(filename, includedFilenames) ||
+    isExcludedFile(filename, excludedFilenames)
+  ) {
     return;
   }
 
