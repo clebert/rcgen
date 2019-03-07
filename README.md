@@ -229,4 +229,4 @@ License][license].
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [prettier]: https://prettier.io
 [rcgen-file]: https://github.com/clebert/rcgen/blob/master/rcgen.js
-[stateofjs]: https://2018.stateofjs.com/
+[stateofjs]: https://2018.stateofjs.com
