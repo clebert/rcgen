@@ -223,9 +223,9 @@ yarn install && yarn test
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
-[api-core]: https://rcgen.netlify.com/@rcgen/core/
-[api-filetypes]: https://rcgen.netlify.com/@rcgen/filetypes/
-[api-patchers]: https://rcgen.netlify.com/@rcgen/patchers/
+[api-core]: https://rcgen.io/@rcgen/core/
+[api-filetypes]: https://rcgen.io/@rcgen/filetypes/
+[api-patchers]: https://rcgen.io/@rcgen/patchers/
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [prettier]: https://prettier.io
 [rcgen-file]: https://github.com/clebert/rcgen/blob/master/rcgen.js
