@@ -11,7 +11,13 @@ export function validate<T>(
   valueName: string,
   schema: object
 ): ValidationResult<T> {
-  const ajv = new Ajv({allErrors: true});
+  const ajv = new Ajv({allErrors: true, schemaId: 'auto'});
+
+  // tslint:disable-next-line: no-require-imports
+  ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
+
+  // tslint:disable-next-line: no-require-imports
+  ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 
   ajv.addKeyword('isFunction', {
     compile: () => data => typeof data === 'function'
