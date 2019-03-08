@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/clebert/rcgen/compare/v0.1.0...v0.2.0) (2019-03-08)
+
+
+### Features
+
+* **core:** remove nested if statements ([#3](https://github.com/clebert/rcgen/issues/3)) ([84d01ee](https://github.com/clebert/rcgen/commit/84d01ee))
+* **core:** validate now supports draft-04/-06/-07 JSON schemas ([#4](https://github.com/clebert/rcgen/issues/4)) ([805e96a](https://github.com/clebert/rcgen/commit/805e96a))
+
+
+
+
+
 # 0.1.0 (2019-03-05)
 
 
