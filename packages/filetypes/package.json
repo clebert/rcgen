@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/filetypes",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A collection of common file types for use with rcgen.",
   "homepage": "https://rcgen.io",
   "bugs": {
@@ -19,7 +19,7 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@rcgen/core": "^0.2.0",
+    "@rcgen/core": "^0.3.0",
     "yaml": "^1.3.2"
   },
   "devDependencies": {

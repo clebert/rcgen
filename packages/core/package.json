@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The core functionality of rcgen.",
   "homepage": "https://rcgen.io",
   "bugs": {
