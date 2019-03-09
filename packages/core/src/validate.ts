@@ -9,9 +9,14 @@ export interface ValidationResult<T> {
 export function validate<T>(
   value: unknown,
   valueName: string,
-  schema: object
+  schema: object,
+  customLogger?: Ajv.CustomLogger
 ): ValidationResult<T> {
-  const ajv = new Ajv({allErrors: true, schemaId: 'auto'});
+  const ajv = new Ajv({
+    allErrors: true,
+    schemaId: 'auto',
+    logger: customLogger || false
+  });
 
   // tslint:disable-next-line: no-require-imports
   ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-04.json'));
