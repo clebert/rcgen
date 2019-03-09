@@ -51,4 +51,28 @@ describe('validate', () => {
       })
     ).not.toThrowError();
   });
+
+  it('only logs using the optional custom logger', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn');
+    const customLogger = {log: jest.fn(), warn: jest.fn(), error: jest.fn()};
+
+    const schema = {
+      $ref: '#/definitions',
+      definitions: {},
+      additionalProperties: false
+    };
+
+    try {
+      validate({}, 'value', schema);
+      validate({}, 'value', schema, customLogger);
+
+      expect(consoleWarnSpy.mock.calls).toEqual([]);
+
+      expect(customLogger.warn.mock.calls).toEqual([
+        ['$ref: keywords ignored in schema at path "#"']
+      ]);
+    } finally {
+      consoleWarnSpy.mockRestore();
+    }
+  });
 });
