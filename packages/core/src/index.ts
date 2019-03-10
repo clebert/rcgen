@@ -1,3 +1,5 @@
+export * from './compose-enhancers';
+export * from './enhance-manifest';
 export * from './generate-content';
 export * from './load-file';
 export * from './load-manifest';
