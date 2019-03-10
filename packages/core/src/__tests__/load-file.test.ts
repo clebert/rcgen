@@ -50,60 +50,6 @@ describe('loadFile', () => {
     ]);
   });
 
-  it('returns undefined if the file is not included', () => {
-    const {loadedManifest, file} = new TestEnv('a');
-
-    TestEnv.mockExistsSync.mockReturnValue(false);
-
-    const testCases = [
-      {included: [1, 1, 1]},
-      {includedFilenamePatterns: [], included: [0, 0, 0]},
-      {excludedFilenamePatterns: [], included: [1, 1, 1]},
-      {includedFilenamePatterns: ['*'], included: [1, 1, 0]},
-      {excludedFilenamePatterns: ['*'], included: [0, 0, 1]},
-      {includedFilenamePatterns: ['!*'], included: [1, 0, 0]},
-      {excludedFilenamePatterns: ['!*'], included: [0, 1, 1]},
-      {includedFilenamePatterns: ['*/*'], included: [0, 0, 1]},
-      {excludedFilenamePatterns: ['*/*'], included: [1, 1, 0]},
-      {includedFilenamePatterns: ['**/*'], included: [1, 1, 1]},
-      {excludedFilenamePatterns: ['**/*'], included: [0, 0, 0]},
-      {includedFilenamePatterns: ['*', '*/*'], included: [1, 1, 1]},
-      {excludedFilenamePatterns: ['*', '*/*'], included: [0, 0, 0]},
-      {
-        includedFilenamePatterns: [],
-        excludedFilenamePatterns: [],
-        included: [0, 0, 0]
-      },
-      {
-        includedFilenamePatterns: ['*'],
-        excludedFilenamePatterns: ['!*'],
-        included: [0, 1, 0]
-      }
-    ];
-
-    for (const {
-      includedFilenamePatterns,
-      excludedFilenamePatterns,
-      included
-    } of testCases) {
-      ['!a', '.b', 'c/d'].forEach((filename, index) => {
-        const files = [{...file, filename}];
-
-        expect(
-          loadFile(
-            {
-              ...loadedManifest,
-              files,
-              includedFilenamePatterns,
-              excludedFilenamePatterns
-            },
-            filename
-          )
-        ).toEqual(included[index] ? files[0] : undefined);
-      });
-    }
-  });
-
   it('does not attempt to access the file if it is not included', () => {
     const {loadedManifest, file} = new TestEnv('a');
 
@@ -112,7 +58,7 @@ describe('loadFile', () => {
     expect(
       loadFile(
         {...loadedManifest, files: [file], includedFilenamePatterns: []},
-        file.filename
+        'a'
       )
     ).toBeUndefined();
 
@@ -125,9 +71,7 @@ describe('loadFile', () => {
 
     TestEnv.mockExistsSync.mockReturnValue(false);
 
-    expect(loadFile({...loadedManifest, files: [file]}, file.filename)).toEqual(
-      file
-    );
+    expect(loadFile({...loadedManifest, files: [file]}, 'a')).toEqual(file);
 
     expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
     expect(TestEnv.mockReadFileSync.mock.calls).toEqual([]);
@@ -149,7 +93,7 @@ describe('loadFile', () => {
     });
 
     expect(() =>
-      loadFile({...loadedManifest, files: [file]}, file.filename)
+      loadFile({...loadedManifest, files: [file]}, 'a')
     ).toThrowError(
       new Error(
         "File 'a' cannot be loaded because it could not be accessed. Details: ExistsSyncError"
@@ -167,7 +111,7 @@ describe('loadFile', () => {
     });
 
     expect(() =>
-      loadFile({...loadedManifest, files: [file]}, file.filename)
+      loadFile({...loadedManifest, files: [file]}, 'a')
     ).toThrowError(
       new Error(
         "File 'a' cannot be loaded because its content could not be read. Details: ReadFileSyncError"

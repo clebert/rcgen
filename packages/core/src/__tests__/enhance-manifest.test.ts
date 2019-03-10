@@ -3,7 +3,7 @@ import {TestEnv} from './test-env';
 import {enhanceManifest} from '..';
 
 describe('enhanceManifest', () => {
-  it('enhances the specified manifest', () => {
+  it('enhances the manifest', () => {
     expect(enhanceManifest({})({})).toEqual({});
 
     const {file: fileA} = new TestEnv('a');

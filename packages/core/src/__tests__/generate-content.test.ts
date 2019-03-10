@@ -36,7 +36,7 @@ describe('generateContent', () => {
     mockNodeRequire.mockReturnValue({default: manifest});
 
     expect(() =>
-      generateContent(absoluteManifestFilename, file.filename, mockNodeRequire)
+      generateContent(absoluteManifestFilename, 'a', mockNodeRequire)
     ).toThrowError(
       new Error(
         "The content of file 'a' cannot be generated because the file is not included."

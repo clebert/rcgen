@@ -8,7 +8,7 @@ describe('merge', () => {
     patcher = jest.fn(() => ({foo: {bar: [456]}, baz: 'qux'}));
   });
 
-  it('calls the specified patcher', () => {
+  it('calls the patcher', () => {
     const args = createPatcherArgs('a', {foo: {bar: [123]}});
 
     expect(merge('a', patcher)(args)).toEqual({
@@ -24,7 +24,7 @@ describe('merge', () => {
     ]);
   });
 
-  it('does not call the specified patcher', () => {
+  it('does not call the patcher', () => {
     expect(merge('a', patcher)(createPatcherArgs('b', {}))).toEqual({});
 
     expect(patcher.mock.calls).toEqual([]);

@@ -8,7 +8,7 @@ describe('replace', () => {
     patcher = jest.fn(() => 'bar');
   });
 
-  it('calls the specified patcher', () => {
+  it('calls the patcher', () => {
     const args = createPatcherArgs('a', 'foo');
 
     expect(replace('a', patcher)(args)).toEqual('bar');
@@ -16,7 +16,7 @@ describe('replace', () => {
     expect(patcher.mock.calls).toEqual([[args]]);
   });
 
-  it('does not call the specified patcher', () => {
+  it('does not call the patcher', () => {
     expect(replace('a', patcher)(createPatcherArgs('b', 'foo'))).toEqual('foo');
 
     expect(patcher.mock.calls).toEqual([]);
