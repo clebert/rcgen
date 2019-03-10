@@ -1,5 +1,7 @@
 import micromatch from 'micromatch';
 
+export type FileMatcher = (filename: string) => boolean;
+
 export interface Globs {
   readonly includedFilenamePatterns?: string[];
   readonly excludedFilenamePatterns?: string[];
@@ -31,9 +33,8 @@ function isExcludedFile(
   return excludedFilenamePatterns.some(pattern => isMatch(filename, pattern));
 }
 
-export function matchFile(filename: string, globs: Globs): boolean {
-  return (
+export function matchFile(globs: Globs): FileMatcher {
+  return filename =>
     isIncludedFile(filename, globs.includedFilenamePatterns) &&
-    !isExcludedFile(filename, globs.excludedFilenamePatterns)
-  );
+    !isExcludedFile(filename, globs.excludedFilenamePatterns);
 }

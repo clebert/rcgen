@@ -42,7 +42,7 @@ export function loadFile<T = unknown>(
     throw createFileCannotBeLoadedError(filename, 'because it is undefined');
   }
 
-  if (!matchFile(filename, loadedManifest)) {
+  if (!matchFile(loadedManifest)(filename)) {
     return;
   }
 
