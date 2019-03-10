@@ -9,7 +9,8 @@ describe('replace', () => {
         absoluteManifestFilename,
         filename: 'a',
         generatedContent: 'foo',
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual('bar');
   });
@@ -20,7 +21,8 @@ describe('replace', () => {
         absoluteManifestFilename,
         filename: 'b',
         generatedContent: 'foo',
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual('foo');
   });

@@ -4,43 +4,41 @@ import {enhanceManifest} from '..';
 
 describe('enhanceManifest', () => {
   it('enhances the specified manifest', () => {
+    expect(enhanceManifest()({})).toEqual({});
     expect(enhanceManifest({})({})).toEqual({});
 
-    const {file} = new TestEnv();
-    const patcher = jest.fn();
+    const {file: fileA} = new TestEnv('a');
+    const patcherA = jest.fn();
 
     expect(
       enhanceManifest({
-        files: [file],
-        patchers: [patcher],
+        files: [fileA],
+        patchers: [patcherA],
         includedFilenames: ['a'],
         excludedFilenames: ['a']
       })({})
     ).toEqual({
-      files: [file],
-      patchers: [patcher],
+      files: [fileA],
+      patchers: [patcherA],
       includedFilenames: ['a'],
       excludedFilenames: ['a']
     });
 
     expect(
       enhanceManifest({})({
-        files: [file],
-        patchers: [patcher],
+        files: [fileA],
+        patchers: [patcherA],
         includedFilenames: ['a'],
         excludedFilenames: ['a']
       })
     ).toEqual({
-      files: [file],
-      patchers: [patcher],
+      files: [fileA],
+      patchers: [patcherA],
       includedFilenames: ['a'],
       excludedFilenames: ['a']
     });
 
-    const fileA = file;
-    const fileB = {...file, filename: 'b'};
-
-    const patcherA = patcher;
+    const fileB = {...fileA, filename: 'b'};
     const patcherB = jest.fn();
 
     expect(

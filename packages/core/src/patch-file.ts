@@ -24,7 +24,7 @@ export function patchFile<T = unknown>(
   loadedManifest: LoadedManifest,
   loadedFile: LoadedFile<T>
 ): PatchedFile<T> {
-  const {absoluteManifestFilename, patchers} = loadedManifest;
+  const {absoluteManifestFilename, files = [], patchers = []} = loadedManifest;
 
   const {
     filename,
@@ -33,11 +33,11 @@ export function patchFile<T = unknown>(
     readContent
   } = loadedFile;
 
-  let generatedContent = initialContent;
+  const otherFilenames = files
+    .filter(file => file.filename !== filename)
+    .map(file => file.filename);
 
-  if (!patchers) {
-    return {...loadedFile, generatedContent};
-  }
+  let generatedContent = initialContent;
 
   for (const patcher of patchers) {
     try {
@@ -45,7 +45,8 @@ export function patchFile<T = unknown>(
         absoluteManifestFilename,
         filename,
         generatedContent,
-        readContent
+        readContent,
+        otherFilenames
       });
     } catch (error) {
       throw createFileCannotBePatchedError(

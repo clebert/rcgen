@@ -10,7 +10,7 @@ describe('generateContent', () => {
       readContentData,
       absoluteManifestFilename,
       fileWithDeserializer
-    } = new TestEnv();
+    } = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
     TestEnv.mockReadFileSync.mockReturnValue(readContentData);
@@ -22,15 +22,15 @@ describe('generateContent', () => {
 
     mockNodeRequire.mockReturnValue({default: manifest});
 
-    const {filename, initialContent} = fileWithDeserializer;
+    const {initialContent} = fileWithDeserializer;
 
     expect(
-      generateContent(absoluteManifestFilename, filename, mockNodeRequire)
+      generateContent(absoluteManifestFilename, 'a', mockNodeRequire)
     ).toEqual([...initialContent, ...readContent]);
   });
 
   it('throws if the file is not included', () => {
-    const {mockNodeRequire, absoluteManifestFilename, file} = new TestEnv();
+    const {mockNodeRequire, absoluteManifestFilename, file} = new TestEnv('a');
     const manifest: Manifest = {files: [file], includedFilenames: []};
 
     mockNodeRequire.mockReturnValue({default: manifest});

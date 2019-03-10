@@ -54,7 +54,7 @@ export class TestEnv {
   public readonly file: File<string[]>;
   public readonly fileWithDeserializer: File<string[]>;
 
-  public constructor(filename: string = 'a') {
+  public constructor(filename: string) {
     this.readContent = ['bar'];
     this.readContentData = TestEnv.serializeJson(this.readContent);
 
