@@ -44,7 +44,7 @@ describe('createJsonFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('serializes the content to JSON', () => {
+    it('serializes the content data as JSON', () => {
       const {serializer} = createJsonFiletype();
 
       expect(

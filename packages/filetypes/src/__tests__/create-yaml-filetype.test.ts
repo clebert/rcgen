@@ -44,7 +44,7 @@ describe('createYamlFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('serializes the content to YAML', () => {
+    it('serializes the content data as YAML', () => {
       const {serializer} = createYamlFiletype();
 
       expect(
