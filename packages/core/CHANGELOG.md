@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/clebert/rcgen/compare/v0.7.0...v0.8.0) (2019-03-10)
+
+
+### Features
+
+* **core:** curry the matchFile function ([#14](https://github.com/clebert/rcgen/issues/14)) ([6529368](https://github.com/clebert/rcgen/commit/6529368))
+
+
+
+
+
 # [0.7.0](https://github.com/clebert/rcgen/compare/v0.6.0...v0.7.0) (2019-03-10)
 
 
