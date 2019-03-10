@@ -197,7 +197,7 @@ A collection of common file types for use with **rcgen**.
 
 ### [@rcgen/patchers][api-patchers]
 
-A collection of convenient patcher functions for use with **rcgen**.
+A collection of higher-order patchers for use with **rcgen**.
 
 ## Contributing
 

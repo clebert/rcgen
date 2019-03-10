@@ -1,6 +1,9 @@
 import {Patcher} from '@rcgen/core';
 
-export function replace<T>(filename: string, value: T): Patcher<T> {
-  return ({filename: currentFilename, generatedContent}) =>
-    currentFilename === filename ? value : generatedContent;
+export function replace<T>(filename: string, patcher: Patcher<T>): Patcher<T> {
+  return args => {
+    const {filename: currentFilename, generatedContent} = args;
+
+    return currentFilename === filename ? patcher(args) : generatedContent;
+  };
 }

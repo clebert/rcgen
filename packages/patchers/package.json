@@ -1,7 +1,7 @@
 {
   "name": "@rcgen/patchers",
   "version": "0.5.0",
-  "description": "A collection of convenient patcher functions for use with rcgen.",
+  "description": "A collection of higher-order patchers for use with rcgen.",
   "homepage": "https://rcgen.io",
   "bugs": {
     "url": "https://github.com/clebert/rcgen/issues"

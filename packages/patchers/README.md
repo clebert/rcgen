@@ -2,7 +2,7 @@
 
 [![Package Version][package-badge]][package-npm] [![API][api-badge]][api]
 
-A collection of convenient patcher functions for use with **rcgen**.
+A collection of higher-order patchers for use with **rcgen**.
 
 ## Installation
 
