@@ -44,7 +44,7 @@ describe('createYamlFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('stringifies the given content to YAML', () => {
+    it('stringifies the specified content to YAML', () => {
       const {serializer} = createYamlFiletype();
 
       expect(
@@ -58,7 +58,7 @@ describe('createYamlFiletype', () => {
   });
 
   describe('#deserializer', () => {
-    it('parses the given content as YAML', () => {
+    it('parses the specified content as YAML', () => {
       const {deserializer} = createYamlFiletype();
 
       expect(
