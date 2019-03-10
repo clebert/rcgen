@@ -4,7 +4,6 @@ import {enhanceManifest} from '..';
 
 describe('enhanceManifest', () => {
   it('enhances the specified manifest', () => {
-    expect(enhanceManifest()({})).toEqual({});
     expect(enhanceManifest({})({})).toEqual({});
 
     const {file: fileA} = new TestEnv('a');
