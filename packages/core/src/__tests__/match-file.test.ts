@@ -30,7 +30,7 @@ describe('matchFile', () => {
 
     for (const {included, ...globs} of testCases) {
       ['!a', '.b', 'c/d'].forEach((filename, index) => {
-        expect(matchFile(filename, globs)).toBe(Boolean(included[index]));
+        expect(matchFile(globs)(filename)).toBe(Boolean(included[index]));
       });
     }
   });
