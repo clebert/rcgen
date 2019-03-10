@@ -9,13 +9,13 @@ export function enhanceManifest(manifest: Manifest): Enhancer<Manifest> {
   return currentManifest => ({
     files: mergeArrays(currentManifest.files, manifest.files),
     patchers: mergeArrays(currentManifest.patchers, manifest.patchers),
-    includedFilenames: mergeArrays(
-      currentManifest.includedFilenames,
-      manifest.includedFilenames
+    includedFilenamePatterns: mergeArrays(
+      currentManifest.includedFilenamePatterns,
+      manifest.includedFilenamePatterns
     ),
-    excludedFilenames: mergeArrays(
-      currentManifest.excludedFilenames,
-      manifest.excludedFilenames
+    excludedFilenamePatterns: mergeArrays(
+      currentManifest.excludedFilenamePatterns,
+      manifest.excludedFilenamePatterns
     )
   });
 }

@@ -1,7 +1,7 @@
 import {existsSync, readFileSync} from 'fs';
-import micromatch from 'micromatch';
 import path from 'path';
 import {File, LoadedManifest} from './load-manifest';
+import {matchFile} from './match-file';
 import {validate} from './validate';
 
 export interface LoadedFile<T> extends File<T> {
@@ -21,32 +21,6 @@ function createFileCannotBeLoadedError(
   );
 }
 
-function isMatch(filename: string, pattern: string): boolean {
-  return micromatch.isMatch(filename, pattern, {dot: true, nonegate: true});
-}
-
-function isIncludedFile(
-  filename: string,
-  includedFilenames: string[] | undefined
-): boolean {
-  if (!includedFilenames) {
-    return true;
-  }
-
-  return includedFilenames.some(pattern => isMatch(filename, pattern));
-}
-
-function isExcludedFile(
-  filename: string,
-  excludedFilenames: string[] | undefined
-): boolean {
-  if (!excludedFilenames) {
-    return false;
-  }
-
-  return excludedFilenames.some(pattern => isMatch(filename, pattern));
-}
-
 /**
  * @throws if the file is undefined
  * @throws if the file could not be accessed
@@ -58,12 +32,7 @@ export function loadFile<T = unknown>(
   loadedManifest: LoadedManifest,
   filename: string
 ): LoadedFile<T> | undefined {
-  const {
-    absoluteManifestFilename,
-    files = [],
-    includedFilenames,
-    excludedFilenames
-  } = loadedManifest;
+  const {absoluteManifestFilename, files = []} = loadedManifest;
 
   const file = files.find(
     ({filename: otherFilename}) => filename === otherFilename
@@ -73,10 +42,7 @@ export function loadFile<T = unknown>(
     throw createFileCannotBeLoadedError(filename, 'because it is undefined');
   }
 
-  if (
-    !isIncludedFile(filename, includedFilenames) ||
-    isExcludedFile(filename, excludedFilenames)
-  ) {
+  if (!matchFile(filename, loadedManifest)) {
     return;
   }
 

@@ -3,7 +3,7 @@ import {TestEnv} from './test-env';
 import {enhanceManifest} from '..';
 
 describe('enhanceManifest', () => {
-  it('enhances the specified manifest', () => {
+  it('enhances the manifest', () => {
     expect(enhanceManifest({})({})).toEqual({});
 
     const {file: fileA} = new TestEnv('a');
@@ -13,28 +13,28 @@ describe('enhanceManifest', () => {
       enhanceManifest({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenames: ['a'],
-        excludedFilenames: ['a']
+        includedFilenamePatterns: ['a'],
+        excludedFilenamePatterns: ['a']
       })({})
     ).toEqual({
       files: [fileA],
       patchers: [patcherA],
-      includedFilenames: ['a'],
-      excludedFilenames: ['a']
+      includedFilenamePatterns: ['a'],
+      excludedFilenamePatterns: ['a']
     });
 
     expect(
       enhanceManifest({})({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenames: ['a'],
-        excludedFilenames: ['a']
+        includedFilenamePatterns: ['a'],
+        excludedFilenamePatterns: ['a']
       })
     ).toEqual({
       files: [fileA],
       patchers: [patcherA],
-      includedFilenames: ['a'],
-      excludedFilenames: ['a']
+      includedFilenamePatterns: ['a'],
+      excludedFilenamePatterns: ['a']
     });
 
     const fileB = {...fileA, filename: 'b'};
@@ -44,19 +44,19 @@ describe('enhanceManifest', () => {
       enhanceManifest({
         files: [fileB],
         patchers: [patcherB],
-        includedFilenames: ['b'],
-        excludedFilenames: ['b']
+        includedFilenamePatterns: ['b'],
+        excludedFilenamePatterns: ['b']
       })({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenames: ['a'],
-        excludedFilenames: ['a']
+        includedFilenamePatterns: ['a'],
+        excludedFilenamePatterns: ['a']
       })
     ).toEqual({
       files: [fileA, fileB],
       patchers: [patcherA, patcherB],
-      includedFilenames: ['a', 'b'],
-      excludedFilenames: ['a', 'b']
+      includedFilenamePatterns: ['a', 'b'],
+      excludedFilenamePatterns: ['a', 'b']
     });
   });
 });
