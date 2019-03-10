@@ -44,8 +44,10 @@ exports.default = {
     }
   ],
   patchers: [
-    merge('.vscode/settings.json', {'editor.formatOnSave': true}),
-    replace('.node-version', ['10']),
-    merge('husky.config.js', {hooks: {'commit-msg': 'yarn commitlint --edit'}})
+    merge('.vscode/settings.json', () => ({'editor.formatOnSave': true})),
+    replace('.node-version', () => ['10']),
+    merge('husky.config.js', () => ({
+      hooks: {'commit-msg': 'yarn commitlint --edit'}
+    }))
   ]
 };

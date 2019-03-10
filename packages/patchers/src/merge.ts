@@ -3,10 +3,13 @@ import deepmerge from 'deepmerge';
 
 export function merge<T extends object>(
   filename: string,
-  object: Partial<T>
+  patcher: Patcher<T>
 ): Patcher<T> {
-  return ({filename: currentFilename, generatedContent}) =>
-    currentFilename === filename
-      ? deepmerge(generatedContent, object)
+  return args => {
+    const {filename: currentFilename, generatedContent} = args;
+
+    return currentFilename === filename
+      ? deepmerge(generatedContent, patcher(args))
       : generatedContent;
+  };
 }
