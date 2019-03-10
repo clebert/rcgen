@@ -23,7 +23,8 @@ export interface Filetype<T> {
   readonly deserializer?: Deserializer<T>;
 }
 
-export interface File<T> {
+// tslint:disable-next-line: no-any
+export interface File<T = any> {
   readonly filename: string;
   readonly filetype: Filetype<T>;
   readonly initialContent: T;
@@ -37,11 +38,12 @@ export interface PatcherArgs<T> {
   readonly readContent: T | undefined;
 }
 
-export type Patcher<T> = (args: PatcherArgs<T>) => T;
+// tslint:disable-next-line: no-any
+export type Patcher<T = any> = (args: PatcherArgs<T>) => T;
 
 export interface Manifest {
-  readonly files: File<any>[]; // tslint:disable-line: no-any
-  readonly patchers?: Patcher<any>[]; // tslint:disable-line: no-any
+  readonly files?: File[];
+  readonly patchers?: Patcher[];
   readonly includedFilenames?: string[];
   readonly excludedFilenames?: string[];
 }
@@ -98,7 +100,6 @@ const manifestSchema = {
     includedFilenames: {type: 'array', items: {type: 'string'}},
     excludedFilenames: {type: 'array', items: {type: 'string'}}
   },
-  required: ['files'],
   additionalProperties: false
 };
 
@@ -108,6 +109,58 @@ const manifestModuleSchema = {
   required: ['default'],
   additionalProperties: false
 };
+
+function checkFiles(absoluteManifestFilename: string, files: File[]): void {
+  const filenames = new Set<string>();
+
+  for (const {filename, filetype, initialContent} of files) {
+    if (filenames.has(filename)) {
+      throw createManifestCannotBeLoadedError(
+        absoluteManifestFilename,
+        `because at least two of its files have the same filename '${filename}'`
+      );
+    }
+
+    filenames.add(filename);
+
+    if (path.isAbsolute(filename)) {
+      throw createManifestCannotBeLoadedError(
+        absoluteManifestFilename,
+        `because the filename of its file '${filename}' is not relative`
+      );
+    }
+
+    for (const {filename: otherFilename, conflictingFilenames} of files) {
+      if (conflictingFilenames && conflictingFilenames.includes(filename)) {
+        if (filename === otherFilename) {
+          throw createManifestCannotBeLoadedError(
+            absoluteManifestFilename,
+            `because its file '${filename}' conflicts with itself`
+          );
+        } else {
+          throw createManifestCannotBeLoadedError(
+            absoluteManifestFilename,
+            `because its file '${filename}' conflicts with its other file '${otherFilename}'`
+          );
+        }
+      }
+    }
+
+    const initialContentResult = validate(
+      initialContent,
+      'initialContent',
+      filetype.contentSchema
+    );
+
+    if (!initialContentResult.isValid(initialContent)) {
+      throw createManifestCannotBeLoadedError(
+        absoluteManifestFilename,
+        `because the initial content of its file '${filename}' is invalid`,
+        initialContentResult.validationMessage
+      );
+    }
+  }
+}
 
 /**
  * @throws if the filename of the manifest is not absolute
@@ -157,55 +210,9 @@ export function loadManifest(
   }
 
   const manifest = manifestModule.default;
-  const {files} = manifest;
-  const filenames = new Set<string>();
 
-  for (const {filename, filetype, initialContent} of files) {
-    if (filenames.has(filename)) {
-      throw createManifestCannotBeLoadedError(
-        absoluteManifestFilename,
-        `because at least two of its files have the same filename '${filename}'`
-      );
-    }
-
-    filenames.add(filename);
-
-    if (path.isAbsolute(filename)) {
-      throw createManifestCannotBeLoadedError(
-        absoluteManifestFilename,
-        `because the filename of its file '${filename}' is not relative`
-      );
-    }
-
-    for (const {filename: otherFilename, conflictingFilenames} of files) {
-      if (conflictingFilenames && conflictingFilenames.includes(filename)) {
-        if (filename === otherFilename) {
-          throw createManifestCannotBeLoadedError(
-            absoluteManifestFilename,
-            `because its file '${filename}' conflicts with itself`
-          );
-        } else {
-          throw createManifestCannotBeLoadedError(
-            absoluteManifestFilename,
-            `because its file '${filename}' conflicts with its other file '${otherFilename}'`
-          );
-        }
-      }
-    }
-
-    const initialContentResult = validate(
-      initialContent,
-      'initialContent',
-      filetype.contentSchema
-    );
-
-    if (!initialContentResult.isValid(initialContent)) {
-      throw createManifestCannotBeLoadedError(
-        absoluteManifestFilename,
-        `because the initial content of its file '${filename}' is invalid`,
-        initialContentResult.validationMessage
-      );
-    }
+  if (manifest.files) {
+    checkFiles(absoluteManifestFilename, manifest.files);
   }
 
   return {...manifest, absoluteManifestFilename};

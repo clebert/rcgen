@@ -60,7 +60,7 @@ export function loadFile<T = unknown>(
 ): LoadedFile<T> | undefined {
   const {
     absoluteManifestFilename,
-    files,
+    files = [],
     includedFilenames,
     excludedFilenames
   } = loadedManifest;

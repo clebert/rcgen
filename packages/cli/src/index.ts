@@ -44,7 +44,7 @@ const {
 try {
   const absoluteManifestFilename = path.join(process.cwd(), manifestFilename);
   const loadedManifest = loadManifest(absoluteManifestFilename);
-  const {files} = loadedManifest;
+  const {files = []} = loadedManifest;
 
   if (files.length === 0 && verbose) {
     console.log(`No files found in manifest '${absoluteManifestFilename}'.`);
