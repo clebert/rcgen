@@ -11,9 +11,8 @@ export function createJsonFiletype<T = object>(
 
   return {
     contentSchema,
-    serializer: ({generatedContent}) =>
-      Buffer.from(`${JSON.stringify(generatedContent, null, 2)}\n`),
-    deserializer: ({readContentData}) =>
-      JSON.parse(readContentData.toString().trim())
+    serializer: ({content}) =>
+      Buffer.from(`${JSON.stringify(content, null, 2)}\n`),
+    deserializer: ({contentData}) => JSON.parse(contentData.toString().trim())
   };
 }

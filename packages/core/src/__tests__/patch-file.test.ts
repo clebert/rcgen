@@ -3,10 +3,10 @@ import {TestEnv} from './test-env';
 import {PatcherArgs, patchFile} from '..';
 
 describe('patchFile', () => {
-  it('returns the file together with its generated content', () => {
+  it('patches the file with newly generated content', () => {
     const {
-      readContent,
-      readContentData,
+      exisitingContent,
+      exisitingContentData,
       loadedManifest,
       fileWithDeserializer
     } = new TestEnv('b');
@@ -29,7 +29,13 @@ describe('patchFile', () => {
     const {initialContent} = fileWithDeserializer;
 
     const loadedFileA = {...fileWithDeserializer, filename: 'a'};
-    const loadedFileB = {...fileWithDeserializer, readContentData, readContent};
+
+    const loadedFileB = {
+      ...fileWithDeserializer,
+      exisitingContentData,
+      exisitingContent
+    };
+
     const loadedFileC = {...fileWithDeserializer, filename: 'c'};
 
     expect(
@@ -54,7 +60,7 @@ describe('patchFile', () => {
           absoluteManifestFilename,
           filename: 'b',
           generatedContent: initialContent,
-          readContent,
+          exisitingContent,
           otherFilenames: ['a', 'c']
         }
       ]
@@ -66,7 +72,7 @@ describe('patchFile', () => {
           absoluteManifestFilename,
           filename: 'b',
           generatedContent: [...initialContent, 'baz'],
-          readContent,
+          exisitingContent,
           otherFilenames: ['a', 'c']
         }
       ]
@@ -89,7 +95,7 @@ describe('patchFile', () => {
     );
   });
 
-  it('throws if the generated content of the file will become invalid', () => {
+  it('throws if the newly generated content of the file is invalid', () => {
     const {loadedManifest, file} = new TestEnv('a');
 
     const mockPatcher1 = jest.fn(() => 'baz');
@@ -99,7 +105,7 @@ describe('patchFile', () => {
 
     expect(() => patchFile({...loadedManifest, patchers}, file)).toThrowError(
       new Error(
-        "File 'a' cannot be patched because its generated content will become invalid. Details: The generatedContent should be array."
+        "File 'a' cannot be patched because its newly generated content is invalid. Details: The generatedContent should be array."
       )
     );
 
@@ -108,7 +114,7 @@ describe('patchFile', () => {
   });
 
   describe('without patchers', () => {
-    it('returns the file together with its initial content instead of generated content', () => {
+    it('patches the file with its initial content', () => {
       const {loadedManifest, file} = new TestEnv('a');
 
       expect(patchFile(loadedManifest, file)).toEqual({

@@ -3,42 +3,46 @@ import {TestEnv} from './test-env';
 import {loadFile} from '..';
 
 describe('loadFile', () => {
-  it('returns the file together with its read but not deserialized content', () => {
+  it('only reads the exisiting content data of the file', () => {
     const {
-      readContentData,
+      exisitingContentData,
       loadedManifest,
       absoluteFilename,
       file
     } = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
-    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockReadFileSync.mockReturnValue(exisitingContentData);
 
     expect(loadFile({...loadedManifest, files: [file]}, 'a')).toEqual({
       ...file,
-      readContentData
+      exisitingContentData
     });
 
     expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
     expect(TestEnv.mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
   });
 
-  it('returns the file together with its read and deserialized content', () => {
+  it('deserializes the exisiting content of the file', () => {
     const {
       mockDeserializer,
-      readContent,
-      readContentData,
+      exisitingContent,
+      exisitingContentData,
       loadedManifest,
       absoluteFilename,
       fileWithDeserializer
     } = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
-    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockReadFileSync.mockReturnValue(exisitingContentData);
 
     expect(
       loadFile({...loadedManifest, files: [fileWithDeserializer]}, 'a')
-    ).toEqual({...fileWithDeserializer, readContentData, readContent});
+    ).toEqual({
+      ...fileWithDeserializer,
+      exisitingContentData,
+      exisitingContent
+    });
 
     expect(TestEnv.mockExistsSync.mock.calls).toEqual([[absoluteFilename]]);
     expect(TestEnv.mockReadFileSync.mock.calls).toEqual([[absoluteFilename]]);
@@ -46,7 +50,13 @@ describe('loadFile', () => {
     const {absoluteManifestFilename} = loadedManifest;
 
     expect(mockDeserializer.mock.calls).toEqual([
-      [{absoluteManifestFilename, filename: 'a', readContentData}]
+      [
+        {
+          absoluteManifestFilename,
+          filename: 'a',
+          contentData: exisitingContentData
+        }
+      ]
     ]);
   });
 
@@ -66,7 +76,7 @@ describe('loadFile', () => {
     expect(TestEnv.mockReadFileSync.mock.calls).toEqual([]);
   });
 
-  it('does not attempt to read the content of the file if it does not exist', () => {
+  it('does not attempt to read the exisiting content data of the file if it does not exist', () => {
     const {loadedManifest, absoluteFilename, file} = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(false);
@@ -101,7 +111,7 @@ describe('loadFile', () => {
     );
   });
 
-  it('throws if the content of the file could not be read', () => {
+  it('throws if the exisiting content data of the file could not be read', () => {
     const {loadedManifest, file} = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
@@ -114,21 +124,21 @@ describe('loadFile', () => {
       loadFile({...loadedManifest, files: [file]}, 'a')
     ).toThrowError(
       new Error(
-        "File 'a' cannot be loaded because its content could not be read. Details: ReadFileSyncError"
+        "File 'a' cannot be loaded because its exisiting content data could not be read. Details: ReadFileSyncError"
       )
     );
   });
 
-  it('throws if the read content of the file could not be deserialized', () => {
+  it('throws if the exisiting content of the file could not be deserialized', () => {
     const {
       mockDeserializer,
-      readContentData,
+      exisitingContentData,
       loadedManifest,
       fileWithDeserializer
     } = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
-    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockReadFileSync.mockReturnValue(exisitingContentData);
 
     mockDeserializer.mockImplementation(() => {
       throw new Error('DeserializerError');
@@ -138,12 +148,12 @@ describe('loadFile', () => {
       loadFile({...loadedManifest, files: [fileWithDeserializer]}, 'a')
     ).toThrowError(
       new Error(
-        "File 'a' cannot be loaded because its read content could not be deserialized. Details: DeserializerError"
+        "File 'a' cannot be loaded because its exisiting content could not be deserialized. Details: DeserializerError"
       )
     );
   });
 
-  it('throws if the read content of the file is invalid', () => {
+  it('throws if the exisiting content of the file is invalid', () => {
     const {loadedManifest, fileWithDeserializer} = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
@@ -153,7 +163,7 @@ describe('loadFile', () => {
       loadFile({...loadedManifest, files: [fileWithDeserializer]}, 'a')
     ).toThrowError(
       new Error(
-        "File 'a' cannot be loaded because its read content is invalid. Details: The readContent should be array."
+        "File 'a' cannot be loaded because its exisiting content is invalid. Details: The exisitingContent should be array."
       )
     );
   });

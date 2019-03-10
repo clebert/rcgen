@@ -18,7 +18,7 @@ function createFileCannotBePatchedError(
 
 /**
  * @throws if a patcher caused an error
- * @throws if the generated content of the file will become invalid
+ * @throws if the newly generated content of the file is invalid
  */
 export function patchFile<T = unknown>(
   loadedManifest: LoadedManifest,
@@ -30,7 +30,7 @@ export function patchFile<T = unknown>(
     filename,
     filetype: {contentSchema},
     initialContent,
-    readContent
+    exisitingContent
   } = loadedFile;
 
   const otherFilenames = files
@@ -45,7 +45,7 @@ export function patchFile<T = unknown>(
         absoluteManifestFilename,
         filename,
         generatedContent,
-        readContent,
+        exisitingContent,
         otherFilenames
       });
     } catch (error) {
@@ -65,7 +65,7 @@ export function patchFile<T = unknown>(
     if (!generatedContentResult.isValid(generatedContent)) {
       throw createFileCannotBePatchedError(
         filename,
-        'because its generated content will become invalid',
+        'because its newly generated content is invalid',
         generatedContentResult.validationMessage
       );
     }

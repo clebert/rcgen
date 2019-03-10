@@ -5,7 +5,7 @@ import {validate} from './validate';
 export interface SerializerArgs<T> {
   readonly absoluteManifestFilename: string;
   readonly filename: string;
-  readonly generatedContent: T;
+  readonly content: T;
 }
 
 export type Serializer<T> = (args: SerializerArgs<T>) => Buffer;
@@ -13,7 +13,7 @@ export type Serializer<T> = (args: SerializerArgs<T>) => Buffer;
 export interface DeserializerArgs {
   readonly absoluteManifestFilename: string;
   readonly filename: string;
-  readonly readContentData: Buffer;
+  readonly contentData: Buffer;
 }
 
 export type Deserializer<T> = (args: DeserializerArgs) => T;
@@ -36,7 +36,7 @@ export interface PatcherArgs<T> {
   readonly absoluteManifestFilename: string;
   readonly filename: string;
   readonly generatedContent: T;
-  readonly readContent: T | undefined;
+  readonly exisitingContent: T | undefined;
   readonly otherFilenames: string[];
 }
 

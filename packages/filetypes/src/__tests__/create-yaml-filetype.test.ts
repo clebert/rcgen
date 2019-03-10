@@ -51,7 +51,7 @@ describe('createYamlFiletype', () => {
         serializer({
           absoluteManifestFilename,
           filename,
-          generatedContent: {foo: 'bar', baz: [123, 456]}
+          content: {foo: 'bar', baz: [123, 456]}
         })
       ).toEqual(Buffer.from('foo: bar\nbaz:\n  - 123\n  - 456\n'));
     });
@@ -65,7 +65,7 @@ describe('createYamlFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('foo: bar\nbaz:\n  - 123\n  - 456\n')
+          contentData: Buffer.from('foo: bar\nbaz:\n  - 123\n  - 456\n')
         })
       ).toEqual({foo: 'bar', baz: [123, 456]});
     });

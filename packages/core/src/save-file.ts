@@ -18,10 +18,10 @@ function createFileCannotBeSavedError(
 
 /**
  * @throws if the file conflicts with an existing file
- * @throws if the generated content of the file could not be serialized
- * @throws if the generated content of the file differs from the read content of the file (not in force mode)
+ * @throws if the generated content data of the file could not be serialized
+ * @throws if the generated content data of the file differs from the existing content data of the file (not in force mode)
  * @throws if the required subdirectories of the file could not be created
- * @throws if the generated content of the file could not be written
+ * @throws if the generated content data of the file could not be written
  */
 export function saveFile<T = unknown>(
   loadedManifest: LoadedManifest,
@@ -34,7 +34,7 @@ export function saveFile<T = unknown>(
     filename,
     filetype: {serializer},
     conflictingFilenames,
-    readContentData,
+    exisitingContentData,
     generatedContent
   } = patchedFile;
 
@@ -57,25 +57,25 @@ export function saveFile<T = unknown>(
     generatedContentData = serializer({
       absoluteManifestFilename,
       filename,
-      generatedContent
+      content: generatedContent
     });
   } catch (error) {
     throw createFileCannotBeSavedError(
       filename,
-      'because its generated content could not be serialized',
+      'because its generated content data could not be serialized',
       error.message
     );
   }
 
-  if (readContentData) {
-    if (generatedContentData.compare(readContentData) === 0) {
+  if (exisitingContentData) {
+    if (generatedContentData.compare(exisitingContentData) === 0) {
       return false;
     }
 
     if (!force) {
       throw createFileCannotBeSavedError(
         filename,
-        'because its generated content differs from its read content'
+        'because its generated content data differs from its existing content data'
       );
     }
   }
@@ -97,7 +97,7 @@ export function saveFile<T = unknown>(
   } catch (error) {
     throw createFileCannotBeSavedError(
       filename,
-      'because its generated content could not be written',
+      'because its generated content data could not be written',
       error.message
     );
   }

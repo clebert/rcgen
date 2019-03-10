@@ -30,18 +30,14 @@ describe('createLinesFiletype', () => {
       const {serializer} = createLinesFiletype();
 
       expect(
-        serializer({
-          absoluteManifestFilename,
-          filename,
-          generatedContent: []
-        })
+        serializer({absoluteManifestFilename, filename, content: []})
       ).toEqual(Buffer.from('\n'));
 
       expect(
         serializer({
           absoluteManifestFilename,
           filename,
-          generatedContent: ['', 'b', '', 'c', ' a ', '\nb\r', 'a', '']
+          content: ['', 'b', '', 'c', ' a ', '\nb\r', 'a', '']
         })
       ).toEqual(Buffer.from('a\nb\nc\n'));
     });
@@ -50,18 +46,14 @@ describe('createLinesFiletype', () => {
       const {serializer} = createLinesFiletype({newline: '\r'});
 
       expect(
-        serializer({
-          absoluteManifestFilename,
-          filename,
-          generatedContent: []
-        })
+        serializer({absoluteManifestFilename, filename, content: []})
       ).toEqual(Buffer.from('\r'));
 
       expect(
         serializer({
           absoluteManifestFilename,
           filename,
-          generatedContent: ['', 'b', '', 'c', ' a ', '\nb\r', 'a', '']
+          content: ['', 'b', '', 'c', ' a ', '\nb\r', 'a', '']
         })
       ).toEqual(Buffer.from('a\rb\rc\r'));
     });
@@ -75,7 +67,7 @@ describe('createLinesFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('\n')
+          contentData: Buffer.from('\n')
         })
       ).toEqual([]);
 
@@ -83,7 +75,7 @@ describe('createLinesFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('\nb\nc\n a \n\nb\r\na\n')
+          contentData: Buffer.from('\nb\nc\n a \n\nb\r\na\n')
         })
       ).toEqual(['a', 'b', 'c']);
     });
@@ -95,7 +87,7 @@ describe('createLinesFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('\r')
+          contentData: Buffer.from('\r')
         })
       ).toEqual([]);
 
@@ -103,7 +95,7 @@ describe('createLinesFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('\rb\rc\r a \r\nb\r\ra\r')
+          contentData: Buffer.from('\rb\rc\r a \r\nb\r\ra\r')
         })
       ).toEqual(['a', 'b', 'c']);
     });
