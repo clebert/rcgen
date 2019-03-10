@@ -1,46 +1,32 @@
 import {merge} from '..';
+import {createPatcherArgs} from './create-patcher-args';
 
 describe('merge', () => {
-  const absoluteManifestFilename = '/path/to/m';
+  let patcher: jest.Mock;
 
-  it('merges the result of the specified patcher with the generated content of the specified file', () => {
-    const patcher = jest.fn(() => ({foo: {bar: [456]}, baz: 'qux'}));
+  beforeEach(() => {
+    patcher = jest.fn(() => ({foo: {bar: [456]}, baz: 'qux'}));
+  });
 
-    const args = {
-      absoluteManifestFilename,
-      filename: 'a',
-      generatedContent: {foo: {bar: [123]}},
-      readContent: undefined,
-      otherFilenames: []
-    };
+  it('calls the specified patcher', () => {
+    const args = createPatcherArgs('a', {foo: {bar: [123]}});
 
-    expect(merge<object>('a', patcher)(args)).toEqual({
+    expect(merge('a', patcher)(args)).toEqual({
       foo: {bar: [123, 456]},
       baz: 'qux'
     });
 
     expect(patcher.mock.calls).toEqual([[args]]);
 
-    expect(
-      merge<number[]>('a', () => [456])({...args, generatedContent: [123]})
-    ).toEqual([123, 456]);
+    expect(merge('a', () => [456])(createPatcherArgs('a', [123]))).toEqual([
+      123,
+      456
+    ]);
   });
 
-  it('does not merge the result of the specified patcher with the generated content of an unspecified file', () => {
-    const args = {
-      absoluteManifestFilename,
-      filename: 'b',
-      generatedContent: {foo: {bar: [123]}},
-      readContent: undefined,
-      otherFilenames: []
-    };
+  it('does not call the specified patcher', () => {
+    expect(merge('a', patcher)(createPatcherArgs('b', {}))).toEqual({});
 
-    expect(
-      merge<object>('a', () => ({foo: {bar: [456]}, baz: 'qux'}))(args)
-    ).toEqual({foo: {bar: [123]}});
-
-    expect(
-      merge<number[]>('a', () => [456])({...args, generatedContent: [123]})
-    ).toEqual([123]);
+    expect(patcher.mock.calls).toEqual([]);
   });
 });

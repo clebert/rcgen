@@ -1,33 +1,24 @@
 import {replace} from '..';
+import {createPatcherArgs} from './create-patcher-args';
 
 describe('replace', () => {
-  const absoluteManifestFilename = '/path/to/m';
+  let patcher: jest.Mock;
 
-  it('replaces the generated content of the specified file with the result of the specified patcher', () => {
-    const patcher = jest.fn(() => 'bar');
+  beforeEach(() => {
+    patcher = jest.fn(() => 'bar');
+  });
 
-    const args = {
-      absoluteManifestFilename,
-      filename: 'a',
-      generatedContent: 'foo',
-      readContent: undefined,
-      otherFilenames: []
-    };
+  it('calls the specified patcher', () => {
+    const args = createPatcherArgs('a', 'foo');
 
     expect(replace('a', patcher)(args)).toEqual('bar');
 
     expect(patcher.mock.calls).toEqual([[args]]);
   });
 
-  it('does not replace the generated content of an unspecified file with the result of the specified patcher', () => {
-    const args = {
-      absoluteManifestFilename,
-      filename: 'b',
-      generatedContent: 'foo',
-      readContent: undefined,
-      otherFilenames: []
-    };
+  it('does not call the specified patcher', () => {
+    expect(replace('a', patcher)(createPatcherArgs('b', 'foo'))).toEqual('foo');
 
-    expect(replace('a', () => 'bar')(args)).toEqual('foo');
+    expect(patcher.mock.calls).toEqual([]);
   });
 });
