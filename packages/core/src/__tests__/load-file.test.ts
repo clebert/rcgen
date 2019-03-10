@@ -57,29 +57,46 @@ describe('loadFile', () => {
 
     const testCases = [
       {included: [1, 1, 1]},
-      {includedFilenames: [], included: [0, 0, 0]},
-      {excludedFilenames: [], included: [1, 1, 1]},
-      {includedFilenames: ['*'], included: [1, 1, 0]},
-      {excludedFilenames: ['*'], included: [0, 0, 1]},
-      {includedFilenames: ['!*'], included: [1, 0, 0]},
-      {excludedFilenames: ['!*'], included: [0, 1, 1]},
-      {includedFilenames: ['*/*'], included: [0, 0, 1]},
-      {excludedFilenames: ['*/*'], included: [1, 1, 0]},
-      {includedFilenames: ['**/*'], included: [1, 1, 1]},
-      {excludedFilenames: ['**/*'], included: [0, 0, 0]},
-      {includedFilenames: ['*', '*/*'], included: [1, 1, 1]},
-      {excludedFilenames: ['*', '*/*'], included: [0, 0, 0]},
-      {includedFilenames: [], excludedFilenames: [], included: [0, 0, 0]},
-      {includedFilenames: ['*'], excludedFilenames: ['!*'], included: [0, 1, 0]}
+      {includedFilenamePatterns: [], included: [0, 0, 0]},
+      {excludedFilenamePatterns: [], included: [1, 1, 1]},
+      {includedFilenamePatterns: ['*'], included: [1, 1, 0]},
+      {excludedFilenamePatterns: ['*'], included: [0, 0, 1]},
+      {includedFilenamePatterns: ['!*'], included: [1, 0, 0]},
+      {excludedFilenamePatterns: ['!*'], included: [0, 1, 1]},
+      {includedFilenamePatterns: ['*/*'], included: [0, 0, 1]},
+      {excludedFilenamePatterns: ['*/*'], included: [1, 1, 0]},
+      {includedFilenamePatterns: ['**/*'], included: [1, 1, 1]},
+      {excludedFilenamePatterns: ['**/*'], included: [0, 0, 0]},
+      {includedFilenamePatterns: ['*', '*/*'], included: [1, 1, 1]},
+      {excludedFilenamePatterns: ['*', '*/*'], included: [0, 0, 0]},
+      {
+        includedFilenamePatterns: [],
+        excludedFilenamePatterns: [],
+        included: [0, 0, 0]
+      },
+      {
+        includedFilenamePatterns: ['*'],
+        excludedFilenamePatterns: ['!*'],
+        included: [0, 1, 0]
+      }
     ];
 
-    for (const {includedFilenames, excludedFilenames, included} of testCases) {
+    for (const {
+      includedFilenamePatterns,
+      excludedFilenamePatterns,
+      included
+    } of testCases) {
       ['!a', '.b', 'c/d'].forEach((filename, index) => {
         const files = [{...file, filename}];
 
         expect(
           loadFile(
-            {...loadedManifest, files, includedFilenames, excludedFilenames},
+            {
+              ...loadedManifest,
+              files,
+              includedFilenamePatterns,
+              excludedFilenamePatterns
+            },
             filename
           )
         ).toEqual(included[index] ? files[0] : undefined);
@@ -94,7 +111,7 @@ describe('loadFile', () => {
 
     expect(
       loadFile(
-        {...loadedManifest, files: [file], includedFilenames: []},
+        {...loadedManifest, files: [file], includedFilenamePatterns: []},
         file.filename
       )
     ).toBeUndefined();

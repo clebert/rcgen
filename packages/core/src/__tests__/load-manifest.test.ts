@@ -54,11 +54,16 @@ describe('loadManifest', () => {
       {files: [fileWithDeserializer]},
       {patchers: []},
       {patchers: [jest.fn()]},
-      {includedFilenames: []},
-      {includedFilenames: ['*']},
-      {excludedFilenames: []},
-      {excludedFilenames: ['*']},
-      {files: [], patchers: [], includedFilenames: [], excludedFilenames: []}
+      {includedFilenamePatterns: []},
+      {includedFilenamePatterns: ['*']},
+      {excludedFilenamePatterns: []},
+      {excludedFilenamePatterns: ['*']},
+      {
+        files: [],
+        patchers: [],
+        includedFilenamePatterns: [],
+        excludedFilenamePatterns: []
+      }
     ];
 
     for (const manifest of manifests) {
@@ -115,20 +120,20 @@ describe('loadManifest', () => {
         '.patchers[0] should be function'
       ),
       defineInvalidManifest(
-        {includedFilenames: 123},
-        '.includedFilenames should be array'
+        {includedFilenamePatterns: 123},
+        '.includedFilenamePatterns should be array'
       ),
       defineInvalidManifest(
-        {includedFilenames: [123]},
-        '.includedFilenames[0] should be string'
+        {includedFilenamePatterns: [123]},
+        '.includedFilenamePatterns[0] should be string'
       ),
       defineInvalidManifest(
-        {excludedFilenames: 123},
-        '.excludedFilenames should be array'
+        {excludedFilenamePatterns: 123},
+        '.excludedFilenamePatterns should be array'
       ),
       defineInvalidManifest(
-        {excludedFilenames: [123]},
-        '.excludedFilenames[0] should be string'
+        {excludedFilenamePatterns: [123]},
+        '.excludedFilenamePatterns[0] should be string'
       ),
       defineInvalidManifest(
         {unknown: 123},

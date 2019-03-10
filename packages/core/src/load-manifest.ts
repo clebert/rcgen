@@ -1,4 +1,5 @@
 import path from 'path';
+import {Globs} from './match-file';
 import {validate} from './validate';
 
 export interface SerializerArgs<T> {
@@ -42,11 +43,9 @@ export interface PatcherArgs<T> {
 // tslint:disable-next-line: no-any
 export type Patcher<T = any> = (args: PatcherArgs<T>) => T;
 
-export interface Manifest {
+export interface Manifest extends Globs {
   readonly files?: File[];
   readonly patchers?: Patcher[];
-  readonly includedFilenames?: string[];
-  readonly excludedFilenames?: string[];
 }
 
 export interface LoadedManifest extends Manifest {
@@ -98,8 +97,8 @@ const manifestSchema = {
   properties: {
     files: {type: 'array', items: fileSchema},
     patchers: {type: 'array', items: patcherSchema},
-    includedFilenames: {type: 'array', items: {type: 'string'}},
-    excludedFilenames: {type: 'array', items: {type: 'string'}}
+    includedFilenamePatterns: {type: 'array', items: {type: 'string'}},
+    excludedFilenamePatterns: {type: 'array', items: {type: 'string'}}
   },
   additionalProperties: false
 };
