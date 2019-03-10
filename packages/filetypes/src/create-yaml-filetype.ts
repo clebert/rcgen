@@ -12,9 +12,7 @@ export function createYamlFiletype<T = object>(
 
   return {
     contentSchema,
-    serializer: ({generatedContent}) =>
-      Buffer.from(YAML.stringify(generatedContent)),
-    deserializer: ({readContentData}) =>
-      YAML.parse(readContentData.toString().trim())
+    serializer: ({content}) => Buffer.from(YAML.stringify(content)),
+    deserializer: ({contentData}) => YAML.parse(contentData.toString().trim())
   };
 }

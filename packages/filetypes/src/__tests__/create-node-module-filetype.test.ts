@@ -48,7 +48,7 @@ describe('createNodeModuleFiletype', () => {
         serializer({
           absoluteManifestFilename: '/path/to/m',
           filename: 'a',
-          generatedContent: {foo: 'bar'}
+          content: {foo: 'bar'}
         })
       ).toEqual(
         Buffer.from(

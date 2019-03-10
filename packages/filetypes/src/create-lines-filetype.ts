@@ -19,9 +19,9 @@ export function createLinesFiletype(
 
   return {
     contentSchema: {type: 'array', items: {type: 'string'}},
-    serializer: ({generatedContent}) =>
-      Buffer.from(`${normalize(generatedContent).join(newline)}${newline}`),
-    deserializer: ({readContentData}) =>
-      normalize(readContentData.toString().split(newline))
+    serializer: ({content}) =>
+      Buffer.from(`${normalize(content).join(newline)}${newline}`),
+    deserializer: ({contentData}) =>
+      normalize(contentData.toString().split(newline))
   };
 }

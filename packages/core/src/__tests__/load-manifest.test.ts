@@ -42,7 +42,7 @@ function defineInvalidFiletype(
 }
 
 describe('loadManifest', () => {
-  it('returns the manifest together with its filename', () => {
+  it('loads the manifest', () => {
     const {mockNodeRequire, file, fileWithDeserializer} = new TestEnv('a');
 
     const manifests: Manifest[] = [

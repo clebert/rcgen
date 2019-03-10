@@ -3,21 +3,21 @@ import {TestEnv} from './test-env';
 import {Manifest, generateContent} from '..';
 
 describe('generateContent', () => {
-  it('returns the generated content of the file', () => {
+  it('generates the content of the file', () => {
     const {
       mockNodeRequire,
-      readContent,
-      readContentData,
+      exisitingContent,
+      exisitingContentData,
       absoluteManifestFilename,
       fileWithDeserializer
     } = new TestEnv('a');
 
     TestEnv.mockExistsSync.mockReturnValue(true);
-    TestEnv.mockReadFileSync.mockReturnValue(readContentData);
+    TestEnv.mockReadFileSync.mockReturnValue(exisitingContentData);
 
     const manifest: Manifest = {
       files: [fileWithDeserializer],
-      patchers: [args => [...args.generatedContent, ...args.readContent]]
+      patchers: [args => [...args.generatedContent, ...args.exisitingContent]]
     };
 
     mockNodeRequire.mockReturnValue({default: manifest});
@@ -26,7 +26,7 @@ describe('generateContent', () => {
 
     expect(
       generateContent(absoluteManifestFilename, 'a', mockNodeRequire)
-    ).toEqual([...initialContent, ...readContent]);
+    ).toEqual([...initialContent, ...exisitingContent]);
   });
 
   it('throws if the file is not included', () => {

@@ -32,17 +32,15 @@ export class TestEnv {
   public readonly mockNodeRequire = jest.fn();
 
   public readonly mockSerializer = jest.fn(
-    ({generatedContent}: SerializerArgs<unknown>) =>
-      TestEnv.serializeJson(generatedContent)
+    ({content}: SerializerArgs<unknown>) => TestEnv.serializeJson(content)
   );
 
   public readonly mockDeserializer = jest.fn(
-    ({readContentData}: DeserializerArgs) =>
-      TestEnv.deserializeJson(readContentData)
+    ({contentData}: DeserializerArgs) => TestEnv.deserializeJson(contentData)
   );
 
-  public readonly readContent: string[];
-  public readonly readContentData: Buffer;
+  public readonly exisitingContent: string[];
+  public readonly exisitingContentData: Buffer;
 
   public readonly absoluteRootDirname: string;
   public readonly absoluteManifestFilename: string;
@@ -55,8 +53,8 @@ export class TestEnv {
   public readonly fileWithDeserializer: File<string[]>;
 
   public constructor(filename: string) {
-    this.readContent = ['bar'];
-    this.readContentData = TestEnv.serializeJson(this.readContent);
+    this.exisitingContent = ['bar'];
+    this.exisitingContentData = TestEnv.serializeJson(this.exisitingContent);
 
     this.absoluteRootDirname = '/path/to';
     this.absoluteManifestFilename = path.join(this.absoluteRootDirname, 'm');

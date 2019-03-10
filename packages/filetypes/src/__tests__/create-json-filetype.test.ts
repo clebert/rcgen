@@ -44,15 +44,11 @@ describe('createJsonFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('serializes the content to JSON', () => {
+    it('serializes the content data as JSON', () => {
       const {serializer} = createJsonFiletype();
 
       expect(
-        serializer({
-          absoluteManifestFilename,
-          filename,
-          generatedContent: {foo: 'bar'}
-        })
+        serializer({absoluteManifestFilename, filename, content: {foo: 'bar'}})
       ).toEqual(Buffer.from('{\n  "foo": "bar"\n}\n'));
     });
   });
@@ -65,7 +61,7 @@ describe('createJsonFiletype', () => {
         deserializer!({
           absoluteManifestFilename,
           filename,
-          readContentData: Buffer.from('{\n  "foo": "bar"\n}\n')
+          contentData: Buffer.from('{\n  "foo": "bar"\n}\n')
         })
       ).toEqual({foo: 'bar'});
     });
