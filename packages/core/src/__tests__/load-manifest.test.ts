@@ -46,17 +46,18 @@ describe('loadManifest', () => {
     const {mockNodeRequire, file, fileWithDeserializer} = new TestEnv();
 
     const manifests: Manifest[] = [
+      {},
       {files: []},
       {files: [file]},
       {files: [{...file, conflictingFilenames: []}]},
       {files: [{...file, conflictingFilenames: ['b']}]},
       {files: [fileWithDeserializer]},
-      {files: [], patchers: []},
-      {files: [], patchers: [jest.fn()]},
-      {files: [], includedFilenames: []},
-      {files: [], includedFilenames: ['*']},
-      {files: [], excludedFilenames: []},
-      {files: [], excludedFilenames: ['*']},
+      {patchers: []},
+      {patchers: [jest.fn()]},
+      {includedFilenames: []},
+      {includedFilenames: ['*']},
+      {excludedFilenames: []},
+      {excludedFilenames: ['*']},
       {files: [], patchers: [], includedFilenames: [], excludedFilenames: []}
     ];
 
@@ -103,38 +104,34 @@ describe('loadManifest', () => {
         " should have required property 'default'"
       ),
       defineInvalidManifestModule(
-        {default: {files: []}, unknown: 123},
+        {default: {}, unknown: 123},
         ' should NOT have additional properties'
       ),
       defineInvalidManifest(123, ' should be object'),
-      defineInvalidManifest({}, " should have required property 'files'"),
       defineInvalidManifest({files: 123}, '.files should be array'),
+      defineInvalidManifest({patchers: 123}, '.patchers should be array'),
       defineInvalidManifest(
-        {files: [], patchers: 123},
-        '.patchers should be array'
-      ),
-      defineInvalidManifest(
-        {files: [], patchers: [123]},
+        {patchers: [123]},
         '.patchers[0] should be function'
       ),
       defineInvalidManifest(
-        {files: [], includedFilenames: 123},
+        {includedFilenames: 123},
         '.includedFilenames should be array'
       ),
       defineInvalidManifest(
-        {files: [], includedFilenames: [123]},
+        {includedFilenames: [123]},
         '.includedFilenames[0] should be string'
       ),
       defineInvalidManifest(
-        {files: [], excludedFilenames: 123},
+        {excludedFilenames: 123},
         '.excludedFilenames should be array'
       ),
       defineInvalidManifest(
-        {files: [], excludedFilenames: [123]},
+        {excludedFilenames: [123]},
         '.excludedFilenames[0] should be string'
       ),
       defineInvalidManifest(
-        {files: [], unknown: 123},
+        {unknown: 123},
         ' should NOT have additional properties'
       ),
       defineInvalidFile(123, ' should be object'),

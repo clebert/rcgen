@@ -72,9 +72,7 @@ npm install -D @rcgen/cli @rcgen/core @rcgen/filetypes @rcgen/patchers
 4. Create a `rcgen.js` manifest file with the following contents:
 
 ```js
-exports.default = {
-  files: []
-};
+exports.default = {};
 ```
 
 5. Define the `prettier.config.js` file within the manifest file:

@@ -64,8 +64,7 @@ export class TestEnv {
     this.absoluteDirname = path.dirname(this.absoluteFilename);
 
     this.loadedManifest = {
-      absoluteManifestFilename: this.absoluteManifestFilename,
-      files: []
+      absoluteManifestFilename: this.absoluteManifestFilename
     };
 
     const filetype = {
