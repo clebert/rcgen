@@ -2,14 +2,14 @@ import {composeEnhancers} from '..';
 
 describe('composeEnhancers', () => {
   it('performs a left-to-right function composition', () => {
-    expect(composeEnhancers<string[]>()(['foo'])).toEqual(['foo']);
+    expect(composeEnhancers<string[]>([])(['foo'])).toEqual(['foo']);
 
     expect(
-      composeEnhancers<string[]>(
+      composeEnhancers<string[]>([
         currentValue => [...currentValue, 'bar'],
         currentValue => [...currentValue, 'baz'],
         currentValue => [...currentValue, 'qux']
-      )(['foo'])
+      ])(['foo'])
     ).toEqual(['foo', 'bar', 'baz', 'qux']);
   });
 });
