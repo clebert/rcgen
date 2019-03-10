@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/clebert/rcgen/compare/v0.3.0...v0.4.0) (2019-03-10)
+
+
+### Features
+
+* **core:** add convenience functions for enhancing a manifest ([#7](https://github.com/clebert/rcgen/issues/7)) ([4f65905](https://github.com/clebert/rcgen/commit/4f65905))
+
+
+
+
+
 # [0.3.0](https://github.com/clebert/rcgen/compare/v0.2.0...v0.3.0) (2019-03-09)
 
 **Note:** Version bump only for package @rcgen/filetypes
