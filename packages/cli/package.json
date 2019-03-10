@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The CLI of rcgen.",
   "homepage": "https://rcgen.io",
   "bugs": {
@@ -23,7 +23,7 @@
     "rcgen": "bin/run"
   },
   "dependencies": {
-    "@rcgen/core": "^0.4.0",
+    "@rcgen/core": "^0.5.0",
     "meow": "^5.0.0"
   },
   "devDependencies": {

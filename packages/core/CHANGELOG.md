@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/clebert/rcgen/compare/v0.4.0...v0.5.0) (2019-03-10)
+
+
+### Features
+
+* **core:** pass other filenames as argument to a patcher ([#8](https://github.com/clebert/rcgen/issues/8)) ([69cbec5](https://github.com/clebert/rcgen/commit/69cbec5))
+
+
+
+
+
 # [0.4.0](https://github.com/clebert/rcgen/compare/v0.3.0...v0.4.0) (2019-03-10)
 
 
