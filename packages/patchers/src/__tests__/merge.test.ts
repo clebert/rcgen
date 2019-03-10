@@ -9,7 +9,8 @@ describe('merge', () => {
         absoluteManifestFilename,
         filename: 'a',
         generatedContent: {foo: {bar: [123]}},
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual({foo: {bar: [123, 456]}, baz: 'qux'});
 
@@ -18,7 +19,8 @@ describe('merge', () => {
         absoluteManifestFilename,
         filename: 'a',
         generatedContent: [123],
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual([123, 456]);
   });
@@ -29,7 +31,8 @@ describe('merge', () => {
         absoluteManifestFilename,
         filename: 'b',
         generatedContent: {foo: {bar: [123]}},
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual({foo: {bar: [123]}});
 
@@ -38,7 +41,8 @@ describe('merge', () => {
         absoluteManifestFilename,
         filename: 'b',
         generatedContent: [123],
-        readContent: undefined
+        readContent: undefined,
+        otherFilenames: []
       })
     ).toEqual([123]);
   });

@@ -36,6 +36,7 @@ export interface PatcherArgs<T> {
   readonly filename: string;
   readonly generatedContent: T;
   readonly readContent: T | undefined;
+  readonly otherFilenames: string[];
 }
 
 // tslint:disable-next-line: no-any

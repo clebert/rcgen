@@ -9,7 +9,7 @@ describe('patchFile', () => {
       readContentData,
       loadedManifest,
       fileWithDeserializer
-    } = new TestEnv();
+    } = new TestEnv('b');
 
     const mockPatcher1 = jest.fn(
       ({generatedContent}: PatcherArgs<string[]>) => [
@@ -26,11 +26,23 @@ describe('patchFile', () => {
     );
 
     const patchers = [mockPatcher1, mockPatcher2];
-    const {filename, initialContent} = fileWithDeserializer;
-    const loadedFile = {...fileWithDeserializer, readContentData, readContent};
+    const {initialContent} = fileWithDeserializer;
 
-    expect(patchFile({...loadedManifest, patchers}, loadedFile)).toEqual({
-      ...loadedFile,
+    const loadedFileA = {...fileWithDeserializer, filename: 'a'};
+    const loadedFileB = {...fileWithDeserializer, readContentData, readContent};
+    const loadedFileC = {...fileWithDeserializer, filename: 'c'};
+
+    expect(
+      patchFile(
+        {
+          ...loadedManifest,
+          files: [loadedFileA, loadedFileB, loadedFileC],
+          patchers
+        },
+        loadedFileB
+      )
+    ).toEqual({
+      ...loadedFileB,
       generatedContent: [...initialContent, 'baz', 'qux']
     });
 
@@ -40,9 +52,10 @@ describe('patchFile', () => {
       [
         {
           absoluteManifestFilename,
-          filename,
+          filename: 'b',
           generatedContent: initialContent,
-          readContent
+          readContent,
+          otherFilenames: ['a', 'c']
         }
       ]
     ]);
@@ -51,16 +64,17 @@ describe('patchFile', () => {
       [
         {
           absoluteManifestFilename,
-          filename,
+          filename: 'b',
           generatedContent: [...initialContent, 'baz'],
-          readContent
+          readContent,
+          otherFilenames: ['a', 'c']
         }
       ]
     ]);
   });
 
   it('throws if a patcher caused an error', () => {
-    const {loadedManifest, file} = new TestEnv();
+    const {loadedManifest, file} = new TestEnv('a');
 
     const patchers = [
       () => {
@@ -76,7 +90,7 @@ describe('patchFile', () => {
   });
 
   it('throws if the generated content of the file will become invalid', () => {
-    const {loadedManifest, file} = new TestEnv();
+    const {loadedManifest, file} = new TestEnv('a');
 
     const mockPatcher1 = jest.fn(() => 'baz');
     const mockPatcher2 = jest.fn();
@@ -95,7 +109,7 @@ describe('patchFile', () => {
 
   describe('without patchers', () => {
     it('returns the file together with its initial content instead of generated content', () => {
-      const {loadedManifest, file} = new TestEnv();
+      const {loadedManifest, file} = new TestEnv('a');
 
       expect(patchFile(loadedManifest, file)).toEqual({
         ...file,
