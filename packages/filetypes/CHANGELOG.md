@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/clebert/rcgen/compare/v0.6.0...v0.7.0) (2019-03-10)
+
+
+### Features
+
+* **all:** rename read content to existing content ([#13](https://github.com/clebert/rcgen/issues/13)) ([de4fec0](https://github.com/clebert/rcgen/commit/de4fec0))
+* **core:** add matchFile utility function ([#12](https://github.com/clebert/rcgen/issues/12)) ([88ec0b8](https://github.com/clebert/rcgen/commit/88ec0b8))
+
+
+
+
+
 # [0.6.0](https://github.com/clebert/rcgen/compare/v0.5.0...v0.6.0) (2019-03-10)
 
 **Note:** Version bump only for package @rcgen/filetypes
