@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/clebert/rcgen/compare/v0.5.0...v0.6.0) (2019-03-10)
+
+
+### Features
+
+* **core:** remove some default/variadic args ([#9](https://github.com/clebert/rcgen/issues/9)) ([367db0d](https://github.com/clebert/rcgen/commit/367db0d))
+
+
+
+
+
 # [0.5.0](https://github.com/clebert/rcgen/compare/v0.4.0...v0.5.0) (2019-03-10)
 
 
