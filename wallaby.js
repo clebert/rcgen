@@ -20,6 +20,5 @@ module.exports = wallaby => ({
   env: {type: 'node', runner: 'node'},
   setup,
   testFramework: 'jest',
-  compilers: {'**/*.ts?(x)': wallaby.compilers.babel()},
-  delays: {run: 500}
+  compilers: {'**/*.ts?(x)': wallaby.compilers.babel()}
 });
