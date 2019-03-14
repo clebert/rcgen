@@ -1,10 +1,9 @@
 import {
-  Enhancer,
   File,
   Globs,
-  Manifest,
-  enhanceManifest,
-  matchFile
+  ManifestCreator,
+  matchFile,
+  mergeManifest
 } from '@rcgen/core';
 import {createLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
@@ -21,14 +20,14 @@ export const gitIgnoreFile: File<string[]> = {
 
 export const gitFiles = [gitIgnoreFile];
 
-export function git(): Enhancer<Manifest> {
-  return enhanceManifest({files: gitFiles});
+export function git(): ManifestCreator {
+  return mergeManifest({files: gitFiles});
 }
 
-export function gitIgnore(options: GitIgnoreOptions = {}): Enhancer<Manifest> {
+export function gitIgnore(options: GitIgnoreOptions = {}): ManifestCreator {
   const {additionalFilenames = []} = options;
 
-  return enhanceManifest({
+  return mergeManifest({
     patchers: [
       merge(gitIgnoreFile.filename, ({otherFilenames}) =>
         [...otherFilenames, ...additionalFilenames].filter(matchFile(options))

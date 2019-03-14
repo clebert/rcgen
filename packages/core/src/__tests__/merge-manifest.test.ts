@@ -1,16 +1,31 @@
 import {TestEnv} from './test-env';
 
-import {enhanceManifest} from '..';
+import {mergeManifest} from '..';
 
-describe('enhanceManifest', () => {
-  it('enhances the manifest', () => {
-    expect(enhanceManifest({})({})).toEqual({});
+describe('mergeManifest', () => {
+  it('merges the manifest', () => {
+    expect(mergeManifest({})()).toEqual({});
+    expect(mergeManifest({})({})).toEqual({});
 
     const {file: fileA} = new TestEnv('a');
     const patcherA = jest.fn();
 
     expect(
-      enhanceManifest({
+      mergeManifest({
+        files: [fileA],
+        patchers: [patcherA],
+        includedFilenamePatterns: ['a'],
+        excludedFilenamePatterns: ['a']
+      })()
+    ).toEqual({
+      files: [fileA],
+      patchers: [patcherA],
+      includedFilenamePatterns: ['a'],
+      excludedFilenamePatterns: ['a']
+    });
+
+    expect(
+      mergeManifest({
         files: [fileA],
         patchers: [patcherA],
         includedFilenamePatterns: ['a'],
@@ -24,7 +39,7 @@ describe('enhanceManifest', () => {
     });
 
     expect(
-      enhanceManifest({})({
+      mergeManifest({})({
         files: [fileA],
         patchers: [patcherA],
         includedFilenamePatterns: ['a'],
@@ -41,7 +56,7 @@ describe('enhanceManifest', () => {
     const patcherB = jest.fn();
 
     expect(
-      enhanceManifest({
+      mergeManifest({
         files: [fileB],
         patchers: [patcherB],
         includedFilenamePatterns: ['b'],
