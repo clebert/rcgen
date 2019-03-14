@@ -31,7 +31,7 @@ describe('createLinesFiletype', () => {
 
       expect(
         serializer({absoluteManifestFilename, filename, content: []})
-      ).toEqual(Buffer.from('\n'));
+      ).toEqual(Buffer.from(''));
 
       expect(
         serializer({
@@ -47,7 +47,7 @@ describe('createLinesFiletype', () => {
 
       expect(
         serializer({absoluteManifestFilename, filename, content: []})
-      ).toEqual(Buffer.from('\r'));
+      ).toEqual(Buffer.from(''));
 
       expect(
         serializer({
@@ -62,6 +62,14 @@ describe('createLinesFiletype', () => {
   describe('#deserializer', () => {
     it('uses LF as newline', () => {
       const {deserializer} = createLinesFiletype();
+
+      expect(
+        deserializer!({
+          absoluteManifestFilename,
+          filename,
+          contentData: Buffer.from('')
+        })
+      ).toEqual([]);
 
       expect(
         deserializer!({
