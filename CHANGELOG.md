@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/clebert/rcgen/compare/v0.8.0...v0.9.0) (2019-03-14)
+
+
+### Bug Fixes
+
+* **configs:** fix type of gitIgnoreFile ([#21](https://github.com/clebert/rcgen/issues/21)) ([c739b33](https://github.com/clebert/rcgen/commit/c739b33))
+* **filetypes:** do not add newline to empty content ([#22](https://github.com/clebert/rcgen/issues/22)) ([1168177](https://github.com/clebert/rcgen/commit/1168177))
+
+
+### Features
+
+* **configs:** create configs package ([#19](https://github.com/clebert/rcgen/issues/19)) ([5186ea8](https://github.com/clebert/rcgen/commit/5186ea8))
+
+
+
+
+
 # [0.8.0](https://github.com/clebert/rcgen/compare/v0.7.0...v0.8.0) (2019-03-10)
 
 
