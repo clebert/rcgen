@@ -1,0 +1,29 @@
+{
+  "name": "@rcgen/configs",
+  "version": "0.0.0",
+  "description": "A collection of configuration providers for use with rcgen.",
+  "homepage": "https://rcgen.io",
+  "bugs": {
+    "url": "https://github.com/clebert/rcgen/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clebert/rcgen.git"
+  },
+  "license": "MIT",
+  "author": "Clemens Akens <clebert@me.com>",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "@rcgen/core": "^0.8.0",
+    "@rcgen/filetypes": "^0.8.0",
+    "@rcgen/patchers": "^0.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
