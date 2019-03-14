@@ -67,6 +67,10 @@ Examples
 
 The core functionality of **rcgen**.
 
+### [@rcgen/configs][api-configs]
+
+A collection of configuration providers for use with **rcgen**.
+
 ### [@rcgen/filetypes][api-filetypes]
 
 A collection of common file types for use with **rcgen**.
@@ -97,6 +101,7 @@ yarn install && yarn test
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
+[api-configs]: https://rcgen.io/@rcgen/configs/
 [api-core]: https://rcgen.io/@rcgen/core/
 [api-filetypes]: https://rcgen.io/@rcgen/filetypes/
 [api-patchers]: https://rcgen.io/@rcgen/patchers/
