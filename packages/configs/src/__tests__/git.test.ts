@@ -2,16 +2,16 @@ import {Manifest, composeManifest, generateContent} from '@rcgen/core';
 import {git, gitIgnore, gitIgnoreFile} from '..';
 
 describe('git', () => {
-  it('adds a ".gitignore" file to the enhanced manifest', () => {
-    const enhancedManifest = composeManifest(git())({});
+  it('adds a ".gitignore" file to the manifest', () => {
+    const manifest = composeManifest(git())({});
 
-    expect(enhancedManifest).toEqual({files: [gitIgnoreFile]});
-    expect(enhancedManifest.files![0]).toBe(gitIgnoreFile);
+    expect(manifest).toEqual({files: [gitIgnoreFile]});
+    expect(manifest.files![0]).toBe(gitIgnoreFile);
   });
 });
 
 describe('gitIgnore', () => {
-  it('adds a patcher to the enhanced manifest', () => {
+  it('adds a patcher to the manifest', () => {
     expect(composeManifest(gitIgnore())({})).toEqual({
       patchers: [expect.any(Function)]
     });
