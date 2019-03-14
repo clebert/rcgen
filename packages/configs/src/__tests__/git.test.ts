@@ -1,18 +1,18 @@
-import {Manifest, composeEnhancers, generateContent} from '@rcgen/core';
+import {Manifest, composeManifest, generateContent} from '@rcgen/core';
 import {git, gitIgnore, gitIgnoreFile} from '..';
 
 describe('git', () => {
-  it('adds a ".gitignore" file to the enhanced manifest', () => {
-    const enhancedManifest = composeEnhancers([git()])({});
+  it('adds a ".gitignore" file to the manifest', () => {
+    const manifest = composeManifest(git())({});
 
-    expect(enhancedManifest).toEqual({files: [gitIgnoreFile]});
-    expect(enhancedManifest.files![0]).toBe(gitIgnoreFile);
+    expect(manifest).toEqual({files: [gitIgnoreFile]});
+    expect(manifest.files![0]).toBe(gitIgnoreFile);
   });
 });
 
 describe('gitIgnore', () => {
-  it('adds a patcher to the enhanced manifest', () => {
-    expect(composeEnhancers([gitIgnore()])({})).toEqual({
+  it('adds a patcher to the manifest', () => {
+    expect(composeManifest(gitIgnore())({})).toEqual({
       patchers: [expect.any(Function)]
     });
   });
@@ -28,7 +28,7 @@ describe('gitIgnoreFile', () => {
   }
 
   it('generates empty content', () => {
-    manifest = composeEnhancers([git(), gitIgnore()])({});
+    manifest = composeManifest(git(), gitIgnore())({});
 
     expect(generateGitIgnoreFileContent()).toEqual([]);
   });
@@ -36,14 +36,14 @@ describe('gitIgnoreFile', () => {
   it('generates non-empty content', () => {
     const filetype = {contentSchema: {}, serializer: jest.fn()};
 
-    manifest = composeEnhancers([
+    manifest = composeManifest(
       git(),
       gitIgnore({
         additionalFilenames: ['b', 'b/c', 'c'],
         includedFilenamePatterns: ['*'],
         excludedFilenamePatterns: ['b']
       })
-    ])({
+    )({
       files: [
         {filename: 'a', filetype, initialContent: {}},
         {filename: 'a/b', filetype, initialContent: {}}

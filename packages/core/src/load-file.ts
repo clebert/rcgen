@@ -1,6 +1,7 @@
 import {existsSync, readFileSync} from 'fs';
 import path from 'path';
-import {File, LoadedManifest} from './load-manifest';
+import {File} from './compose-manifest';
+import {LoadedManifest} from './load-manifest';
 import {matchFile} from './match-file';
 import {validate} from './validate';
 
