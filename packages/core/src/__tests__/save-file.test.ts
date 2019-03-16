@@ -95,7 +95,7 @@ describe('saveFile', () => {
       saveFile({absoluteManifestFilename}, patchedFile)
     ).toThrowError(
       new Error(
-        "File 'a' cannot be saved because its generated content data differs from its existing content data."
+        "File 'a' cannot be saved because its generated content data differs from its existing content data, by setting the --force flag the file can be saved anyway."
       )
     );
   });

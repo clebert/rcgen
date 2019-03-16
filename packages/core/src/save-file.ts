@@ -75,7 +75,7 @@ export function saveFile<T = unknown>(
     if (!force) {
       throw createFileCannotBeSavedError(
         filename,
-        'because its generated content data differs from its existing content data'
+        'because its generated content data differs from its existing content data, by setting the --force flag the file can be saved anyway'
       );
     }
   }
