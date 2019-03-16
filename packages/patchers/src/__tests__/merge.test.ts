@@ -25,7 +25,11 @@ describe('merge', () => {
   });
 
   it('does not call the patcher', () => {
-    expect(merge('a', patcher)(createPatcherArgs('b', {}))).toEqual({});
+    const generatedContent = ['foo'];
+
+    expect(merge('a', patcher)(createPatcherArgs('b', generatedContent))).toBe(
+      generatedContent
+    );
 
     expect(patcher.mock.calls).toEqual([]);
   });
