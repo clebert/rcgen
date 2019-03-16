@@ -44,10 +44,7 @@ describe('gitIgnoreFile', () => {
         excludedFilenamePatterns: ['b']
       })
     )({
-      files: [
-        {filename: 'a', filetype, initialContent: {}},
-        {filename: 'a/b', filetype, initialContent: {}}
-      ]
+      files: [{filename: 'a', filetype}, {filename: 'a/b', filetype}]
     });
 
     expect(generateGitIgnoreFileContent()).toEqual(['a', 'c']);

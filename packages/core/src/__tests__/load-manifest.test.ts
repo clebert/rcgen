@@ -1,57 +1,62 @@
-import {TestEnv} from './test-env';
+import {filetype, filetypeWithDeserializer, mockNodeRequire} from './test-env';
 
-import {Manifest, loadManifest} from '..';
+import {loadManifest} from '..';
 
 export interface InvalidDefinition {
-  readonly manifestModule: unknown;
+  readonly invalidManifestModule: unknown;
   readonly validationMessage: string;
 }
 
 function defineInvalidManifestModule(
-  manifestModule: unknown,
+  invalidManifestModule: unknown,
   predicate: string
 ): InvalidDefinition {
-  return {manifestModule, validationMessage: `The manifestModule${predicate}.`};
+  return {
+    invalidManifestModule,
+    validationMessage: `The manifestModule${predicate}.`
+  };
 }
 
 function defineInvalidManifest(
-  manifest: unknown,
+  invalidManifest: unknown,
   predicate: string
 ): InvalidDefinition {
   return defineInvalidManifestModule(
-    {default: manifest},
+    {default: invalidManifest},
     `.default${predicate}`
   );
 }
 
 function defineInvalidFile(
-  file: unknown,
+  invalidFile: unknown,
   predicate: string
 ): InvalidDefinition {
-  return defineInvalidManifest({files: [file]}, `.files[0]${predicate}`);
+  return defineInvalidManifest({files: [invalidFile]}, `.files[0]${predicate}`);
 }
 
 function defineInvalidFiletype(
-  filetype: unknown,
+  invalidFiletype: unknown,
   predicate: string
 ): InvalidDefinition {
   return defineInvalidFile(
-    {filename: 'a', filetype, initialContent: ['foo']},
+    {filename: 'a', filetype: invalidFiletype},
     `.filetype${predicate}`
   );
 }
 
 describe('loadManifest', () => {
-  it('loads the manifest', () => {
-    const {mockNodeRequire, file, fileWithDeserializer} = new TestEnv('a');
+  const absoluteManifestFilename = '/path/to/m';
 
-    const manifests: Manifest[] = [
+  it('loads the manifest', () => {
+    const file = {filename: 'a', filetype};
+
+    const manifests = [
       {},
       {files: []},
       {files: [file]},
       {files: [{...file, conflictingFilenames: []}]},
       {files: [{...file, conflictingFilenames: ['b']}]},
-      {files: [fileWithDeserializer]},
+      {files: [{...file, filetype: filetypeWithDeserializer}]},
       {patchers: []},
       {patchers: [jest.fn()]},
       {includedFilenamePatterns: []},
@@ -69,9 +74,9 @@ describe('loadManifest', () => {
     for (const manifest of manifests) {
       mockNodeRequire.mockReturnValue({default: manifest});
 
-      expect(loadManifest('/path/to/m', mockNodeRequire)).toEqual({
+      expect(loadManifest(absoluteManifestFilename, mockNodeRequire)).toEqual({
         ...manifest,
-        absoluteManifestFilename: '/path/to/m'
+        absoluteManifestFilename
       });
     }
   });
@@ -85,13 +90,13 @@ describe('loadManifest', () => {
   });
 
   it('throws if the module of the manifest could not be required', () => {
-    const {mockNodeRequire} = new TestEnv('a');
-
     mockNodeRequire.mockImplementation(() => {
       throw new Error('NodeRequireError');
     });
 
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+    expect(() =>
+      loadManifest(absoluteManifestFilename, mockNodeRequire)
+    ).toThrowError(
       new Error(
         "Manifest '/path/to/m' cannot be loaded because its module could not be required. Details: NodeRequireError"
       )
@@ -99,8 +104,7 @@ describe('loadManifest', () => {
   });
 
   it('throws if the module of the manifest does not have a valid default export', () => {
-    const {mockNodeRequire, file} = new TestEnv('a');
-    const {filetype} = file;
+    const file = {filename: 'a', filetype};
 
     const invalidDefinitions = [
       defineInvalidManifestModule(123, ' should be object'),
@@ -141,19 +145,15 @@ describe('loadManifest', () => {
       ),
       defineInvalidFile(123, ' should be object'),
       defineInvalidFile(
-        {filetype, initialContent: ['foo']},
+        {filetype},
         " should have required property 'filename'"
       ),
       defineInvalidFile(
-        {filename: 'a', initialContent: ['foo']},
+        {filename: 'a'},
         " should have required property 'filetype'"
       ),
       defineInvalidFile(
-        {filename: 'a', filetype},
-        " should have required property 'initialContent'"
-      ),
-      defineInvalidFile(
-        {filename: 123, filetype, initialContent: ['foo']},
+        {filename: 123, filetype},
         '.filename should be string'
       ),
       defineInvalidFile(
@@ -195,10 +195,15 @@ describe('loadManifest', () => {
       )
     ];
 
-    for (const {manifestModule, validationMessage} of invalidDefinitions) {
-      mockNodeRequire.mockReturnValue(manifestModule);
+    for (const {
+      invalidManifestModule,
+      validationMessage
+    } of invalidDefinitions) {
+      mockNodeRequire.mockReturnValue(invalidManifestModule);
 
-      expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+      expect(() =>
+        loadManifest(absoluteManifestFilename, mockNodeRequire)
+      ).toThrowError(
         new Error(
           `Manifest '/path/to/m' cannot be loaded because its module does not have a valid default export. Details: ${validationMessage}`
         )
@@ -207,11 +212,14 @@ describe('loadManifest', () => {
   });
 
   it('throws if at least two of the files in the manifest have the same filename', () => {
-    const {mockNodeRequire, file} = new TestEnv('a');
+    const file = {filename: 'a', filetype};
+    const manifest = {files: [file, file]};
 
-    mockNodeRequire.mockReturnValue({default: {files: [file, file]}});
+    mockNodeRequire.mockReturnValue({default: manifest});
 
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+    expect(() =>
+      loadManifest(absoluteManifestFilename, mockNodeRequire)
+    ).toThrowError(
       new Error(
         "Manifest '/path/to/m' cannot be loaded because at least two of its files have the same filename 'a'."
       )
@@ -219,13 +227,14 @@ describe('loadManifest', () => {
   });
 
   it('throws if the filename of a file in the manifest is not relative', () => {
-    const {mockNodeRequire, file} = new TestEnv('a');
+    const file = {filename: '/a', filetype};
+    const manifest = {files: [file]};
 
-    mockNodeRequire.mockReturnValue({
-      default: {files: [{...file, filename: '/a'}]}
-    });
+    mockNodeRequire.mockReturnValue({default: manifest});
 
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+    expect(() =>
+      loadManifest(absoluteManifestFilename, mockNodeRequire)
+    ).toThrowError(
       new Error(
         "Manifest '/path/to/m' cannot be loaded because the filename of its file '/a' is not relative."
       )
@@ -233,13 +242,14 @@ describe('loadManifest', () => {
   });
 
   it('throws if a file in the manifest conflicts with itself', () => {
-    const {mockNodeRequire, file} = new TestEnv('b');
+    const file = {filename: 'b', filetype, conflictingFilenames: ['a', 'b']};
+    const manifest = {files: [file]};
 
-    mockNodeRequire.mockReturnValue({
-      default: {files: [{...file, conflictingFilenames: ['a', 'b']}]}
-    });
+    mockNodeRequire.mockReturnValue({default: manifest});
 
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+    expect(() =>
+      loadManifest(absoluteManifestFilename, mockNodeRequire)
+    ).toThrowError(
       new Error(
         "Manifest '/path/to/m' cannot be loaded because its file 'b' conflicts with itself."
       )
@@ -247,33 +257,18 @@ describe('loadManifest', () => {
   });
 
   it('throws if a file in the manifest conflicts with another file in the manifest', () => {
-    const {mockNodeRequire, file: fileA} = new TestEnv('a');
-    const fileB = {...fileA, filename: 'b', conflictingFilenames: ['a']};
+    const fileA = {filename: 'a', filetype};
+    const fileB = {filename: 'b', filetype, conflictingFilenames: ['a']};
 
-    mockNodeRequire.mockReturnValue({default: {files: [fileA, fileB]}});
+    const manifest = {files: [fileA, fileB]};
 
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
+    mockNodeRequire.mockReturnValue({default: manifest});
+
+    expect(() =>
+      loadManifest(absoluteManifestFilename, mockNodeRequire)
+    ).toThrowError(
       new Error(
         "Manifest '/path/to/m' cannot be loaded because its file 'a' conflicts with its other file 'b'."
-      )
-    );
-  });
-
-  it('throws if the initial content of a file in the manifest is invalid', () => {
-    const {mockNodeRequire, file} = new TestEnv('a');
-    const {filetype} = file;
-
-    mockNodeRequire.mockReturnValue({
-      default: {
-        files: [
-          {...file, filetype: {...filetype, contentSchema: {type: 'string'}}}
-        ]
-      }
-    });
-
-    expect(() => loadManifest('/path/to/m', mockNodeRequire)).toThrowError(
-      new Error(
-        "Manifest '/path/to/m' cannot be loaded because the initial content of its file 'a' is invalid. Details: The initialContent should be string."
       )
     );
   });
