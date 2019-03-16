@@ -8,28 +8,26 @@ import {
 import {createTextLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
-export interface GitIgnoreOptions extends Globs {
-  readonly additionalFilenames?: string[];
-}
-
-export const gitIgnoreFile: File<string[]> = {
+const gitignoreFile: File<string[]> = {
   filename: '.gitignore',
   filetype: createTextLinesFiletype()
 };
 
-export const gitFiles = [gitIgnoreFile];
-
 export function git(): ManifestCreator {
-  return mergeManifest({files: gitFiles});
+  return mergeManifest({files: [gitignoreFile]});
 }
 
-export function gitIgnore(options: GitIgnoreOptions = {}): ManifestCreator {
-  const {additionalFilenames = []} = options;
+export function gitIgnoreFiles(...filenames: string[]): ManifestCreator {
+  return mergeManifest({
+    patchers: [merge<string[]>(gitignoreFile.filename, () => filenames)]
+  });
+}
 
+export function gitIgnoreIntrinsicFiles(globs: Globs = {}): ManifestCreator {
   return mergeManifest({
     patchers: [
-      merge(gitIgnoreFile.filename, ({otherFilenames}) =>
-        [...otherFilenames, ...additionalFilenames].filter(matchFile(options))
+      merge<string[]>(gitignoreFile.filename, ({otherFilenames}) =>
+        otherFilenames.filter(matchFile(globs))
       )
     ]
   });
