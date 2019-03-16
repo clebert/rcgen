@@ -6,8 +6,8 @@ import {matchFile} from './match-file';
 import {validate} from './validate';
 
 export interface LoadedFile<T> extends File<T> {
-  readonly exisitingContentData?: Buffer;
-  readonly exisitingContent?: T;
+  readonly existingContentData?: Buffer;
+  readonly existingContent?: T;
 }
 
 function createFileCannotBeLoadedError(
@@ -25,9 +25,9 @@ function createFileCannotBeLoadedError(
 /**
  * @throws if the file is undefined
  * @throws if the file could not be accessed
- * @throws if the exisiting content data of the file could not be read
- * @throws if the exisiting content of the file could not be deserialized
- * @throws if the exisiting content of the file is invalid
+ * @throws if the existing content data of the file could not be read
+ * @throws if the existing content of the file could not be deserialized
+ * @throws if the existing content of the file is invalid
  */
 export function loadFile<T = unknown>(
   loadedManifest: LoadedManifest,
@@ -62,14 +62,14 @@ export function loadFile<T = unknown>(
     );
   }
 
-  let exisitingContentData: Buffer;
+  let existingContentData: Buffer;
 
   try {
-    exisitingContentData = readFileSync(absoluteFilename);
+    existingContentData = readFileSync(absoluteFilename);
   } catch (error) {
     throw createFileCannotBeLoadedError(
       filename,
-      'because its exisiting content data could not be read',
+      'because its existing content data could not be read',
       error.message
     );
   }
@@ -79,38 +79,38 @@ export function loadFile<T = unknown>(
   } = file;
 
   if (!deserializer) {
-    return {...file, exisitingContentData};
+    return {...file, existingContentData};
   }
 
-  let exisitingContent: T;
+  let existingContent: T;
 
   try {
-    exisitingContent = deserializer({
+    existingContent = deserializer({
       absoluteManifestFilename,
       filename,
-      contentData: exisitingContentData
+      contentData: existingContentData
     });
   } catch (error) {
     throw createFileCannotBeLoadedError(
       filename,
-      'because its exisiting content could not be deserialized',
+      'because its existing content could not be deserialized',
       error.message
     );
   }
 
-  const exisitingContentResult = validate<T>(
-    exisitingContent,
-    'exisitingContent',
+  const existingContentResult = validate<T>(
+    existingContent,
+    'existingContent',
     contentSchema
   );
 
-  if (!exisitingContentResult.isValid(exisitingContent)) {
+  if (!existingContentResult.isValid(existingContent)) {
     throw createFileCannotBeLoadedError(
       filename,
-      'because its exisiting content is invalid',
-      exisitingContentResult.validationMessage
+      'because its existing content is invalid',
+      existingContentResult.validationMessage
     );
   }
 
-  return {...file, exisitingContentData, exisitingContent};
+  return {...file, existingContentData, existingContent};
 }

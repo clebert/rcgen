@@ -22,28 +22,27 @@ export interface Filetype<T> {
   readonly deserializer?: Deserializer<T>;
 }
 
-// tslint:disable-next-line: no-any
-export interface File<T = any> {
+export interface File<T> {
   readonly filename: string;
   readonly filetype: Filetype<T>;
-  readonly initialContent: T;
   readonly conflictingFilenames?: string[];
 }
 
 export interface PatcherArgs<T> {
   readonly absoluteManifestFilename: string;
   readonly filename: string;
-  readonly generatedContent: T;
-  readonly exisitingContent: T | undefined;
+  readonly generatedContent: T | undefined;
+  readonly existingContent: T | undefined;
   readonly otherFilenames: string[];
 }
 
-// tslint:disable-next-line: no-any
-export type Patcher<T = any> = (args: PatcherArgs<T>) => T;
+export type Patcher<T> = (args: PatcherArgs<T>) => T | undefined;
 
 export interface Manifest extends Globs {
-  readonly files?: File[];
-  readonly patchers?: Patcher[];
+  // tslint:disable-next-line: no-any
+  readonly files?: File<any>[];
+  // tslint:disable-next-line: no-any
+  readonly patchers?: Patcher<any>[];
 }
 
 export type ManifestCreator = (initialManifest?: Manifest) => Manifest;

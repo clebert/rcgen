@@ -2,8 +2,18 @@ import {loadFile} from './load-file';
 import {loadManifest} from './load-manifest';
 import {patchFile} from './patch-file';
 
+function createContentCannotBeGeneratedError(
+  filename: string,
+  cause: string
+): Error {
+  return new Error(
+    `The content of file '${filename}' cannot be generated ${cause}.`
+  );
+}
+
 /**
  * @throws if the file is not included
+ * @throws if none of the patchers matches the file
  */
 export function generateContent(
   absoluteManifestFilename: string,
@@ -14,10 +24,20 @@ export function generateContent(
   const loadedFile = loadFile(loadedManifest, filename);
 
   if (!loadedFile) {
-    throw new Error(
-      `The content of file '${filename}' cannot be generated because the file is not included.`
+    throw createContentCannotBeGeneratedError(
+      filename,
+      'because the file is not included'
     );
   }
 
-  return patchFile(loadedManifest, loadedFile).generatedContent;
+  const patchedFile = patchFile(loadedManifest, loadedFile);
+
+  if (!patchedFile) {
+    throw createContentCannotBeGeneratedError(
+      filename,
+      'because none of the patchers matches the file'
+    );
+  }
+
+  return patchedFile.generatedContent;
 }

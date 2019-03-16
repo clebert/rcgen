@@ -18,34 +18,28 @@ function createFileCannotBePatchedError(
 
 /**
  * @throws if a patcher caused an error
- * @throws if the newly generated content of the file is invalid
+ * @throws if a patcher generates invalid content
  */
 export function patchFile<T = unknown>(
   loadedManifest: LoadedManifest,
   loadedFile: LoadedFile<T>
-): PatchedFile<T> {
+): PatchedFile<T> | null {
   const {absoluteManifestFilename, files = [], patchers = []} = loadedManifest;
+  const {filename, filetype, existingContent} = loadedFile;
+  const otherFiles = files.filter(file => file.filename !== filename);
+  const otherFilenames = otherFiles.map(otherFile => otherFile.filename);
 
-  const {
-    filename,
-    filetype: {contentSchema},
-    initialContent,
-    exisitingContent
-  } = loadedFile;
-
-  const otherFilenames = files
-    .filter(file => file.filename !== filename)
-    .map(file => file.filename);
-
-  let generatedContent = initialContent;
+  let generatedContent: T | undefined;
 
   for (const patcher of patchers) {
+    let newlyGeneratedContent: T | undefined;
+
     try {
-      generatedContent = patcher({
+      newlyGeneratedContent = patcher({
         absoluteManifestFilename,
         filename,
         generatedContent,
-        exisitingContent,
+        existingContent,
         otherFilenames
       });
     } catch (error) {
@@ -56,20 +50,28 @@ export function patchFile<T = unknown>(
       );
     }
 
+    if (newlyGeneratedContent === undefined) {
+      continue;
+    }
+
+    generatedContent = newlyGeneratedContent;
+
     const generatedContentResult = validate<T>(
       generatedContent,
       'generatedContent',
-      contentSchema
+      filetype.contentSchema
     );
 
     if (!generatedContentResult.isValid(generatedContent)) {
       throw createFileCannotBePatchedError(
         filename,
-        'because its newly generated content is invalid',
+        'because a patcher generates invalid content',
         generatedContentResult.validationMessage
       );
     }
   }
 
-  return {...loadedFile, generatedContent};
+  return generatedContent !== undefined
+    ? {...loadedFile, generatedContent}
+    : null;
 }

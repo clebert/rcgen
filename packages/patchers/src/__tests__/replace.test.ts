@@ -17,7 +17,7 @@ describe('replace', () => {
   });
 
   it('does not call the patcher', () => {
-    expect(replace('a', patcher)(createPatcherArgs('b', 'foo'))).toEqual('foo');
+    expect(replace('a', patcher)(createPatcherArgs('b', 'foo'))).toBe('foo');
 
     expect(patcher.mock.calls).toEqual([]);
   });

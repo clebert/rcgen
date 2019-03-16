@@ -34,7 +34,7 @@ export function saveFile<T = unknown>(
     filename,
     filetype: {serializer},
     conflictingFilenames,
-    exisitingContentData,
+    existingContentData,
     generatedContent
   } = patchedFile;
 
@@ -67,8 +67,8 @@ export function saveFile<T = unknown>(
     );
   }
 
-  if (exisitingContentData) {
-    if (generatedContentData.compare(exisitingContentData) === 0) {
+  if (existingContentData) {
+    if (generatedContentData.compare(existingContentData) === 0) {
       return false;
     }
 

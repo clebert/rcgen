@@ -1,74 +1,66 @@
-import {TestEnv} from './test-env';
+import {
+  filetype,
+  mockExistsSync,
+  mockMkdirpSync,
+  mockSerializer,
+  mockWriteFileSync,
+  serializeJson
+} from './test-env';
 
-import path from 'path';
 import {saveFile} from '..';
 
 describe('saveFile', () => {
+  const absoluteManifestFilename = '/path/to/m';
+  const generatedContent = 'foo';
+  const generatedContentData = serializeJson(generatedContent);
+
   it('writes the generated content data to the file', () => {
-    const {
-      mockSerializer,
-      absoluteFilename,
-      absoluteDirname,
-      loadedManifest,
-      file
-    } = new TestEnv('a/b');
+    const patchedFile = {filename: 'a/b', filetype, generatedContent};
 
-    const generatedContent = ['baz'];
-    const patchedFile = {...file, generatedContent};
-
-    expect(saveFile(loadedManifest, patchedFile)).toBe(true);
-
-    const {absoluteManifestFilename} = loadedManifest;
+    expect(saveFile({absoluteManifestFilename}, patchedFile)).toBe(true);
 
     expect(mockSerializer.mock.calls).toEqual([
       [{absoluteManifestFilename, filename: 'a/b', content: generatedContent}]
     ]);
 
-    expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([[absoluteDirname]]);
+    expect(mockMkdirpSync.mock.calls).toEqual([['/path/to/a']]);
 
-    expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([
-      [absoluteFilename, TestEnv.serializeJson(generatedContent)]
+    expect(mockWriteFileSync.mock.calls).toEqual([
+      ['/path/to/a/b', generatedContentData]
     ]);
   });
 
   it('does not attempt to write the generated content data to the file if it matches the existing content data of the file', () => {
-    const {
-      mockSerializer,
-      exisitingContent,
-      exisitingContentData,
-      loadedManifest,
-      file
-    } = new TestEnv('a');
+    const patchedFile = {
+      filename: 'a',
+      filetype,
+      existingContentData: generatedContentData,
+      generatedContent
+    };
 
-    const generatedContent = exisitingContent;
-    const patchedFile = {...file, exisitingContentData, generatedContent};
-
-    expect(saveFile(loadedManifest, patchedFile)).toBe(false);
-
-    const {absoluteManifestFilename} = loadedManifest;
+    expect(saveFile({absoluteManifestFilename}, patchedFile)).toBe(false);
 
     expect(mockSerializer.mock.calls).toEqual([
       [{absoluteManifestFilename, filename: 'a', content: generatedContent}]
     ]);
 
-    expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([]);
-    expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([]);
+    expect(mockMkdirpSync.mock.calls).toEqual([]);
+    expect(mockWriteFileSync.mock.calls).toEqual([]);
   });
 
   it('throws if the file conflicts with an existing file', () => {
-    const {absoluteRootDirname, loadedManifest, file} = new TestEnv('a');
-
-    TestEnv.mockExistsSync.mockImplementation(
-      filename => filename === path.join(absoluteRootDirname, 'c')
-    );
+    mockExistsSync.mockImplementation(filename => filename === '/path/to/c');
 
     const patchedFile = {
-      ...file,
+      filename: 'a',
+      filetype,
       conflictingFilenames: ['b', 'c'],
-      generatedContent: ['baz']
+      generatedContent
     };
 
-    expect(() => saveFile(loadedManifest, patchedFile)).toThrowError(
+    expect(() =>
+      saveFile({absoluteManifestFilename}, patchedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be saved because it conflicts with the existing file 'c'."
       )
@@ -76,15 +68,15 @@ describe('saveFile', () => {
   });
 
   it('throws if the generated content data of the file could not be serialized', () => {
-    const {mockSerializer, loadedManifest, file} = new TestEnv('a');
+    const patchedFile = {filename: 'a', filetype, generatedContent};
 
     mockSerializer.mockImplementation(() => {
       throw new Error('SerializerError');
     });
 
-    const patchedFile = {...file, generatedContent: ['baz']};
-
-    expect(() => saveFile(loadedManifest, patchedFile)).toThrowError(
+    expect(() =>
+      saveFile({absoluteManifestFilename}, patchedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data could not be serialized. Details: SerializerError"
       )
@@ -92,15 +84,16 @@ describe('saveFile', () => {
   });
 
   it('throws if the generated content data of the file differs from the existing content data of the file', () => {
-    const {exisitingContentData, loadedManifest, file} = new TestEnv('a');
-
     const patchedFile = {
-      ...file,
-      exisitingContentData,
-      generatedContent: ['baz']
+      filename: 'a',
+      filetype,
+      existingContentData: serializeJson('bar'),
+      generatedContent
     };
 
-    expect(() => saveFile(loadedManifest, patchedFile)).toThrowError(
+    expect(() =>
+      saveFile({absoluteManifestFilename}, patchedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data differs from its existing content data."
       )
@@ -108,15 +101,15 @@ describe('saveFile', () => {
   });
 
   it('throws if the required subdirectories of the file could not be created', () => {
-    const {loadedManifest, file} = new TestEnv('a');
-
-    TestEnv.mockMkdirpSync.mockImplementation(() => {
+    mockMkdirpSync.mockImplementation(() => {
       throw new Error('MkdirpSyncError');
     });
 
-    const patchedFile = {...file, generatedContent: ['baz']};
+    const patchedFile = {filename: 'a', filetype, generatedContent};
 
-    expect(() => saveFile(loadedManifest, patchedFile)).toThrowError(
+    expect(() =>
+      saveFile({absoluteManifestFilename}, patchedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its required subdirectories could not be created. Details: MkdirpSyncError"
       )
@@ -124,15 +117,15 @@ describe('saveFile', () => {
   });
 
   it('throws if the generated content data of the file could not be written', () => {
-    const {loadedManifest, file} = new TestEnv('a');
-
-    TestEnv.mockWriteFileSync.mockImplementation(() => {
+    mockWriteFileSync.mockImplementation(() => {
       throw new Error('WriteFileSyncError');
     });
 
-    const patchedFile = {...file, generatedContent: ['baz']};
+    const patchedFile = {filename: 'a', filetype, generatedContent};
 
-    expect(() => saveFile(loadedManifest, patchedFile)).toThrowError(
+    expect(() =>
+      saveFile({absoluteManifestFilename}, patchedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data could not be written. Details: WriteFileSyncError"
       )
@@ -141,30 +134,25 @@ describe('saveFile', () => {
 
   describe('in force mode', () => {
     it('writes the generated content data to the file although it differs from the existing content data of the file', () => {
-      const {
-        mockSerializer,
-        exisitingContentData,
-        absoluteFilename,
-        absoluteDirname,
-        loadedManifest,
-        file
-      } = new TestEnv('a/b');
+      const patchedFile = {
+        filename: 'a/b',
+        filetype,
+        existingContentData: serializeJson('bar'),
+        generatedContent
+      };
 
-      const generatedContent = ['baz'];
-      const patchedFile = {...file, exisitingContentData, generatedContent};
-
-      expect(saveFile(loadedManifest, patchedFile, true)).toBe(true);
-
-      const {absoluteManifestFilename} = loadedManifest;
+      expect(saveFile({absoluteManifestFilename}, patchedFile, true)).toBe(
+        true
+      );
 
       expect(mockSerializer.mock.calls).toEqual([
         [{absoluteManifestFilename, filename: 'a/b', content: generatedContent}]
       ]);
 
-      expect(TestEnv.mockMkdirpSync.mock.calls).toEqual([[absoluteDirname]]);
+      expect(mockMkdirpSync.mock.calls).toEqual([['/path/to/a']]);
 
-      expect(TestEnv.mockWriteFileSync.mock.calls).toEqual([
-        [absoluteFilename, TestEnv.serializeJson(generatedContent)]
+      expect(mockWriteFileSync.mock.calls).toEqual([
+        ['/path/to/a/b', generatedContentData]
       ]);
     });
   });

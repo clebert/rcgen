@@ -41,31 +41,39 @@ const {
   flags: {force, manifest: manifestFilename, verbose}
 } = (meow(helpMessage, options) as any) as Cli; // tslint:disable-line: no-any
 
+function log(message: string): void {
+  if (verbose) {
+    console.log(message);
+  }
+}
+
 try {
   const absoluteManifestFilename = path.join(process.cwd(), manifestFilename);
   const loadedManifest = loadManifest(absoluteManifestFilename);
   const {files = []} = loadedManifest;
 
-  if (files.length === 0 && verbose) {
-    console.log(`No files found in manifest '${absoluteManifestFilename}'.`);
-  }
+  if (files.length === 0) {
+    log(`No files found in manifest '${absoluteManifestFilename}'.`);
+  } else {
+    for (const file of files) {
+      const {filename} = file;
+      const loadedFile = loadFile(loadedManifest, filename);
 
-  for (const file of files) {
-    const {filename} = file;
-    const loadedFile = loadFile(loadedManifest, filename);
+      if (loadedFile) {
+        const patchedFile = patchFile(loadedManifest, loadedFile);
 
-    if (loadedFile) {
-      const patchedFile = patchFile(loadedManifest, loadedFile);
-
-      if (saveFile(loadedManifest, patchedFile, force)) {
-        if (verbose) {
-          console.log(`File '${filename}' was successfully generated.`);
+        if (!patchedFile) {
+          log(
+            `File '${filename}' has no generated content and was therefore skipped.`
+          );
+        } else if (saveFile(loadedManifest, patchedFile, force)) {
+          log(`File '${filename}' was successfully generated.`);
+        } else {
+          log(`File '${filename}' is already generated.`);
         }
-      } else if (verbose) {
-        console.log(`File '${filename}' is already generated.`);
+      } else {
+        log(`File '${filename}' is not included.`);
       }
-    } else if (verbose) {
-      console.log(`File '${filename}' is not included.`);
     }
   }
 } catch (error) {

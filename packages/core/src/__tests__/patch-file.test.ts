@@ -1,126 +1,140 @@
-import {TestEnv} from './test-env';
+import {filetype} from './test-env';
 
-import {PatcherArgs, patchFile} from '..';
+import {patchFile} from '..';
 
 describe('patchFile', () => {
-  it('patches the file with newly generated content', () => {
-    const {
-      exisitingContent,
-      exisitingContentData,
-      loadedManifest,
-      fileWithDeserializer
-    } = new TestEnv('b');
+  const absoluteManifestFilename = '/path/to/m';
 
-    const mockPatcher1 = jest.fn(
-      ({generatedContent}: PatcherArgs<string[]>) => [
-        ...generatedContent,
-        'baz'
-      ]
+  it('patches the file by calling multiple patchers one after the other', () => {
+    const mockPatcher1 = jest.fn(() => 'bar');
+    const mockPatcher2 = jest.fn(() => undefined);
+    const mockPatcher3 = jest.fn(() => 'baz');
+
+    const patchers = [mockPatcher1, mockPatcher2, mockPatcher3];
+    const loadedFile = {filename: 'a', filetype, existingContent: 'foo'};
+
+    expect(patchFile({absoluteManifestFilename, patchers}, loadedFile)).toEqual(
+      {...loadedFile, generatedContent: 'baz'}
     );
 
-    const mockPatcher2 = jest.fn(
-      ({generatedContent}: PatcherArgs<string[]>) => [
-        ...generatedContent,
-        'qux'
-      ]
-    );
-
-    const patchers = [mockPatcher1, mockPatcher2];
-    const {initialContent} = fileWithDeserializer;
-
-    const loadedFileA = {...fileWithDeserializer, filename: 'a'};
-
-    const loadedFileB = {
-      ...fileWithDeserializer,
-      exisitingContentData,
-      exisitingContent
+    const patcherArgs = {
+      absoluteManifestFilename,
+      filename: 'a',
+      generatedContent: undefined,
+      existingContent: 'foo',
+      otherFilenames: []
     };
 
-    const loadedFileC = {...fileWithDeserializer, filename: 'c'};
+    expect(mockPatcher1.mock.calls).toEqual([[patcherArgs]]);
 
-    expect(
-      patchFile(
-        {
-          ...loadedManifest,
-          files: [loadedFileA, loadedFileB, loadedFileC],
-          patchers
-        },
-        loadedFileB
-      )
-    ).toEqual({
-      ...loadedFileB,
-      generatedContent: [...initialContent, 'baz', 'qux']
-    });
+    expect(mockPatcher2.mock.calls).toEqual([
+      [{...patcherArgs, generatedContent: 'bar'}]
+    ]);
 
-    const {absoluteManifestFilename} = loadedManifest;
+    expect(mockPatcher3.mock.calls).toEqual([
+      [{...patcherArgs, generatedContent: 'bar'}]
+    ]);
+  });
 
-    expect(mockPatcher1.mock.calls).toEqual([
+  it('patches the file if the only patcher generates falsy content', () => {
+    const patchers = [() => ''];
+    const loadedFile = {filename: 'a', filetype};
+
+    expect(patchFile({absoluteManifestFilename, patchers}, loadedFile)).toEqual(
+      {...loadedFile, generatedContent: ''}
+    );
+  });
+
+  it('does not patch the file if the only patcher generates no content', () => {
+    const patchers = [() => undefined];
+    const loadedFile = {filename: 'a', filetype};
+
+    expect(patchFile({absoluteManifestFilename, patchers}, loadedFile)).toBe(
+      null
+    );
+  });
+
+  it('does not patch the file if no patchers exist', () => {
+    const loadedFile = {filename: 'a', filetype};
+
+    expect(patchFile({absoluteManifestFilename}, loadedFile)).toBe(null);
+  });
+
+  it('passes other filenames to a patcher if other files exist', () => {
+    const files = [
+      {filename: 'a', filetype},
+      {filename: 'b', filetype},
+      {filename: 'c', filetype}
+    ];
+
+    const mockPatcher = jest.fn();
+    const patchers = [mockPatcher];
+    const loadedFile = {filename: 'a', filetype};
+
+    patchFile({absoluteManifestFilename, files, patchers}, loadedFile);
+
+    expect(mockPatcher.mock.calls).toEqual([
       [
         {
           absoluteManifestFilename,
-          filename: 'b',
-          generatedContent: initialContent,
-          exisitingContent,
-          otherFilenames: ['a', 'c']
+          filename: 'a',
+          generatedContent: undefined,
+          existingContent: undefined,
+          otherFilenames: ['b', 'c']
         }
       ]
     ]);
+  });
 
-    expect(mockPatcher2.mock.calls).toEqual([
+  it('does not pass other filenames to a patcher if no other files exist', () => {
+    const files = [{filename: 'a', filetype}];
+    const mockPatcher = jest.fn();
+    const patchers = [mockPatcher];
+    const loadedFile = {filename: 'a', filetype};
+
+    patchFile({absoluteManifestFilename, files, patchers}, loadedFile);
+
+    expect(mockPatcher.mock.calls).toEqual([
       [
         {
           absoluteManifestFilename,
-          filename: 'b',
-          generatedContent: [...initialContent, 'baz'],
-          exisitingContent,
-          otherFilenames: ['a', 'c']
+          filename: 'a',
+          generatedContent: undefined,
+          existingContent: undefined,
+          otherFilenames: []
         }
       ]
     ]);
   });
 
   it('throws if a patcher caused an error', () => {
-    const {loadedManifest, file} = new TestEnv('a');
-
     const patchers = [
       () => {
         throw new Error('PatcherError');
       }
     ];
 
-    expect(() => patchFile({...loadedManifest, patchers}, file)).toThrowError(
+    const loadedFile = {filename: 'a', filetype};
+
+    expect(() =>
+      patchFile({absoluteManifestFilename, patchers}, loadedFile)
+    ).toThrowError(
       new Error(
         "File 'a' cannot be patched because a patcher caused an error. Details: PatcherError"
       )
     );
   });
 
-  it('throws if the newly generated content of the file is invalid', () => {
-    const {loadedManifest, file} = new TestEnv('a');
+  it('throws if a patcher generates invalid content', () => {
+    const patchers = [() => 0];
+    const loadedFile = {filename: 'a', filetype};
 
-    const mockPatcher1 = jest.fn(() => 'baz');
-    const mockPatcher2 = jest.fn();
-
-    const patchers = [mockPatcher1, mockPatcher2];
-
-    expect(() => patchFile({...loadedManifest, patchers}, file)).toThrowError(
+    expect(() =>
+      patchFile({absoluteManifestFilename, patchers}, loadedFile)
+    ).toThrowError(
       new Error(
-        "File 'a' cannot be patched because its newly generated content is invalid. Details: The generatedContent should be array."
+        "File 'a' cannot be patched because a patcher generates invalid content. Details: The generatedContent should be string."
       )
     );
-
-    expect(mockPatcher1).toHaveBeenCalledTimes(1);
-    expect(mockPatcher2).not.toHaveBeenCalled();
-  });
-
-  describe('without patchers', () => {
-    it('patches the file with its initial content', () => {
-      const {loadedManifest, file} = new TestEnv('a');
-
-      expect(patchFile(loadedManifest, file)).toEqual({
-        ...file,
-        generatedContent: file.initialContent
-      });
-    });
   });
 });

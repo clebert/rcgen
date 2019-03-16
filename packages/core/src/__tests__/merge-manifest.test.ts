@@ -1,4 +1,4 @@
-import {TestEnv} from './test-env';
+import {filetype} from './test-env';
 
 import {mergeManifest} from '..';
 
@@ -7,7 +7,7 @@ describe('mergeManifest', () => {
     expect(mergeManifest({})()).toEqual({});
     expect(mergeManifest({})({})).toEqual({});
 
-    const {file: fileA} = new TestEnv('a');
+    const fileA = {filename: 'a', filetype};
     const patcherA = jest.fn();
 
     expect(
@@ -52,7 +52,7 @@ describe('mergeManifest', () => {
       excludedFilenamePatterns: ['a']
     });
 
-    const fileB = {...fileA, filename: 'b'};
+    const fileB = {filename: 'b', filetype};
     const patcherB = jest.fn();
 
     expect(

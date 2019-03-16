@@ -14,8 +14,7 @@ export interface GitIgnoreOptions extends Globs {
 
 export const gitIgnoreFile: File<string[]> = {
   filename: '.gitignore',
-  filetype: createLinesFiletype(),
-  initialContent: [] as string[]
+  filetype: createLinesFiletype()
 };
 
 export const gitFiles = [gitIgnoreFile];
