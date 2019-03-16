@@ -9,7 +9,9 @@ export function merge<T extends object>(
     const {filename: currentFilename, generatedContent} = args;
 
     return currentFilename === filename
-      ? deepmerge(generatedContent, patcher(args))
+      ? generatedContent
+        ? deepmerge(generatedContent, patcher(args))
+        : patcher(args)
       : generatedContent;
   };
 }
