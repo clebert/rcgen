@@ -2,9 +2,6 @@ import {validate} from '@rcgen/core';
 import {createYamlFiletype} from '..';
 
 describe('createYamlFiletype', () => {
-  const absoluteManifestFilename = '/path/to/m';
-  const filename = 'a';
-
   describe('#contentSchema', () => {
     it('matches an object', () => {
       const {contentSchema} = createYamlFiletype();
@@ -23,7 +20,7 @@ describe('createYamlFiletype', () => {
       }
     });
 
-    it('can be customized', () => {
+    it('matches a custom type', () => {
       const {contentSchema} = createYamlFiletype({
         contentSchema: {type: 'array'}
       });
@@ -44,30 +41,52 @@ describe('createYamlFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('serializes the content data as YAML', () => {
-      const {serializer} = createYamlFiletype();
+    describe('without a custom content preprocessor', () => {
+      it('creates a YAML string', () => {
+        const {serializer} = createYamlFiletype();
 
-      expect(
-        serializer({
-          absoluteManifestFilename,
-          filename,
-          content: {foo: 'bar', baz: ['qux', 123]}
-        })
-      ).toEqual(Buffer.from('foo: bar\nbaz:\n  - qux\n  - 123\n'));
+        expect(
+          serializer({
+            absoluteManifestFilename: '/path/to/m',
+            filename: 'a',
+            content: {foo: 'bar'}
+          })
+        ).toEqual(Buffer.from('foo: bar\n'));
+      });
+    });
+
+    describe('with a custom content preprocessor', () => {
+      it('creates a YAML string after preprocessing the content', () => {
+        const mockContentPreprocessor = jest.fn(() => ({baz: 'qux'} as object));
+
+        const {serializer} = createYamlFiletype({
+          contentPreprocessor: mockContentPreprocessor
+        });
+
+        expect(
+          serializer({
+            absoluteManifestFilename: '/path/to/m',
+            filename: 'a',
+            content: {foo: 'bar'}
+          })
+        ).toEqual(Buffer.from('baz: qux\n'));
+
+        expect(mockContentPreprocessor.mock.calls).toEqual([[{foo: 'bar'}]]);
+      });
     });
   });
 
   describe('#deserializer', () => {
-    it('deserializes the content as YAML', () => {
+    it('parses a YAML string', () => {
       const {deserializer} = createYamlFiletype();
 
       expect(
         deserializer!({
-          absoluteManifestFilename,
-          filename,
-          contentData: Buffer.from('foo: bar\nbaz:\n  - qux\n  - 123\n')
+          absoluteManifestFilename: '/path/to/m',
+          filename: 'a',
+          contentData: Buffer.from('foo: bar\n')
         })
-      ).toEqual({foo: 'bar', baz: ['qux', 123]});
+      ).toEqual({foo: 'bar'});
     });
   });
 });

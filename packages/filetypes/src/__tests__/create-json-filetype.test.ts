@@ -2,9 +2,6 @@ import {validate} from '@rcgen/core';
 import {createJsonFiletype} from '..';
 
 describe('createJsonFiletype', () => {
-  const absoluteManifestFilename = '/path/to/m';
-  const filename = 'a';
-
   describe('#contentSchema', () => {
     it('matches an object', () => {
       const {contentSchema} = createJsonFiletype();
@@ -23,7 +20,7 @@ describe('createJsonFiletype', () => {
       }
     });
 
-    it('can be customized', () => {
+    it('matches a custom type', () => {
       const {contentSchema} = createJsonFiletype({
         contentSchema: {type: 'array'}
       });
@@ -44,23 +41,49 @@ describe('createJsonFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('serializes the content data as JSON', () => {
-      const {serializer} = createJsonFiletype();
+    describe('without a custom content preprocessor', () => {
+      it('creates a JSON string', () => {
+        const {serializer} = createJsonFiletype();
 
-      expect(
-        serializer({absoluteManifestFilename, filename, content: {foo: 'bar'}})
-      ).toEqual(Buffer.from('{\n  "foo": "bar"\n}\n'));
+        expect(
+          serializer({
+            absoluteManifestFilename: '/path/to/m',
+            filename: 'a',
+            content: {foo: 'bar'}
+          })
+        ).toEqual(Buffer.from('{\n  "foo": "bar"\n}\n'));
+      });
+    });
+
+    describe('with a custom content preprocessor', () => {
+      it('creates a JSON string after preprocessing the content', () => {
+        const mockContentPreprocessor = jest.fn(() => ({baz: 'qux'} as object));
+
+        const {serializer} = createJsonFiletype({
+          contentPreprocessor: mockContentPreprocessor
+        });
+
+        expect(
+          serializer({
+            absoluteManifestFilename: '/path/to/m',
+            filename: 'a',
+            content: {foo: 'bar'}
+          })
+        ).toEqual(Buffer.from('{\n  "baz": "qux"\n}\n'));
+
+        expect(mockContentPreprocessor.mock.calls).toEqual([[{foo: 'bar'}]]);
+      });
     });
   });
 
   describe('#deserializer', () => {
-    it('deserializes the content as JSON', () => {
+    it('parses a JSON string', () => {
       const {deserializer} = createJsonFiletype();
 
       expect(
         deserializer!({
-          absoluteManifestFilename,
-          filename,
+          absoluteManifestFilename: '/path/to/m',
+          filename: 'a',
           contentData: Buffer.from('{\n  "foo": "bar"\n}\n')
         })
       ).toEqual({foo: 'bar'});

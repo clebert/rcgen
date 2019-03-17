@@ -5,7 +5,7 @@ import {
   matchFile,
   mergeManifest
 } from '@rcgen/core';
-import {createLinesFiletype} from '@rcgen/filetypes';
+import {createTextLinesFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/patchers';
 
 export interface GitIgnoreOptions extends Globs {
@@ -14,7 +14,7 @@ export interface GitIgnoreOptions extends Globs {
 
 export const gitIgnoreFile: File<string[]> = {
   filename: '.gitignore',
-  filetype: createLinesFiletype()
+  filetype: createTextLinesFiletype()
 };
 
 export const gitFiles = [gitIgnoreFile];
