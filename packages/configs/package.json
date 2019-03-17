@@ -1,6 +1,6 @@
 {
   "name": "@rcgen/configs",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "A collection of configuration providers for use with rcgen.",
   "homepage": "https://rcgen.io",
   "bugs": {
@@ -19,9 +19,9 @@
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "dependencies": {
-    "@rcgen/core": "^0.12.0",
-    "@rcgen/filetypes": "^0.12.0",
-    "@rcgen/patchers": "^0.12.0",
+    "@rcgen/core": "^0.13.0",
+    "@rcgen/filetypes": "^0.13.0",
+    "@rcgen/patchers": "^0.13.0",
     "sort-package-json": "^1.21.0"
   },
   "publishConfig": {

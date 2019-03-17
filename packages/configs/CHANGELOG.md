@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/clebert/rcgen/compare/v0.12.0...v0.13.0) (2019-03-17)
+
+
+### Features
+
+* **configs:** add more config providers ([#30](https://github.com/clebert/rcgen/issues/30)) ([1f7769a](https://github.com/clebert/rcgen/commit/1f7769a))
+
+
+
+
+
 # [0.12.0](https://github.com/clebert/rcgen/compare/v0.11.0...v0.12.0) (2019-03-17)
 
 
