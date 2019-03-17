@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/clebert/rcgen/compare/v0.10.0...v0.11.0) (2019-03-17)
+
+
+### Bug Fixes
+
+* **patchers:** merge works without initial content ([#26](https://github.com/clebert/rcgen/issues/26)) ([202b0d9](https://github.com/clebert/rcgen/commit/202b0d9))
+
+
+### Features
+
+* **core:** improve error message for overwriting files ([#25](https://github.com/clebert/rcgen/issues/25)) ([fe42529](https://github.com/clebert/rcgen/commit/fe42529))
+* **core:** remove the initial content of files ([#24](https://github.com/clebert/rcgen/issues/24)) ([2171f06](https://github.com/clebert/rcgen/commit/2171f06))
+
+
+
+
+
 # [0.10.0](https://github.com/clebert/rcgen/compare/v0.9.0...v0.10.0) (2019-03-14)
 
 

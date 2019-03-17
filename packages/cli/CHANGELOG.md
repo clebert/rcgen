@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/clebert/rcgen/compare/v0.10.0...v0.11.0) (2019-03-17)
+
+
+### Features
+
+* **cli:** improve help message regarding the --force flag ([#28](https://github.com/clebert/rcgen/issues/28)) ([6c98c46](https://github.com/clebert/rcgen/commit/6c98c46))
+* **core:** remove the initial content of files ([#24](https://github.com/clebert/rcgen/issues/24)) ([2171f06](https://github.com/clebert/rcgen/commit/2171f06))
+
+
+
+
+
 # [0.10.0](https://github.com/clebert/rcgen/compare/v0.9.0...v0.10.0) (2019-03-14)
 
 **Note:** Version bump only for package @rcgen/cli
