@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/clebert/rcgen/compare/v0.11.0...v0.12.0) (2019-03-17)
+
+
+### Features
+
+* **filetypes:** rename text lines and add content preprocessor ([#29](https://github.com/clebert/rcgen/issues/29)) ([1a22d59](https://github.com/clebert/rcgen/commit/1a22d59))
+
+
+
+
+
 # [0.11.0](https://github.com/clebert/rcgen/compare/v0.10.0...v0.11.0) (2019-03-17)
 
 
