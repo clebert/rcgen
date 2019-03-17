@@ -4,7 +4,7 @@ import {createPatcherArgs} from './create-patcher-args';
 
 describe('replace', () => {
   const oldContent = 'foo';
-  const newContent = 'bar';
+  const newContent = ''; // The new content is intentionally falsy!
 
   let patcher: jest.Mock;
   let patcherArgs: PatcherArgs<string>;

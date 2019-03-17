@@ -8,6 +8,10 @@ export function replace<T>(filename: string, patcher: Patcher<T>): Patcher<T> {
       return generatedContent;
     }
 
-    return patcher(args) || generatedContent;
+    const newlyGeneratedContent = patcher(args);
+
+    return newlyGeneratedContent !== undefined
+      ? newlyGeneratedContent
+      : generatedContent;
   };
 }
