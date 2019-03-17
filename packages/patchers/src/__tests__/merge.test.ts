@@ -1,36 +1,109 @@
+import {PatcherArgs} from '@rcgen/core';
 import {merge} from '..';
 import {createPatcherArgs} from './create-patcher-args';
 
 describe('merge', () => {
+  const oldContent = {foo: {bar: ['baz']}};
+  const newContent = {foo: {bar: ['qux']}};
+  const mergedContent = {foo: {bar: ['baz', 'qux']}};
+
   let patcher: jest.Mock;
+  let patcherArgs: PatcherArgs<object>;
+  let filename: string;
 
-  beforeEach(() => {
-    patcher = jest.fn(() => ({foo: {bar: ['qux']}}));
-  });
-
-  it('calls the patcher', () => {
-    const args = createPatcherArgs('a', {foo: {bar: ['baz']}});
-
-    expect(merge('a', patcher)(args)).toEqual({
-      foo: {bar: ['baz', 'qux']}
+  describe('with matching filename', () => {
+    beforeEach(() => {
+      filename = 'a';
     });
 
-    expect(patcher.mock.calls).toEqual([[args]]);
+    describe('with old content', () => {
+      beforeEach(() => {
+        patcherArgs = createPatcherArgs('a', oldContent);
+      });
 
-    expect(merge('a', patcher)(createPatcherArgs('a'))).toEqual({
-      foo: {bar: ['qux']}
+      describe('with new content', () => {
+        beforeEach(() => {
+          patcher = jest.fn(() => newContent);
+        });
+
+        it('returns merged content', () => {
+          expect(merge(filename, patcher)(patcherArgs)).toEqual(mergedContent);
+
+          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+        });
+      });
+
+      describe('without new content', () => {
+        beforeEach(() => {
+          patcher = jest.fn(() => undefined);
+        });
+
+        it('returns old content', () => {
+          expect(merge(filename, patcher)(patcherArgs)).toEqual(oldContent);
+
+          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+        });
+      });
+    });
+
+    describe('without old content', () => {
+      beforeEach(() => {
+        patcherArgs = createPatcherArgs('a');
+      });
+
+      describe('with new content', () => {
+        beforeEach(() => {
+          patcher = jest.fn(() => newContent);
+        });
+
+        it('returns new content', () => {
+          expect(merge(filename, patcher)(patcherArgs)).toEqual(newContent);
+
+          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+        });
+      });
+
+      describe('without new content', () => {
+        beforeEach(() => {
+          patcher = jest.fn(() => undefined);
+        });
+
+        it('returns no content', () => {
+          expect(merge(filename, patcher)(patcherArgs)).toBeUndefined();
+
+          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+        });
+      });
     });
   });
 
-  it('does not call the patcher', () => {
-    const generatedContent = {foo: {bar: ['baz']}};
+  describe('without matching filename', () => {
+    beforeEach(() => {
+      filename = 'b';
+    });
 
-    expect(merge('a', patcher)(createPatcherArgs('b', generatedContent))).toBe(
-      generatedContent
-    );
+    describe('with old content', () => {
+      beforeEach(() => {
+        patcherArgs = createPatcherArgs('a', oldContent);
+      });
 
-    expect(patcher.mock.calls).toEqual([]);
+      it('returns old content', () => {
+        expect(merge(filename, patcher)(patcherArgs)).toEqual(oldContent);
 
-    expect(merge('a', patcher)(createPatcherArgs('b'))).toBe(undefined);
+        expect(patcher.mock.calls).toEqual([]);
+      });
+    });
+
+    describe('without old content', () => {
+      beforeEach(() => {
+        patcherArgs = createPatcherArgs('a');
+      });
+
+      it('returns no content', () => {
+        expect(merge(filename, patcher)(patcherArgs)).toBeUndefined();
+
+        expect(patcher.mock.calls).toEqual([]);
+      });
+    });
   });
 });
