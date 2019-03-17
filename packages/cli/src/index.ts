@@ -17,7 +17,7 @@ const helpMessage = `
     $ rcgen
 
   Options
-    --force,    -f  Overwrite existing files with generated content.
+    --force,    -f  Overwrite existing files with different content.
     --manifest, -m  Relative filename of the manifest to be loaded.
                     Default: '${defaultManifestFilename}'
     --verbose,  -v  Enable verbose logging.

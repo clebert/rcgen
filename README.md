@@ -49,7 +49,7 @@ Usage
   $ rcgen
 
 Options
-  --force,    -f  Overwrite existing files with generated content.
+  --force,    -f  Overwrite existing files with different content.
   --manifest, -m  Relative filename of the manifest to be loaded.
                   Default: 'rcgen.js'
   --verbose,  -v  Enable verbose logging.
