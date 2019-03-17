@@ -145,7 +145,7 @@ describe('loadFile', () => {
 
   it('throws if the existing content of the file is invalid', () => {
     mockExistsSync.mockReturnValue(true);
-    mockReadFileSync.mockReturnValue(serializeJson(0));
+    mockReadFileSync.mockReturnValue(serializeJson(123));
 
     const file = {filename: 'a', filetype: filetypeWithDeserializer};
 

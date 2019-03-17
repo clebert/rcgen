@@ -5,32 +5,32 @@ describe('merge', () => {
   let patcher: jest.Mock;
 
   beforeEach(() => {
-    patcher = jest.fn(() => ({foo: {bar: [456]}, baz: 'qux'}));
+    patcher = jest.fn(() => ({foo: {bar: ['qux']}}));
   });
 
   it('calls the patcher', () => {
-    const args = createPatcherArgs('a', {foo: {bar: [123]}});
+    const args = createPatcherArgs('a', {foo: {bar: ['baz']}});
 
     expect(merge('a', patcher)(args)).toEqual({
-      foo: {bar: [123, 456]},
-      baz: 'qux'
+      foo: {bar: ['baz', 'qux']}
     });
 
     expect(patcher.mock.calls).toEqual([[args]]);
 
-    expect(merge('a', () => [456])(createPatcherArgs('a', [123]))).toEqual([
-      123,
-      456
-    ]);
+    expect(merge('a', patcher)(createPatcherArgs('a'))).toEqual({
+      foo: {bar: ['qux']}
+    });
   });
 
   it('does not call the patcher', () => {
-    const generatedContent = ['foo'];
+    const generatedContent = {foo: {bar: ['baz']}};
 
     expect(merge('a', patcher)(createPatcherArgs('b', generatedContent))).toBe(
       generatedContent
     );
 
     expect(patcher.mock.calls).toEqual([]);
+
+    expect(merge('a', patcher)(createPatcherArgs('b'))).toBe(undefined);
   });
 });
