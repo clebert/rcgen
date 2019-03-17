@@ -1,4 +1,5 @@
-import {Manifest, ManifestCreator} from './compose-manifest';
+import {Manifest} from './load-manifest';
+import {ManifestCreator} from './manifest-creator';
 
 function mergeArrays<T>(a?: T[], b?: T[]): T[] | undefined {
   return !a ? b : !b ? a : [...a, ...b];

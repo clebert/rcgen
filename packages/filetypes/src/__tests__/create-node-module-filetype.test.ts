@@ -20,7 +20,7 @@ describe('createNodeModuleFiletype', () => {
       }
     });
 
-    it('can be customized', () => {
+    it('matches a custom type', () => {
       const {contentSchema} = createNodeModuleFiletype({
         contentSchema: {type: 'array'}
       });
@@ -41,7 +41,7 @@ describe('createNodeModuleFiletype', () => {
   });
 
   describe('#serializer', () => {
-    it('generates a Node.js module', () => {
+    it('creates a Node.js module', () => {
       const {serializer} = createNodeModuleFiletype();
 
       expect(

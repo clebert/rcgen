@@ -2,6 +2,7 @@ export * from './compose-manifest';
 export * from './generate-content';
 export * from './load-file';
 export * from './load-manifest';
+export * from './manifest-creator';
 export * from './match-file';
 export * from './merge-manifest';
 export * from './patch-file';
