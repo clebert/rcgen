@@ -8,10 +8,20 @@ export function merge<T extends object>(
   return args => {
     const {filename: currentFilename, generatedContent} = args;
 
-    return currentFilename === filename
-      ? generatedContent
-        ? deepmerge(generatedContent, patcher(args))
-        : patcher(args)
-      : generatedContent;
+    if (currentFilename !== filename) {
+      return generatedContent;
+    }
+
+    const newlyGeneratedContent = patcher(args);
+
+    if (!newlyGeneratedContent) {
+      return generatedContent;
+    }
+
+    if (!generatedContent) {
+      return newlyGeneratedContent;
+    }
+
+    return deepmerge<T>(generatedContent, newlyGeneratedContent);
   };
 }
