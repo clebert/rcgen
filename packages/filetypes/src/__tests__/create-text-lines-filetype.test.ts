@@ -116,7 +116,11 @@ describe('createTextLinesFiletype', () => {
 
   describe('#deserializer', () => {
     it('parses a text', () => {
-      const {deserializer} = createTextLinesFiletype();
+      const mockContentPreprocessor = jest.fn();
+
+      const {deserializer} = createTextLinesFiletype({
+        contentPreprocessor: mockContentPreprocessor
+      });
 
       expect(
         deserializer!({
@@ -125,6 +129,8 @@ describe('createTextLinesFiletype', () => {
           contentData: Buffer.from(' a \n\nb\r\nc')
         })
       ).toEqual([' a ', '', 'b\r', 'c']);
+
+      expect(mockContentPreprocessor.mock.calls).toEqual([]);
     });
   });
 });

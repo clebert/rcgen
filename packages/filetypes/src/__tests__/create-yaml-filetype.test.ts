@@ -78,7 +78,11 @@ describe('createYamlFiletype', () => {
 
   describe('#deserializer', () => {
     it('parses a YAML string', () => {
-      const {deserializer} = createYamlFiletype();
+      const mockContentPreprocessor = jest.fn();
+
+      const {deserializer} = createYamlFiletype({
+        contentPreprocessor: mockContentPreprocessor
+      });
 
       expect(
         deserializer!({
@@ -87,6 +91,8 @@ describe('createYamlFiletype', () => {
           contentData: Buffer.from('foo: bar\n')
         })
       ).toEqual({foo: 'bar'});
+
+      expect(mockContentPreprocessor.mock.calls).toEqual([]);
     });
   });
 });

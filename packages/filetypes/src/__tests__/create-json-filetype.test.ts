@@ -78,7 +78,11 @@ describe('createJsonFiletype', () => {
 
   describe('#deserializer', () => {
     it('parses a JSON string', () => {
-      const {deserializer} = createJsonFiletype();
+      const mockContentPreprocessor = jest.fn();
+
+      const {deserializer} = createJsonFiletype({
+        contentPreprocessor: mockContentPreprocessor
+      });
 
       expect(
         deserializer!({
@@ -87,6 +91,8 @@ describe('createJsonFiletype', () => {
           contentData: Buffer.from('{\n  "foo": "bar"\n}\n')
         })
       ).toEqual({foo: 'bar'});
+
+      expect(mockContentPreprocessor.mock.calls).toEqual([]);
     });
   });
 });
