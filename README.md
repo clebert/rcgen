@@ -1,5 +1,7 @@
 # rcgen
 
+[![GitHub Stars][github-stars-badge]][github-stars]
+
 A generator for configuration files.
 
 > ⚠️This project is at an early stage of development.
@@ -75,20 +77,23 @@ yarn install && yarn test
 
 ### Development Scripts
 
-| Command                 | Description                                      |
-| ----------------------- | ------------------------------------------------ |
-| `yarn compile`          | Compiles all sources.                            |
-| `yarn lint`             | Lints all sources.                               |
-| `yarn test`             | Executes all tests.                              |
-| `yarn format`           | Formats all files.                               |
-| `yarn generate:configs` | Generates all config files managed by **rcgen**. |
-| `yarn generate:docs`    | Generates all API documentation files.           |
+| Command                 | Description                                             |
+| ----------------------- | ------------------------------------------------------- |
+| `yarn compile`          | Compiles all sources.                                   |
+| `yarn lint`             | Lints all sources.                                      |
+| `yarn test`             | Executes all tests.                                     |
+| `yarn format`           | Formats all files.                                      |
+| `yarn generate:configs` | Generates all configuration files managed by **rcgen**. |
+| `yarn generate:docs`    | Generates all API documentation files.                  |
 
 ---
 
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
+[github-stars]: https://github.com/clebert/rcgen/stargazers
+[github-stars-badge]:
+  https://img.shields.io/github/stars/clebert/rcgen.svg?style=social&label=Star
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [stateofjs]: https://2018.stateofjs.com
-[website]: https://rcgen.io/
+[website]: https://rcgen.io
