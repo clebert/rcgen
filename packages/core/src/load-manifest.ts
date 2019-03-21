@@ -182,12 +182,12 @@ export function loadManifest(
             absoluteManifestFilename,
             `because its file '${filename}' conflicts with itself`
           );
-        } else {
-          throw createManifestCannotBeLoadedError(
-            absoluteManifestFilename,
-            `because its file '${filename}' conflicts with its other file '${otherFilename}'`
-          );
         }
+
+        throw createManifestCannotBeLoadedError(
+          absoluteManifestFilename,
+          `because its file '${filename}' conflicts with its other file '${otherFilename}'`
+        );
       }
     }
   }
