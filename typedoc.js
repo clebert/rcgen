@@ -5,7 +5,7 @@ const git = require('git-rev-sync');
 module.exports = {
   'external-modulemap': '.*packages/([^/]+)/src/.*',
   'sourcefile-url-prefix': `https://github.com/clebert/rcgen/tree/${git.short()}/packages/`,
-  exclude: ['**/*+(__tests__|cli|lib|node_modules)/**/*'],
+  exclude: ['**/*+(__tests__|lib|node_modules)/**/*'],
   excludeExternals: false,
   excludeNotExported: true,
   excludePrivate: true,
