@@ -1,21 +1,27 @@
 // @ts-check
 
-const cheerio = require('cheerio');
 const glob = require('fast-glob');
-const fs = require('fs');
 const path = require('path');
+const updateHtmlFile = require('./update-html-file');
 
-const filenames = glob
-  .sync(path.join(__dirname, '../docs/@rcgen/**/*.html'))
-  .map(String);
+const docsDirname = path.join(__dirname, '../docs');
+
+// Rename "External Modules" to "Packages" on the index page.
+
+updateHtmlFile(path.join(docsDirname, 'index.html'), $ => {
+  $('.tsd-index-section h3').text('Packages');
+});
+
+// Remove "Defined in ..." elements for all sources in node_modules.
+
+const filenames = glob.sync(path.join(docsDirname, '**/*.html')).map(String);
 
 for (const filename of filenames) {
-  console.log(filename);
+  console.info(` Processing  ${filename}`);
 
-  const html = fs.readFileSync(filename, {encoding: 'utf8'});
-  const $ = cheerio.load(html);
-
-  $('aside.tsd-sources').remove();
-
-  fs.writeFileSync(filename, $.html(), {encoding: 'utf8'});
+  updateHtmlFile(filename, $ => {
+    $('.tsd-sources')
+      .filter((_index, element) => /node_modules/.test($(element).text()))
+      .remove();
+  });
 }
