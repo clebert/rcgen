@@ -2,7 +2,7 @@
 
 const glob = require('fast-glob');
 const path = require('path');
-const updateHtmlFile = require('./update-html-file');
+const {updateHtmlFile} = require('./update-html-file');
 
 const docsDirname = path.join(__dirname, '../docs');
 

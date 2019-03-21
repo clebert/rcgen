@@ -10,11 +10,13 @@ const fs = require('fs');
  * @param {string} filename
  * @param {{ ($: CheerioStatic): void; }} update
  */
-module.exports = function updateHtmlFile(filename, update) {
+function updateHtmlFile(filename, update) {
   const html = fs.readFileSync(filename, {encoding: 'utf8'});
   const $ = cheerio.load(html);
 
   update($);
 
   fs.writeFileSync(filename, $.html(), {encoding: 'utf8'});
-};
+}
+
+exports.updateHtmlFile = updateHtmlFile;
