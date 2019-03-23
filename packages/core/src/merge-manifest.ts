@@ -1,7 +1,7 @@
 import {Manifest} from './load-manifest';
 import {ManifestCreator} from './manifest-creator';
 
-function mergeArrays<T>(a?: T[], b?: T[]): T[] | undefined {
+function mergeArrays<T>(a?: readonly T[], b?: readonly T[]): readonly T[] | undefined {
   return !a ? b : !b ? a : [...a, ...b];
 }
 

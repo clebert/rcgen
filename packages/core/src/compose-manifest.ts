@@ -1,7 +1,7 @@
 import {ManifestCreator} from './manifest-creator';
 
 export function composeManifest(
-  ...manifestCreators: ManifestCreator[]
+  ...manifestCreators: readonly ManifestCreator[]
 ): ManifestCreator {
   return (initialManifest = {}) =>
     manifestCreators.reduce(

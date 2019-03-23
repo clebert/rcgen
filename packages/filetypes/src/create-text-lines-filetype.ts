@@ -2,10 +2,10 @@ import {Filetype} from '@rcgen/core';
 import {ContentPreprocessor} from './content-preprocessor';
 
 export interface TextLinesFiletypeOptions {
-  readonly contentPreprocessor?: ContentPreprocessor<string[]>;
+  readonly contentPreprocessor?: ContentPreprocessor<readonly string[]>;
 }
 
-function preprocessTextLines(textLines: string[]): string[] {
+function preprocessTextLines(textLines: readonly string[]): readonly string[] {
   const preprocessedTextLines = Array.from(
     new Set(
       textLines
@@ -19,7 +19,7 @@ function preprocessTextLines(textLines: string[]): string[] {
 
 export function createTextLinesFiletype(
   options: TextLinesFiletypeOptions = {}
-): Filetype<string[]> {
+): Filetype<readonly string[]> {
   const {contentPreprocessor = preprocessTextLines} = options;
 
   return {

@@ -27,7 +27,7 @@ export interface Filetype<T> {
 export interface File<T> {
   readonly filename: string;
   readonly filetype: Filetype<T>;
-  readonly conflictingFilenames?: string[];
+  readonly conflictingFilenames?: readonly string[];
 }
 
 export interface PatcherArgs<T> {
@@ -35,16 +35,16 @@ export interface PatcherArgs<T> {
   readonly filename: string;
   readonly generatedContent: T | undefined;
   readonly existingContent: T | undefined;
-  readonly otherFilenames: string[];
+  readonly otherFilenames: readonly string[];
 }
 
 export type Patcher<T> = (args: PatcherArgs<T>) => T | undefined;
 
 export interface Manifest extends Globs {
   // tslint:disable-next-line: no-any
-  readonly files?: File<any>[];
+  readonly files?: readonly File<any>[];
   // tslint:disable-next-line: no-any
-  readonly patchers?: Patcher<any>[];
+  readonly patchers?: readonly Patcher<any>[];
 }
 
 export interface LoadedManifest extends Manifest {
