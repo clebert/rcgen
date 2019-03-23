@@ -18,6 +18,7 @@
     "paths": {
       "@rcgen/*": ["packages/*/src/index.ts"]
     },
-    "plugins": [{"name": "typescript-tslint-plugin"}]
+    "plugins": [{"name": "typescript-tslint-plugin"}],
+    "incremental": true
   }
 }

@@ -11,7 +11,14 @@ const {composeManifest} = require('@rcgen/core');
 
 exports.default = composeManifest(
   git(),
-  gitIgnoreFiles('coverage', 'docs', 'lib', 'node_modules', 'todo.tasks'),
+  gitIgnoreFiles(
+    '*.tsbuildinfo',
+    'coverage',
+    'docs',
+    'lib',
+    'node_modules',
+    'todo.tasks'
+  ),
   gitIgnoreIntrinsicFiles({excludedFilenamePatterns: ['package.json']}),
   node('10'),
   npm()
