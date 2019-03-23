@@ -95,8 +95,8 @@ const manifestSchema = {
   properties: {
     files: {type: 'array', items: fileSchema},
     patchers: {type: 'array', items: patcherSchema},
-    includedFilenamePatterns: {type: 'array', items: {type: 'string'}},
-    excludedFilenamePatterns: {type: 'array', items: {type: 'string'}}
+    include: {type: 'array', items: {type: 'string'}},
+    exclude: {type: 'array', items: {type: 'string'}}
   },
   additionalProperties: false
 };

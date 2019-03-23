@@ -61,10 +61,7 @@ describe('loadFile', () => {
     const file = {filename: 'a', filetype};
 
     expect(
-      loadFile(
-        {absoluteManifestFilename, files: [file], includedFilenamePatterns: []},
-        'a'
-      )
+      loadFile({absoluteManifestFilename, files: [file], include: []}, 'a')
     ).toBeUndefined();
 
     expect(mockExistsSync.mock.calls).toEqual([]);

@@ -14,42 +14,42 @@ describe('mergeManifest', () => {
       mergeManifest({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenamePatterns: ['a'],
-        excludedFilenamePatterns: ['a']
+        include: ['a'],
+        exclude: ['a']
       })()
     ).toEqual({
       files: [fileA],
       patchers: [patcherA],
-      includedFilenamePatterns: ['a'],
-      excludedFilenamePatterns: ['a']
+      include: ['a'],
+      exclude: ['a']
     });
 
     expect(
       mergeManifest({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenamePatterns: ['a'],
-        excludedFilenamePatterns: ['a']
+        include: ['a'],
+        exclude: ['a']
       })({})
     ).toEqual({
       files: [fileA],
       patchers: [patcherA],
-      includedFilenamePatterns: ['a'],
-      excludedFilenamePatterns: ['a']
+      include: ['a'],
+      exclude: ['a']
     });
 
     expect(
       mergeManifest({})({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenamePatterns: ['a'],
-        excludedFilenamePatterns: ['a']
+        include: ['a'],
+        exclude: ['a']
       })
     ).toEqual({
       files: [fileA],
       patchers: [patcherA],
-      includedFilenamePatterns: ['a'],
-      excludedFilenamePatterns: ['a']
+      include: ['a'],
+      exclude: ['a']
     });
 
     const fileB = {filename: 'b', filetype};
@@ -59,19 +59,19 @@ describe('mergeManifest', () => {
       mergeManifest({
         files: [fileB],
         patchers: [patcherB],
-        includedFilenamePatterns: ['b'],
-        excludedFilenamePatterns: ['b']
+        include: ['b'],
+        exclude: ['b']
       })({
         files: [fileA],
         patchers: [patcherA],
-        includedFilenamePatterns: ['a'],
-        excludedFilenamePatterns: ['a']
+        include: ['a'],
+        exclude: ['a']
       })
     ).toEqual({
       files: [fileA, fileB],
       patchers: [patcherA, patcherB],
-      includedFilenamePatterns: ['a', 'b'],
-      excludedFilenamePatterns: ['a', 'b']
+      include: ['a', 'b'],
+      exclude: ['a', 'b']
     });
   });
 });

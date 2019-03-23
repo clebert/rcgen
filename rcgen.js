@@ -19,7 +19,7 @@ exports.default = composeManifest(
     'node_modules',
     'todo.tasks'
   ),
-  gitIgnoreIntrinsicFiles({excludedFilenamePatterns: ['package.json']}),
+  gitIgnoreIntrinsicFiles({exclude: ['package.json']}),
   node('10'),
   npm()
 )();
