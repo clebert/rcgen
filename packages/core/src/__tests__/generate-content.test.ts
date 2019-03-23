@@ -18,7 +18,7 @@ describe('generateContent', () => {
 
   it('throws if the file is not included', () => {
     const file = {filename: 'a', filetype};
-    const manifest = {files: [file], includedFilenamePatterns: []};
+    const manifest = {files: [file], include: []};
 
     mockNodeRequire.mockReturnValue({default: manifest});
 

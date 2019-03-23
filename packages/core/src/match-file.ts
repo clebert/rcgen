@@ -3,8 +3,8 @@ import micromatch from 'micromatch';
 export type FileMatcher = (filename: string) => boolean;
 
 export interface Globs {
-  readonly includedFilenamePatterns?: string[];
-  readonly excludedFilenamePatterns?: string[];
+  readonly include?: string[];
+  readonly exclude?: string[];
 }
 
 function isMatch(filename: string, pattern: string): boolean {
@@ -13,28 +13,28 @@ function isMatch(filename: string, pattern: string): boolean {
 
 function isIncludedFile(
   filename: string,
-  includedFilenamePatterns: string[] | undefined
+  include: string[] | undefined
 ): boolean {
-  if (!includedFilenamePatterns) {
+  if (!include) {
     return true;
   }
 
-  return includedFilenamePatterns.some(pattern => isMatch(filename, pattern));
+  return include.some(pattern => isMatch(filename, pattern));
 }
 
 function isExcludedFile(
   filename: string,
-  excludedFilenamePatterns: string[] | undefined
+  exclude: string[] | undefined
 ): boolean {
-  if (!excludedFilenamePatterns) {
+  if (!exclude) {
     return false;
   }
 
-  return excludedFilenamePatterns.some(pattern => isMatch(filename, pattern));
+  return exclude.some(pattern => isMatch(filename, pattern));
 }
 
 export function matchFile(globs: Globs): FileMatcher {
   return filename =>
-    isIncludedFile(filename, globs.includedFilenamePatterns) &&
-    !isExcludedFile(filename, globs.excludedFilenamePatterns);
+    isIncludedFile(filename, globs.include) &&
+    !isExcludedFile(filename, globs.exclude);
 }
