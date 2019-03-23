@@ -6,6 +6,7 @@
     "packages/*"
   ],
   "scripts": {
+    "clean": "git clean -f -x -d -e todo.tasks",
     "compile": "lerna exec -- tsc --project tsconfig.cjs.json",
     "format": "prettier --write '**/*.{js,json,md,ts,tsx,yml}'",
     "generate:configs": "npm run --scripts-prepend-node-path=true compile && rcgen --verbose --force",

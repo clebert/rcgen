@@ -77,14 +77,15 @@ yarn install && yarn test
 
 ### Development Scripts
 
-| Command                 | Description                                             |
-| ----------------------- | ------------------------------------------------------- |
-| `yarn compile`          | Compiles all sources.                                   |
-| `yarn lint`             | Lints all sources.                                      |
-| `yarn test`             | Executes all tests.                                     |
-| `yarn format`           | Formats all files.                                      |
-| `yarn generate:configs` | Generates all configuration files managed by **rcgen**. |
-| `yarn generate:docs`    | Generates all API documentation files.                  |
+| Command                 | Description                                            |
+| ----------------------- | ------------------------------------------------------ |
+| `yarn compile`          | Compile all sources.                                   |
+| `yarn lint`             | Lint all sources.                                      |
+| `yarn test`             | Execute all tests.                                     |
+| `yarn format`           | Format all files.                                      |
+| `yarn generate:configs` | Generate all configuration files managed by **rcgen**. |
+| `yarn generate:docs`    | Generate all API documentation files.                  |
+| `yarn clean`            | Clean up all files that are not under version control. |
 
 ---
 
