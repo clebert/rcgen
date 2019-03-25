@@ -1,6 +1,6 @@
 # rcgen
 
-[![GitHub Stars][github-stars-badge]][github-stars]
+[![GitHub][github-badge]][github]
 
 A generator for configuration files.
 
@@ -92,9 +92,8 @@ yarn install && yarn test
 Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
-[github-stars]: https://github.com/clebert/rcgen/stargazers
-[github-stars-badge]:
-  https://img.shields.io/github/stars/clebert/rcgen.svg?style=social&label=Star
+[github]: https://github.com/clebert/rcgen
+[github-badge]: https://img.shields.io/badge/GitHub-rcgen-blue.svg?logo=github
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
 [stateofjs]: https://2018.stateofjs.com
 [website]: https://rcgen.io
