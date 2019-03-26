@@ -35,7 +35,6 @@ export interface PatcherArgs<T> {
   readonly filename: string;
   readonly generatedContent: T | undefined;
   readonly existingContent: T | undefined;
-  readonly otherFilenames: string[];
 }
 
 export type Patcher<T> = (args: PatcherArgs<T>) => T | undefined;

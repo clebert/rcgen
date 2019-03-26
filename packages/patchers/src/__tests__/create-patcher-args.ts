@@ -8,7 +8,6 @@ export function createPatcherArgs<T>(
     absoluteManifestFilename: '/path/to/m',
     filename,
     generatedContent,
-    existingContent: undefined,
-    otherFilenames: []
+    existingContent: undefined
   };
 }
