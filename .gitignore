@@ -1,6 +1,6 @@
-*.tsbuildinfo
-coverage
-docs
-lib
-node_modules
-todo.tasks
+**/*.tsbuildinfo
+**/coverage
+**/docs
+**/lib
+**/node_modules
+**/todo.tasks

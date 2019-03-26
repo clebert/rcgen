@@ -8,6 +8,6 @@ function mergeArrays<T>(a?: T[], b?: T[]): T[] | undefined {
 export function mergeManifest(manifest: Manifest): ManifestCreator {
   return (initialManifest = {}) => ({
     files: mergeArrays(initialManifest.files, manifest.files),
-    patchers: mergeArrays(initialManifest.patchers, manifest.patchers)
+    generators: mergeArrays(initialManifest.generators, manifest.generators)
   });
 }

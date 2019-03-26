@@ -1,14 +1,14 @@
-import {PatcherArgs} from '@rcgen/core';
+import {GeneratorArgs} from '@rcgen/core';
 import {merge} from '..';
-import {createPatcherArgs} from './create-patcher-args';
+import {createGeneratorArgs} from './create-generator-args';
 
 describe('merge', () => {
   const oldContent = {foo: {bar: ['baz']}};
   const newContent = {foo: {bar: ['qux']}};
   const mergedContent = {foo: {bar: ['baz', 'qux']}};
 
-  let patcher: jest.Mock;
-  let patcherArgs: PatcherArgs<object>;
+  let generator: jest.Mock;
+  let generatorArgs: GeneratorArgs<object>;
   let filename: string;
 
   describe('with matching filename', () => {
@@ -18,60 +18,62 @@ describe('merge', () => {
 
     describe('with old content', () => {
       beforeEach(() => {
-        patcherArgs = createPatcherArgs('a', oldContent);
+        generatorArgs = createGeneratorArgs('a', oldContent);
       });
 
       describe('with new content', () => {
         beforeEach(() => {
-          patcher = jest.fn(() => newContent);
+          generator = jest.fn(() => newContent);
         });
 
         it('returns merged content', () => {
-          expect(merge(filename, patcher)(patcherArgs)).toEqual(mergedContent);
+          expect(merge(filename, generator)(generatorArgs)).toEqual(
+            mergedContent
+          );
 
-          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+          expect(generator.mock.calls).toEqual([[generatorArgs]]);
         });
       });
 
       describe('without new content', () => {
         beforeEach(() => {
-          patcher = jest.fn(() => undefined);
+          generator = jest.fn(() => undefined);
         });
 
         it('returns old content', () => {
-          expect(merge(filename, patcher)(patcherArgs)).toEqual(oldContent);
+          expect(merge(filename, generator)(generatorArgs)).toEqual(oldContent);
 
-          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+          expect(generator.mock.calls).toEqual([[generatorArgs]]);
         });
       });
     });
 
     describe('without old content', () => {
       beforeEach(() => {
-        patcherArgs = createPatcherArgs('a');
+        generatorArgs = createGeneratorArgs('a');
       });
 
       describe('with new content', () => {
         beforeEach(() => {
-          patcher = jest.fn(() => newContent);
+          generator = jest.fn(() => newContent);
         });
 
         it('returns new content', () => {
-          expect(merge(filename, patcher)(patcherArgs)).toEqual(newContent);
+          expect(merge(filename, generator)(generatorArgs)).toEqual(newContent);
 
-          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+          expect(generator.mock.calls).toEqual([[generatorArgs]]);
         });
       });
 
       describe('without new content', () => {
         beforeEach(() => {
-          patcher = jest.fn(() => undefined);
+          generator = jest.fn(() => undefined);
         });
 
         it('returns no content', () => {
-          expect(merge(filename, patcher)(patcherArgs)).toBeUndefined();
+          expect(merge(filename, generator)(generatorArgs)).toBeUndefined();
 
-          expect(patcher.mock.calls).toEqual([[patcherArgs]]);
+          expect(generator.mock.calls).toEqual([[generatorArgs]]);
         });
       });
     });
@@ -84,25 +86,25 @@ describe('merge', () => {
 
     describe('with old content', () => {
       beforeEach(() => {
-        patcherArgs = createPatcherArgs('a', oldContent);
+        generatorArgs = createGeneratorArgs('a', oldContent);
       });
 
       it('returns old content', () => {
-        expect(merge(filename, patcher)(patcherArgs)).toEqual(oldContent);
+        expect(merge(filename, generator)(generatorArgs)).toEqual(oldContent);
 
-        expect(patcher.mock.calls).toEqual([]);
+        expect(generator.mock.calls).toEqual([]);
       });
     });
 
     describe('without old content', () => {
       beforeEach(() => {
-        patcherArgs = createPatcherArgs('a');
+        generatorArgs = createGeneratorArgs('a');
       });
 
       it('returns no content', () => {
-        expect(merge(filename, patcher)(patcherArgs)).toBeUndefined();
+        expect(merge(filename, generator)(generatorArgs)).toBeUndefined();
 
-        expect(patcher.mock.calls).toEqual([]);
+        expect(generator.mock.calls).toEqual([]);
       });
     });
   });

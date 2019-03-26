@@ -1,4 +1,4 @@
-import {loadFile, loadManifest, patchFile, saveFile} from '@rcgen/core';
+import {generateFile, loadFile, loadManifest, saveFile} from '@rcgen/core';
 import meow from 'meow';
 import path from 'path';
 
@@ -60,13 +60,13 @@ try {
     for (const file of files) {
       const {filename} = file;
       const loadedFile = loadFile(loadedManifest, filename);
-      const patchedFile = patchFile(loadedManifest, loadedFile);
+      const generatedFile = generateFile(loadedManifest, loadedFile);
 
-      if (!patchedFile) {
+      if (!generatedFile) {
         log(
           `File '${filename}' has no generated content and was therefore skipped.`
         );
-      } else if (saveFile(loadedManifest, patchedFile, force)) {
+      } else if (saveFile(loadedManifest, generatedFile, force)) {
         log(`File '${filename}' was successfully generated.`);
       } else {
         log(`File '${filename}' is already generated.`);

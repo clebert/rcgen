@@ -8,31 +8,28 @@ describe('mergeManifest', () => {
     expect(mergeManifest({})({})).toEqual({});
 
     const fileA = {filename: 'a', filetype};
-    const patcherA = jest.fn();
+    const generatorA = jest.fn();
 
-    expect(mergeManifest({files: [fileA], patchers: [patcherA]})()).toEqual({
-      files: [fileA],
-      patchers: [patcherA]
-    });
-
-    expect(mergeManifest({files: [fileA], patchers: [patcherA]})({})).toEqual({
-      files: [fileA],
-      patchers: [patcherA]
-    });
-
-    expect(mergeManifest({})({files: [fileA], patchers: [patcherA]})).toEqual({
-      files: [fileA],
-      patchers: [patcherA]
-    });
-
-    const fileB = {filename: 'b', filetype};
-    const patcherB = jest.fn();
+    expect(mergeManifest({files: [fileA], generators: [generatorA]})()).toEqual(
+      {files: [fileA], generators: [generatorA]}
+    );
 
     expect(
-      mergeManifest({files: [fileB], patchers: [patcherB]})({
+      mergeManifest({files: [fileA], generators: [generatorA]})({})
+    ).toEqual({files: [fileA], generators: [generatorA]});
+
+    expect(
+      mergeManifest({})({files: [fileA], generators: [generatorA]})
+    ).toEqual({files: [fileA], generators: [generatorA]});
+
+    const fileB = {filename: 'b', filetype};
+    const generatorB = jest.fn();
+
+    expect(
+      mergeManifest({files: [fileB], generators: [generatorB]})({
         files: [fileA],
-        patchers: [patcherA]
+        generators: [generatorA]
       })
-    ).toEqual({files: [fileA, fileB], patchers: [patcherA, patcherB]});
+    ).toEqual({files: [fileA, fileB], generators: [generatorA, generatorB]});
   });
 });
