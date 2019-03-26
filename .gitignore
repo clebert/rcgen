@@ -1,6 +1,4 @@
 *.tsbuildinfo
-.node-version
-.nvmrc
 coverage
 docs
 lib
