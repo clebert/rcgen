@@ -53,7 +53,9 @@ try {
   const {files = []} = loadedManifest;
 
   if (files.length === 0) {
-    log(`No files found in manifest '${absoluteManifestFilename}'.`);
+    log(
+      `No files to be generated found in manifest '${absoluteManifestFilename}'.`
+    );
   } else {
     for (const file of files) {
       const {filename} = file;
