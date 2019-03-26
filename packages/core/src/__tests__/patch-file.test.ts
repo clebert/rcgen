@@ -21,8 +21,7 @@ describe('patchFile', () => {
       absoluteManifestFilename,
       filename: 'a',
       generatedContent: undefined,
-      existingContent: 'foo',
-      otherFilenames: []
+      existingContent: 'foo'
     };
 
     expect(mockPatcher1.mock.calls).toEqual([[patcherArgs]]);
@@ -79,8 +78,7 @@ describe('patchFile', () => {
           absoluteManifestFilename,
           filename: 'a',
           generatedContent: undefined,
-          existingContent: undefined,
-          otherFilenames: ['b', 'c']
+          existingContent: undefined
         }
       ]
     ]);
@@ -100,8 +98,7 @@ describe('patchFile', () => {
           absoluteManifestFilename,
           filename: 'a',
           generatedContent: undefined,
-          existingContent: undefined,
-          otherFilenames: []
+          existingContent: undefined
         }
       ]
     ]);
