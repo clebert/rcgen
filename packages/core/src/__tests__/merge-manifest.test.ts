@@ -10,68 +10,29 @@ describe('mergeManifest', () => {
     const fileA = {filename: 'a', filetype};
     const patcherA = jest.fn();
 
-    expect(
-      mergeManifest({
-        files: [fileA],
-        patchers: [patcherA],
-        include: ['a'],
-        exclude: ['a']
-      })()
-    ).toEqual({
+    expect(mergeManifest({files: [fileA], patchers: [patcherA]})()).toEqual({
       files: [fileA],
-      patchers: [patcherA],
-      include: ['a'],
-      exclude: ['a']
+      patchers: [patcherA]
     });
 
-    expect(
-      mergeManifest({
-        files: [fileA],
-        patchers: [patcherA],
-        include: ['a'],
-        exclude: ['a']
-      })({})
-    ).toEqual({
+    expect(mergeManifest({files: [fileA], patchers: [patcherA]})({})).toEqual({
       files: [fileA],
-      patchers: [patcherA],
-      include: ['a'],
-      exclude: ['a']
+      patchers: [patcherA]
     });
 
-    expect(
-      mergeManifest({})({
-        files: [fileA],
-        patchers: [patcherA],
-        include: ['a'],
-        exclude: ['a']
-      })
-    ).toEqual({
+    expect(mergeManifest({})({files: [fileA], patchers: [patcherA]})).toEqual({
       files: [fileA],
-      patchers: [patcherA],
-      include: ['a'],
-      exclude: ['a']
+      patchers: [patcherA]
     });
 
     const fileB = {filename: 'b', filetype};
     const patcherB = jest.fn();
 
     expect(
-      mergeManifest({
-        files: [fileB],
-        patchers: [patcherB],
-        include: ['b'],
-        exclude: ['b']
-      })({
+      mergeManifest({files: [fileB], patchers: [patcherB]})({
         files: [fileA],
-        patchers: [patcherA],
-        include: ['a'],
-        exclude: ['a']
+        patchers: [patcherA]
       })
-    ).toEqual({
-      files: [fileA, fileB],
-      patchers: [patcherA, patcherB],
-      include: ['a', 'b'],
-      exclude: ['a', 'b']
-    });
+    ).toEqual({files: [fileA, fileB], patchers: [patcherA, patcherB]});
   });
 });

@@ -1,7 +1,6 @@
 import {existsSync, readFileSync} from 'fs';
 import path from 'path';
 import {File, LoadedManifest} from './load-manifest';
-import {matchFile} from './match-file';
 import {validate} from './validate';
 
 export interface LoadedFile<T> extends File<T> {
@@ -31,7 +30,7 @@ function createFileCannotBeLoadedError(
 export function loadFile<T = unknown>(
   loadedManifest: LoadedManifest,
   filename: string
-): LoadedFile<T> | undefined {
+): LoadedFile<T> {
   const {absoluteManifestFilename, files = []} = loadedManifest;
 
   const file = files.find(
@@ -40,10 +39,6 @@ export function loadFile<T = unknown>(
 
   if (!file) {
     throw createFileCannotBeLoadedError(filename, 'because it is undefined');
-  }
-
-  if (!matchFile(loadedManifest)(filename)) {
-    return;
   }
 
   const absoluteRootDirname = path.dirname(absoluteManifestFilename);

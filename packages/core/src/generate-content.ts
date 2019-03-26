@@ -12,7 +12,6 @@ function createContentCannotBeGeneratedError(
 }
 
 /**
- * @throws if the file is not included
  * @throws if none of the patchers matches the file
  */
 export function generateContent(
@@ -22,14 +21,6 @@ export function generateContent(
 ): unknown {
   const loadedManifest = loadManifest(absoluteManifestFilename, nodeRequire);
   const loadedFile = loadFile(loadedManifest, filename);
-
-  if (!loadedFile) {
-    throw createContentCannotBeGeneratedError(
-      filename,
-      'because the file is not included'
-    );
-  }
-
   const patchedFile = patchFile(loadedManifest, loadedFile);
 
   if (!patchedFile) {

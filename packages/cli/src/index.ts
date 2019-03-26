@@ -58,21 +58,16 @@ try {
     for (const file of files) {
       const {filename} = file;
       const loadedFile = loadFile(loadedManifest, filename);
+      const patchedFile = patchFile(loadedManifest, loadedFile);
 
-      if (loadedFile) {
-        const patchedFile = patchFile(loadedManifest, loadedFile);
-
-        if (!patchedFile) {
-          log(
-            `File '${filename}' has no generated content and was therefore skipped.`
-          );
-        } else if (saveFile(loadedManifest, patchedFile, force)) {
-          log(`File '${filename}' was successfully generated.`);
-        } else {
-          log(`File '${filename}' is already generated.`);
-        }
+      if (!patchedFile) {
+        log(
+          `File '${filename}' has no generated content and was therefore skipped.`
+        );
+      } else if (saveFile(loadedManifest, patchedFile, force)) {
+        log(`File '${filename}' was successfully generated.`);
       } else {
-        log(`File '${filename}' is not included.`);
+        log(`File '${filename}' is already generated.`);
       }
     }
   }
