@@ -1,8 +1,8 @@
 import {existsSync, writeFileSync} from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
+import {GeneratedFile} from './generate-file';
 import {LoadedManifest} from './load-manifest';
-import {PatchedFile} from './patch-file';
 
 function createFileCannotBeSavedError(
   filename: string,
@@ -25,7 +25,7 @@ function createFileCannotBeSavedError(
  */
 export function saveFile<T = unknown>(
   loadedManifest: LoadedManifest,
-  patchedFile: PatchedFile<T>,
+  generatedFile: GeneratedFile<T>,
   force: boolean = false
 ): boolean {
   const {absoluteManifestFilename} = loadedManifest;
@@ -36,7 +36,7 @@ export function saveFile<T = unknown>(
     conflictingFilenames,
     existingContentData,
     generatedContent
-  } = patchedFile;
+  } = generatedFile;
 
   const absoluteRootDirname = path.dirname(absoluteManifestFilename);
 

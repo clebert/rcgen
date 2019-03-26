@@ -2,47 +2,47 @@ import {LoadedFile} from './load-file';
 import {LoadedManifest} from './load-manifest';
 import {validate} from './validate';
 
-export interface PatchedFile<T> extends LoadedFile<T> {
+export interface GeneratedFile<T> extends LoadedFile<T> {
   readonly generatedContent: T;
 }
 
-function createFileCannotBePatchedError(
+function createFileCannotBeGeneratedError(
   filename: string,
   cause: string,
   details: string
 ): Error {
   return new Error(
-    `File '${filename}' cannot be patched ${cause}. Details: ${details}`
+    `File '${filename}' cannot be generated ${cause}. Details: ${details}`
   );
 }
 
 /**
- * @throws if a patcher caused an error
- * @throws if a patcher generates invalid content
+ * @throws if a generator caused an error
+ * @throws if a generator generates invalid content
  */
-export function patchFile<T = unknown>(
+export function generateFile<T = unknown>(
   loadedManifest: LoadedManifest,
   loadedFile: LoadedFile<T>
-): PatchedFile<T> | null {
-  const {absoluteManifestFilename, patchers = []} = loadedManifest;
+): GeneratedFile<T> | null {
+  const {absoluteManifestFilename, generators = []} = loadedManifest;
   const {filename, filetype, existingContent} = loadedFile;
 
   let generatedContent: T | undefined;
 
-  for (const patcher of patchers) {
+  for (const generator of generators) {
     let newlyGeneratedContent: T | undefined;
 
     try {
-      newlyGeneratedContent = patcher({
+      newlyGeneratedContent = generator({
         absoluteManifestFilename,
         filename,
-        generatedContent,
+        previouslyGeneratedContent: generatedContent,
         existingContent
       });
     } catch (error) {
-      throw createFileCannotBePatchedError(
+      throw createFileCannotBeGeneratedError(
         filename,
-        'because a patcher caused an error',
+        'because a generator caused an error',
         error.message
       );
     }
@@ -60,9 +60,9 @@ export function patchFile<T = unknown>(
     );
 
     if (!generatedContentResult.isValid(generatedContent)) {
-      throw createFileCannotBePatchedError(
+      throw createFileCannotBeGeneratedError(
         filename,
-        'because a patcher generates invalid content',
+        'because a generator generates invalid content',
         generatedContentResult.validationMessage
       );
     }

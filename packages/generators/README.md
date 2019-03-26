@@ -1,21 +1,21 @@
-# @rcgen/patchers
+# @rcgen/generators
 
 [![Package Version][package-badge]][package-npm]
 
-A collection of higher-order patchers for use with **rcgen**.
+A collection of higher-order generators for use with **rcgen**.
 
 ## Installation
 
 ### Using Yarn
 
 ```sh
-yarn add @rcgen/patchers
+yarn add @rcgen/generators
 ```
 
 ### Using npm
 
 ```sh
-npm install @rcgen/patchers
+npm install @rcgen/generators
 ```
 
 ---
@@ -24,5 +24,5 @@ Copyright (c) 2019, Clemens Akens. Released under the terms of the [MIT
 License][license].
 
 [license]: https://github.com/clebert/rcgen/blob/master/LICENSE
-[package-badge]: https://img.shields.io/npm/v/@rcgen/patchers.svg
-[package-npm]: https://www.npmjs.com/package/@rcgen/patchers
+[package-badge]: https://img.shields.io/npm/v/@rcgen/generators.svg
+[package-npm]: https://www.npmjs.com/package/@rcgen/generators

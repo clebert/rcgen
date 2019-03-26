@@ -1,6 +1,6 @@
+import {generateFile} from './generate-file';
 import {loadFile} from './load-file';
 import {loadManifest} from './load-manifest';
-import {patchFile} from './patch-file';
 
 function createContentCannotBeGeneratedError(
   filename: string,
@@ -12,7 +12,7 @@ function createContentCannotBeGeneratedError(
 }
 
 /**
- * @throws if none of the patchers matches the file
+ * @throws if none of the generators generates the file
  */
 export function generateContent(
   absoluteManifestFilename: string,
@@ -21,14 +21,14 @@ export function generateContent(
 ): unknown {
   const loadedManifest = loadManifest(absoluteManifestFilename, nodeRequire);
   const loadedFile = loadFile(loadedManifest, filename);
-  const patchedFile = patchFile(loadedManifest, loadedFile);
+  const generatedFile = generateFile(loadedManifest, loadedFile);
 
-  if (!patchedFile) {
+  if (!generatedFile) {
     throw createContentCannotBeGeneratedError(
       filename,
-      'because none of the patchers matches the file'
+      'because none of the generators generates the file'
     );
   }
 
-  return patchedFile.generatedContent;
+  return generatedFile.generatedContent;
 }

@@ -29,20 +29,20 @@ export interface File<T> {
   readonly conflictingFilenames?: string[];
 }
 
-export interface PatcherArgs<T> {
+export interface GeneratorArgs<T> {
   readonly absoluteManifestFilename: string;
   readonly filename: string;
-  readonly generatedContent: T | undefined;
+  readonly previouslyGeneratedContent: T | undefined;
   readonly existingContent: T | undefined;
 }
 
-export type Patcher<T> = (args: PatcherArgs<T>) => T | undefined;
+export type Generator<T> = (args: GeneratorArgs<T>) => T | undefined;
 
 export interface Manifest {
   // tslint:disable-next-line: no-any
   readonly files?: File<any>[];
   // tslint:disable-next-line: no-any
-  readonly patchers?: Patcher<any>[];
+  readonly generators?: Generator<any>[];
 }
 
 export interface LoadedManifest extends Manifest {
@@ -86,13 +86,13 @@ const fileSchema = {
   additionalProperties: false
 };
 
-const patcherSchema = {isFunction: true};
+const generatorSchema = {isFunction: true};
 
 const manifestSchema = {
   type: 'object',
   properties: {
     files: {type: 'array', items: fileSchema},
-    patchers: {type: 'array', items: patcherSchema}
+    generators: {type: 'array', items: generatorSchema}
   },
   additionalProperties: false
 };

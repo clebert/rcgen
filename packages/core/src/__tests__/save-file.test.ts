@@ -15,9 +15,9 @@ describe('saveFile', () => {
   const generatedContentData = serializeJson(generatedContent);
 
   it('writes the generated content data to the file', () => {
-    const patchedFile = {filename: 'a/b', filetype, generatedContent};
+    const generatedFile = {filename: 'a/b', filetype, generatedContent};
 
-    expect(saveFile({absoluteManifestFilename}, patchedFile)).toBe(true);
+    expect(saveFile({absoluteManifestFilename}, generatedFile)).toBe(true);
 
     expect(mockSerializer.mock.calls).toEqual([
       [{absoluteManifestFilename, filename: 'a/b', content: generatedContent}]
@@ -31,14 +31,14 @@ describe('saveFile', () => {
   });
 
   it('does not attempt to write the generated content data to the file if it matches the existing content data of the file', () => {
-    const patchedFile = {
+    const generatedFile = {
       filename: 'a',
       filetype,
       existingContentData: generatedContentData,
       generatedContent
     };
 
-    expect(saveFile({absoluteManifestFilename}, patchedFile)).toBe(false);
+    expect(saveFile({absoluteManifestFilename}, generatedFile)).toBe(false);
 
     expect(mockSerializer.mock.calls).toEqual([
       [{absoluteManifestFilename, filename: 'a', content: generatedContent}]
@@ -51,7 +51,7 @@ describe('saveFile', () => {
   it('throws if the file conflicts with an existing file', () => {
     mockExistsSync.mockImplementation(filename => filename === '/path/to/c');
 
-    const patchedFile = {
+    const generatedFile = {
       filename: 'a',
       filetype,
       conflictingFilenames: ['b', 'c'],
@@ -59,7 +59,7 @@ describe('saveFile', () => {
     };
 
     expect(() =>
-      saveFile({absoluteManifestFilename}, patchedFile)
+      saveFile({absoluteManifestFilename}, generatedFile)
     ).toThrowError(
       new Error(
         "File 'a' cannot be saved because it conflicts with the existing file 'c'."
@@ -68,14 +68,14 @@ describe('saveFile', () => {
   });
 
   it('throws if the generated content data of the file could not be serialized', () => {
-    const patchedFile = {filename: 'a', filetype, generatedContent};
+    const generatedFile = {filename: 'a', filetype, generatedContent};
 
     mockSerializer.mockImplementation(() => {
       throw new Error('SerializerError');
     });
 
     expect(() =>
-      saveFile({absoluteManifestFilename}, patchedFile)
+      saveFile({absoluteManifestFilename}, generatedFile)
     ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data could not be serialized. Details: SerializerError"
@@ -84,7 +84,7 @@ describe('saveFile', () => {
   });
 
   it('throws if the generated content data of the file differs from the existing content data of the file', () => {
-    const patchedFile = {
+    const generatedFile = {
       filename: 'a',
       filetype,
       existingContentData: serializeJson('bar'),
@@ -92,7 +92,7 @@ describe('saveFile', () => {
     };
 
     expect(() =>
-      saveFile({absoluteManifestFilename}, patchedFile)
+      saveFile({absoluteManifestFilename}, generatedFile)
     ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data differs from its existing content data, by setting the --force flag the file can be saved anyway."
@@ -105,10 +105,10 @@ describe('saveFile', () => {
       throw new Error('MkdirpSyncError');
     });
 
-    const patchedFile = {filename: 'a', filetype, generatedContent};
+    const generatedFile = {filename: 'a', filetype, generatedContent};
 
     expect(() =>
-      saveFile({absoluteManifestFilename}, patchedFile)
+      saveFile({absoluteManifestFilename}, generatedFile)
     ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its required subdirectories could not be created. Details: MkdirpSyncError"
@@ -121,10 +121,10 @@ describe('saveFile', () => {
       throw new Error('WriteFileSyncError');
     });
 
-    const patchedFile = {filename: 'a', filetype, generatedContent};
+    const generatedFile = {filename: 'a', filetype, generatedContent};
 
     expect(() =>
-      saveFile({absoluteManifestFilename}, patchedFile)
+      saveFile({absoluteManifestFilename}, generatedFile)
     ).toThrowError(
       new Error(
         "File 'a' cannot be saved because its generated content data could not be written. Details: WriteFileSyncError"
@@ -134,14 +134,14 @@ describe('saveFile', () => {
 
   describe('in force mode', () => {
     it('writes the generated content data to the file although it differs from the existing content data of the file', () => {
-      const patchedFile = {
+      const generatedFile = {
         filename: 'a/b',
         filetype,
         existingContentData: serializeJson('bar'),
         generatedContent
       };
 
-      expect(saveFile({absoluteManifestFilename}, patchedFile, true)).toBe(
+      expect(saveFile({absoluteManifestFilename}, generatedFile, true)).toBe(
         true
       );
 

@@ -57,9 +57,9 @@ describe('loadManifest', () => {
       {files: [{...file, conflictingFilenames: []}]},
       {files: [{...file, conflictingFilenames: ['b']}]},
       {files: [{...file, filetype: filetypeWithDeserializer}]},
-      {patchers: []},
-      {patchers: [jest.fn()]},
-      {files: [], patchers: []}
+      {generators: []},
+      {generators: [jest.fn()]},
+      {files: [], generators: []}
     ];
 
     for (const manifest of manifests) {
@@ -109,10 +109,10 @@ describe('loadManifest', () => {
       ),
       defineInvalidManifest(123, ' should be object'),
       defineInvalidManifest({files: 123}, '.files should be array'),
-      defineInvalidManifest({patchers: 123}, '.patchers should be array'),
+      defineInvalidManifest({generators: 123}, '.generators should be array'),
       defineInvalidManifest(
-        {patchers: [123]},
-        '.patchers[0] should be function'
+        {generators: [123]},
+        '.generators[0] should be function'
       ),
       defineInvalidManifest(
         {unknown: 123},
