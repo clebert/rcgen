@@ -59,11 +59,7 @@ describe('loadManifest', () => {
       {files: [{...file, filetype: filetypeWithDeserializer}]},
       {patchers: []},
       {patchers: [jest.fn()]},
-      {include: []},
-      {include: ['*']},
-      {exclude: []},
-      {exclude: ['*']},
-      {files: [], patchers: [], include: [], exclude: []}
+      {files: [], patchers: []}
     ];
 
     for (const manifest of manifests) {
@@ -118,10 +114,6 @@ describe('loadManifest', () => {
         {patchers: [123]},
         '.patchers[0] should be function'
       ),
-      defineInvalidManifest({include: 123}, '.include should be array'),
-      defineInvalidManifest({include: [123]}, '.include[0] should be string'),
-      defineInvalidManifest({exclude: 123}, '.exclude should be array'),
-      defineInvalidManifest({exclude: [123]}, '.exclude[0] should be string'),
       defineInvalidManifest(
         {unknown: 123},
         ' should NOT have additional properties'

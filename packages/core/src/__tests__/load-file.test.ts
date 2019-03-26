@@ -55,19 +55,6 @@ describe('loadFile', () => {
     ]);
   });
 
-  it('does not attempt to access the file if it is not included', () => {
-    mockExistsSync.mockReturnValue(true);
-
-    const file = {filename: 'a', filetype};
-
-    expect(
-      loadFile({absoluteManifestFilename, files: [file], include: []}, 'a')
-    ).toBeUndefined();
-
-    expect(mockExistsSync.mock.calls).toEqual([]);
-    expect(mockReadFileSync.mock.calls).toEqual([]);
-  });
-
   it('does not attempt to read the existing content data of the file if it does not exist', () => {
     mockExistsSync.mockReturnValue(false);
 

@@ -16,21 +16,6 @@ describe('generateContent', () => {
     ).toEqual('foo');
   });
 
-  it('throws if the file is not included', () => {
-    const file = {filename: 'a', filetype};
-    const manifest = {files: [file], include: []};
-
-    mockNodeRequire.mockReturnValue({default: manifest});
-
-    expect(() =>
-      generateContent(absoluteManifestFilename, 'a', mockNodeRequire)
-    ).toThrowError(
-      new Error(
-        "The content of file 'a' cannot be generated because the file is not included."
-      )
-    );
-  });
-
   it('throws if none of the patchers matches the file', () => {
     const file = {filename: 'a', filetype};
     const manifest = {files: [file], patchers: [() => undefined]};
