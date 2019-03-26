@@ -12,7 +12,7 @@ function createContentCannotBeGeneratedError(
 }
 
 /**
- * @throws if none of the generators matches the file
+ * @throws if none of the generators generates the file
  */
 export function generateContent(
   absoluteManifestFilename: string,
@@ -26,7 +26,7 @@ export function generateContent(
   if (!generatedFile) {
     throw createContentCannotBeGeneratedError(
       filename,
-      'because none of the generators matches the file'
+      'because none of the generators generates the file'
     );
   }
 

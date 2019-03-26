@@ -16,7 +16,7 @@ describe('generateContent', () => {
     ).toEqual('foo');
   });
 
-  it('throws if none of the generators matches the file', () => {
+  it('throws if none of the generators generates the file', () => {
     const file = {filename: 'a', filetype};
     const manifest = {files: [file], generators: [() => undefined]};
 
@@ -26,7 +26,7 @@ describe('generateContent', () => {
       generateContent(absoluteManifestFilename, 'a', mockNodeRequire)
     ).toThrowError(
       new Error(
-        "The content of file 'a' cannot be generated because none of the generators matches the file."
+        "The content of file 'a' cannot be generated because none of the generators generates the file."
       )
     );
   });
