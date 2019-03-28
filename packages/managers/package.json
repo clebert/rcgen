@@ -1,0 +1,29 @@
+{
+  "name": "@rcgen/managers",
+  "version": "0.13.0",
+  "description": "A collection of file managers for use with rcgen.",
+  "homepage": "https://rcgen.io",
+  "bugs": {
+    "url": "https://github.com/clebert/rcgen/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clebert/rcgen.git"
+  },
+  "license": "MIT",
+  "author": "Clemens Akens <clebert@me.com>",
+  "files": [
+    "lib",
+    "!__tests__"
+  ],
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "@rcgen/core": "^0.13.0",
+    "@rcgen/filetypes": "^0.13.0",
+    "@rcgen/generators": "^0.13.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

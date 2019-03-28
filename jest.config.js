@@ -3,7 +3,8 @@
 module.exports = {
   collectCoverageFrom: [
     '**/packages/*/src/**/*.{ts,tsx}',
-    '!**/packages/cli/src/**/*.{ts,tsx}'
+    '!**/packages/cli/src/**/*.{ts,tsx}',
+    '!**/packages/managers/src/**/*.{ts,tsx}'
   ],
   coverageThreshold: {
     global: {branches: 100, functions: 100, lines: 100, statements: 100}
