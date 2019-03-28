@@ -19,6 +19,6 @@
       "@rcgen/*": ["packages/*/src/index.ts"]
     },
     "plugins": [{"name": "typescript-tslint-plugin"}],
-    "incremental": false
+    "incremental": true
   }
 }
