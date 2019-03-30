@@ -13,6 +13,7 @@ export interface NonGeneratedUnversionedFile {
 }
 
 export interface Project {
+  readonly nodeVersion?: string;
   readonly managedGeneratedFiles?: ManagedGeneratedFile[];
   readonly unmanagedGeneratedFiles?: UnmanagedGeneratedFile[];
   readonly nonGeneratedUnversionedFiles?: NonGeneratedUnversionedFile[];

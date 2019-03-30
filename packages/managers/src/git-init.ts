@@ -1,6 +1,7 @@
 import {File, ManifestCreator, mergeManifest} from '@rcgen/core';
 import {createTextFiletype} from '@rcgen/filetypes';
 import {merge} from '@rcgen/generators';
+import {findManagedFiles} from './find-managed-files';
 import {Project} from './project';
 
 const gitignoreFile: File<string[]> = {
@@ -17,23 +18,19 @@ export function gitInit(project: Project): ManifestCreator {
     nonGeneratedUnversionedFiles = []
   } = project;
 
-  const managesGitignoreFile = Boolean(
-    managedGeneratedFiles.find(
-      ({filename}) => filename === gitignoreFile.filename
-    )
-  );
+  const files = findManagedFiles(project, [gitignoreFile]);
 
-  const files = managesGitignoreFile ? [gitignoreFile] : [];
+  const generators = [
+    merge(gitignoreFile.filename, () => [
+      ...managedGeneratedFiles
+        .filter(({versioned}) => !versioned)
+        .map(({filename}) => filename),
+      ...unmanagedGeneratedFiles
+        .filter(({versioned}) => !versioned)
+        .map(({pattern}) => pattern),
+      ...nonGeneratedUnversionedFiles.map(({pattern}) => pattern)
+    ])
+  ];
 
-  const generator = merge(gitignoreFile.filename, () => [
-    ...managedGeneratedFiles
-      .filter(({versioned}) => !versioned)
-      .map(({filename}) => filename),
-    ...unmanagedGeneratedFiles
-      .filter(({versioned}) => !versioned)
-      .map(({pattern}) => pattern),
-    ...nonGeneratedUnversionedFiles.map(({pattern}) => pattern)
-  ]);
-
-  return mergeManifest({files, generators: [generator]});
+  return mergeManifest({files, generators});
 }

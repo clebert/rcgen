@@ -42,7 +42,7 @@ TODO
 
 ## Examples
 
-### Automatic Generation of a Gitignore File
+### Managing Git
 
 #### Manifest `rcgen.js`
 
@@ -50,10 +50,10 @@ TODO
 // @ts-check
 
 const {composeManifest} = require('@rcgen/core');
-const {gitInit} = require('@rcgen/project');
+const {gitInit} = require('@rcgen/managers');
 
 /**
- * @type {import('@rcgen/project').Project}
+ * @type {import('@rcgen/managers').Project}
  */
 const project = {
   managedGeneratedFiles: [{filename: '.gitignore', versioned: true}],
@@ -79,6 +79,39 @@ exports.default = composeManifest(gitInit(project))();
 **/lib
 **/node_modules
 **/todo.tasks
+```
+
+### Managing Node.js
+
+#### Manifest `rcgen.js`
+
+```js
+// @ts-check
+
+const {composeManifest} = require('@rcgen/core');
+const {nodeInit} = require('@rcgen/managers');
+
+/**
+ * @type {import('@rcgen/managers').Project}
+ */
+const project = {
+  nodeVersion: '10',
+  managedGeneratedFiles: [{filename: '.node-version'}, {filename: '.nvmrc'}]
+};
+
+exports.default = composeManifest(nodeInit(project))();
+```
+
+#### Generated File `.node-version`
+
+```
+10
+```
+
+#### Generated File `.nvmrc`
+
+```
+10
 ```
 
 ## CLI Documentation
