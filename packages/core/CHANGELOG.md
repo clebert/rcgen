@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/clebert/rcgen/compare/v0.13.0...v0.14.0) (2019-03-30)
+
+
+### Features
+
+* **all:** rename patcher to generator ([#47](https://github.com/clebert/rcgen/issues/47)) ([05213cc](https://github.com/clebert/rcgen/commit/05213cc))
+* **core:** remove globs functionality ([#45](https://github.com/clebert/rcgen/issues/45)) ([cd5c64f](https://github.com/clebert/rcgen/commit/cd5c64f))
+* **core:** remove otherFilenames patcher argument ([#44](https://github.com/clebert/rcgen/issues/44)) ([7d81a34](https://github.com/clebert/rcgen/commit/7d81a34))
+* **core:** rename ex-/include props in Globs interface ([#37](https://github.com/clebert/rcgen/issues/37)) ([589b817](https://github.com/clebert/rcgen/commit/589b817))
+
+
+
+
+
 # [0.13.0](https://github.com/clebert/rcgen/compare/v0.12.0...v0.13.0) (2019-03-17)
 
 **Note:** Version bump only for package @rcgen/core

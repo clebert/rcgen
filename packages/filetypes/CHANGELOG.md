@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/clebert/rcgen/compare/v0.13.0...v0.14.0) (2019-03-30)
+
+
+### Features
+
+* **filetypes:** improve and rename text line set filetype ([#48](https://github.com/clebert/rcgen/issues/48)) ([055d430](https://github.com/clebert/rcgen/commit/055d430))
+* **filetypes:** introduce text filetype ([#50](https://github.com/clebert/rcgen/issues/50)) ([6a130c9](https://github.com/clebert/rcgen/commit/6a130c9))
+
+
+
+
+
 # [0.13.0](https://github.com/clebert/rcgen/compare/v0.12.0...v0.13.0) (2019-03-17)
 
 **Note:** Version bump only for package @rcgen/filetypes
