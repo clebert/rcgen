@@ -4,3 +4,5 @@
 **/lib
 **/node_modules
 **/todo.tasks
+.node-version
+.nvmrc

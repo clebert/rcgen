@@ -1,13 +1,18 @@
 // @ts-check
 
 const {composeManifest} = require('@rcgen/core');
-const {gitInit} = require('@rcgen/managers');
+const {gitInit, nodeInit} = require('@rcgen/managers');
 
 /**
  * @type {import('@rcgen/managers').Project}
  */
 const project = {
-  managedGeneratedFiles: [{filename: '.gitignore', versioned: true}],
+  nodeVersion: '10',
+  managedGeneratedFiles: [
+    {filename: '.gitignore', versioned: true},
+    {filename: '.node-version'},
+    {filename: '.nvmrc'}
+  ],
   unmanagedGeneratedFiles: [
     {pattern: '**/*.tsbuildinfo'},
     {pattern: '**/coverage'},
@@ -18,4 +23,4 @@ const project = {
   nonGeneratedUnversionedFiles: [{pattern: '**/todo.tasks'}]
 };
 
-exports.default = composeManifest(gitInit(project))();
+exports.default = composeManifest(gitInit(project), nodeInit(project))();
