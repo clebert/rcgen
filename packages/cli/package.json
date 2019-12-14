@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@rcgen/core": "^0.14.0",
-    "meow": "^5.0.0"
+    "meow": "^6.0.0"
   },
   "devDependencies": {
     "@types/meow": "^5.0.0"
