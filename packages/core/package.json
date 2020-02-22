@@ -20,10 +20,10 @@
   "typings": "lib/index.d.ts",
   "dependencies": {
     "ajv": "^6.9.2",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^1.0.0"
   },
   "devDependencies": {
-    "@types/mkdirp": "^0.5.2"
+    "@types/mkdirp": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"
