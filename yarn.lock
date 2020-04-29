@@ -1679,13 +1679,12 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@strictsoftware/typedoc-plugin-monorepo@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@strictsoftware/typedoc-plugin-monorepo/-/typedoc-plugin-monorepo-0.2.1.tgz#09a39299ac4885803e1ce1778ddb7dfd64776606"
-  integrity sha512-VEfK9dCsBmxXGJcFUK0lBKRj1BtdVluy0i8sWa7pfIrQwTJEjMbpvMnx3qjNyl8aWZLtpvWMkEbr3WmXSkOZ2Q==
+"@strictsoftware/typedoc-plugin-monorepo@^0.3.0":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@strictsoftware/typedoc-plugin-monorepo/-/typedoc-plugin-monorepo-0.3.1.tgz#83a704bad2cf90a05f62f1c2587b0be09693a9a0"
+  integrity sha512-b7oolCeKZ40jyEfQrDd/Z216M5ZE4tRML0B0bV35tUIALoQsBBA7dz3Kr+X6DtbZA7FQmaqNGS6WAt7zxLL7wg==
   dependencies:
     highlight.js "^9.15.6"
-    marked "^0.6.1"
 
 "@types/babel__core@^7.1.0":
   version "7.1.0"
@@ -5177,11 +5176,6 @@ marked@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
-
-marked@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.1.tgz#a63addde477bca9613028de4b2bc3629e53a0562"
-  integrity sha512-+H0L3ibcWhAZE02SKMqmvYsErLo4EAVJxu5h3bHBBDvvjeWXtl92rGUSBYHL2++5Y+RSNgl8dYOAXcYe7lp1fA==
 
 mem@^4.0.0:
   version "4.2.0"
