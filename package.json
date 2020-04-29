@@ -40,7 +40,7 @@
     "sort-package-json": "^1.21.0",
     "ts-config": "^20.9.0",
     "tslint": "^5.14.0",
-    "typedoc": "^0.14.2",
+    "typedoc": "^0.17.0",
     "typedoc-plugin-sourcefile-url": "^1.0.4",
     "typescript": "3.4.1",
     "typescript-tslint-plugin": "^0.3.1"
